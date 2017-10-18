@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="connect.png">img/connect.png</file>
+        <file alias="pgadmin.png">img/pgAdmin3-256.png</file>
+        <file alias="server-disconnected.png">img/serverbad.png</file>
+        <file alias="server-connected.png">img/server.png</file>
+        <file alias="servers.png">img/servers.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PgAdmin</class>
+ <widget class="QMainWindow" name="PgAdmin">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>PgAdmin</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="pgadmin.qrc">
+    <normaloff>:/pgadmin.png</normaloff>:/pgadmin.png</iconset>
+  </property>
+  <widget class="QWidget" name="_centralWidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QSplitter" name="_splitterVertical">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="ObjectBrowser" name="_objectBrowser">
+       <column>
+        <property name="text">
+         <string>Objects</string>
+        </property>
+       </column>
+      </widget>
+      <widget class="QSplitter" name="_splitterHorizontal">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <widget class="QTabWidget" name="_objectProperties">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="_properties">
+         <attribute name="title">
+          <string>Properties</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="_statistics">
+         <attribute name="title">
+          <string>Statistics</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="_dependencies">
+         <attribute name="title">
+          <string>Dependencies</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="_dependents">
+         <attribute name="title">
+          <string>Dependents</string>
+         </attribute>
+        </widget>
+       </widget>
+       <widget class="QPlainTextEdit" name="_sqlTab"/>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>400</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="_menuFile">
+    <property name="title">
+     <string>Fi&amp;le</string>
+    </property>
+    <addaction name="_actionAddConnection"/>
+    <addaction name="separator"/>
+    <addaction name="_actionSettings"/>
+    <addaction name="separator"/>
+    <addaction name="_actionOpenPgpass"/>
+    <addaction name="separator"/>
+    <addaction name="_actionExit"/>
+   </widget>
+   <widget class="QMenu" name="_menuEdit">
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="_menuView">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+   </widget>
+   <addaction name="_menuFile"/>
+   <addaction name="_menuEdit"/>
+   <addaction name="_menuView"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="_actionAddConnection"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="_actionAddConnection">
+   <property name="icon">
+    <iconset resource="pgadmin.qrc">
+     <normaloff>:/connect.png</normaloff>:/connect.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Add connection</string>
+   </property>
+  </action>
+  <action name="_actionSettings">
+   <property name="text">
+    <string>&amp;Settings</string>
+   </property>
+  </action>
+  <action name="_actionOpenPgpass">
+   <property name="text">
+    <string>&amp;Open .pgpass</string>
+   </property>
+  </action>
+  <action name="_actionExit">
+   <property name="text">
+    <string>&amp;Exit</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>ObjectBrowser</class>
+   <extends>QTreeWidget</extends>
+   <header location="global">objectbrowser.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="pgadmin.qrc"/>
+ </resources>
+ <connections/>
+</ui>

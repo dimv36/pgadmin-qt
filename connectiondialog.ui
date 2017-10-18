@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ConnectionDialog</class>
+ <widget class="QDialog" name="ConnectionDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>378</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Add new server connection</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="pgadmin.qrc">
+    <normaloff>:/server.png</normaloff>:/server.png</iconset>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QTabWidget" name="_connectionProperties">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="_properties">
+      <attribute name="title">
+       <string>Properties</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="_nameLabel">
+         <property name="text">
+          <string>Name</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="_nameLineEdit">
+         <property name="text">
+          <string comment="Connection name"/>
+         </property>
+         <property name="placeholderText">
+          <string>Please, specify name for connection</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="_hostLabel">
+         <property name="text">
+          <string>Host</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="_hostLineEdit">
+         <property name="placeholderText">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="_portLabel">
+         <property name="text">
+          <string>Port</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="_portLineEdit">
+         <property name="text">
+          <string>5432</string>
+         </property>
+         <property name="placeholderText">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="_databaseLineEdit">
+         <property name="text">
+          <string>postgres</string>
+         </property>
+         <property name="placeholderText">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="_dartabaseLabel">
+         <property name="text">
+          <string>Database</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="_usernameLabel">
+         <property name="text">
+          <string>Username</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="_usernameLineEdit">
+         <property name="text">
+          <string>postgres</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="_passwordLabel">
+         <property name="text">
+          <string>Password</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="_passwordLineEdit"/>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="_storePasswordLabel">
+         <property name="text">
+          <string>Store password?</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QCheckBox" name="_storePasswordCheckBox">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="_ssl">
+      <attribute name="title">
+       <string>SSL</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="_advanced">
+      <attribute name="title">
+       <string>Advanced</string>
+      </attribute>
+     </widget>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QDialogButtonBox" name="_buttons">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="pgadmin.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>_buttons</sender>
+   <signal>accepted()</signal>
+   <receiver>ConnectionDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>_buttons</sender>
+   <signal>rejected()</signal>
+   <receiver>ConnectionDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>_nameLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>ConnectionDialog</receiver>
+   <slot>checkEnable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>253</x>
+     <y>58</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>188</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>_hostLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>ConnectionDialog</receiver>
+   <slot>checkEnable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>253</x>
+     <y>96</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>188</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>_portLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>ConnectionDialog</receiver>
+   <slot>checkEnable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>253</x>
+     <y>134</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>188</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>_databaseLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>ConnectionDialog</receiver>
+   <slot>checkEnable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>253</x>
+     <y>172</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>188</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>_usernameLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>ConnectionDialog</receiver>
+   <slot>checkEnable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>253</x>
+     <y>210</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>188</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>_passwordLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>ConnectionDialog</receiver>
+   <slot>checkEnable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>253</x>
+     <y>248</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>188</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>_storePasswordCheckBox</sender>
+   <signal>clicked()</signal>
+   <receiver>ConnectionDialog</receiver>
+   <slot>checkEnable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>136</x>
+     <y>280</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>188</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>checkEnable()</slot>
+ </slots>
+</ui>
