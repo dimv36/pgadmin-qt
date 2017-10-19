@@ -2,11 +2,13 @@
 #define PGOBJECT_H
 
 #include <QTreeWidgetItem>
-#include <QDebug>
 #include <QMenu>
+#include <QTableWidget>
+#include <QPair>
 #include "enums.h"
 
 class ObjectBrowser;
+class PropertyTable;
 
 class PGObject : public QObject, public QTreeWidgetItem
 {
@@ -18,12 +20,13 @@ public:
 //	PGObject(pgaFactory &factory, const QString &newName = QString());
 
 public:
-	void addItem(PGObject *obj);
+	virtual void setMainObjectProperties(PropertyTable *tab);
 
 protected:
 	friend class ObjectBrowser;
 
 	virtual void formContextMenu(QMenu *menu);
+	virtual void setObjectProperties(QTabWidget *tab) {}
 	virtual void refreshItem() {}
 
 protected slots:
@@ -33,6 +36,10 @@ protected:
 	ObjectType _objtype;
 	QString _name;
 	bool _isCollection;
+
+	typedef QPair<QString, QString> PropertyItem;
+	QVector<PropertyItem> _properties;
+
 	/*
 	*  Except column level privileges, column will be always an empty
 	*  string in any case

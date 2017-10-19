@@ -1,6 +1,7 @@
 #include <QMessageBox>
 #include "pgserver.h"
 #include "pgobject.h"
+#include "propertytable.h"
 
 
 PGServer::PGServer(const QString &connectionName,
@@ -16,13 +17,23 @@ PGServer::PGServer(const QString &connectionName,
 		   QIcon(":/server-disconnected.png"))
 {
 	_connection = new PGConnection(host, port, dbname, username, password);
+
+	// Set server properties
+	_properties.push_back(PropertyItem(QObject::tr("Name"), connectionName));
+	_properties.push_back(PropertyItem(QObject::tr("Host"), host));
+	_properties.push_back(PropertyItem(QObject::tr("Port"), QString::number(port)));
+	_properties.push_back(PropertyItem(QObject::tr("Database"), dbname));
+	_properties.push_back(PropertyItem(QObject::tr("Username"), username));
 }
 
 PGServer::PGServer(bool isCollection)
 : PGObject(COLLECTION_SERVERS,
 		   QObject::tr("Servers"),
 		   QIcon(":/servers.png"),
-		   isCollection) {}
+		   isCollection)
+{
+	_connection = nullptr;
+}
 
 PGServer::~PGServer()
 {
@@ -39,6 +50,23 @@ void PGServer::connect()
 		return;
 	}
 	setIcon(ColumnText, QIcon(":/server-connected.png"));
+}
+
+bool PGServer::connected() const
+{
+	if (_objtype == OBJECT_SERVER)
+		return _connection->connected();
+	else
+		return false;
+}
+
+void PGServer::setMainObjectProperties(PropertyTable *tab)
+{
+	tab->removeRows();
+	if (!connected())
+		return;
+
+	PGObject::setMainObjectProperties(tab);
 }
 
 void PGServer::formContextMenu(QMenu *menu)

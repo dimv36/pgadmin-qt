@@ -16,7 +16,10 @@ public:
 	~PGServer();
 
 	void connect();
+	bool connected() const;
 	void disconnect();
+
+	virtual void setMainObjectProperties(PropertyTable *tab);
 
 protected:
 	virtual void formContextMenu(QMenu *menu);

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>771</width>
+    <height>476</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,60 +18,85 @@
     <normaloff>:/pgadmin.png</normaloff>:/pgadmin.png</iconset>
   </property>
   <widget class="QWidget" name="_centralWidget">
-   <layout class="QGridLayout" name="gridLayout">
+   <layout class="QGridLayout" name="_main">
     <item row="0" column="0">
      <widget class="QSplitter" name="_splitterVertical">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="ObjectBrowser" name="_objectBrowser">
-       <column>
-        <property name="text">
-         <string>Objects</string>
-        </property>
-       </column>
-      </widget>
       <widget class="QSplitter" name="_splitterHorizontal">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
-       <widget class="QTabWidget" name="_objectProperties">
-        <property name="currentIndex">
-         <number>0</number>
-        </property>
-        <widget class="QWidget" name="_properties">
-         <attribute name="title">
-          <string>Properties</string>
-         </attribute>
-        </widget>
-        <widget class="QWidget" name="_statistics">
-         <attribute name="title">
-          <string>Statistics</string>
-         </attribute>
-        </widget>
-        <widget class="QWidget" name="_dependencies">
-         <attribute name="title">
-          <string>Dependencies</string>
-         </attribute>
-        </widget>
-        <widget class="QWidget" name="_dependents">
-         <attribute name="title">
-          <string>Dependents</string>
-         </attribute>
-        </widget>
+       <widget class="ObjectBrowser" name="_objectBrowser">
+        <column>
+         <property name="text">
+          <string>Objects</string>
+         </property>
+        </column>
        </widget>
-       <widget class="QPlainTextEdit" name="_sqlTab"/>
+       <widget class="QTableWidget" name="_quickObjectView"/>
+      </widget>
+      <widget class="QTabWidget" name="_objectProperties">
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="_properties">
+        <attribute name="title">
+         <string>Properties</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="PropertyTable" name="_propertiesWidget">
+           <property name="showGrid">
+            <bool>false</bool>
+           </property>
+           <attribute name="horizontalHeaderCascadingSectionResizes">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="horizontalHeaderStretchLastSection">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="verticalHeaderCascadingSectionResizes">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="verticalHeaderStretchLastSection">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>Property</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Value</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </widget>
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menuBar">
+  <widget class="QMenuBar" name="_menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>400</width>
+     <width>771</width>
      <height>30</height>
     </rect>
    </property>
@@ -142,6 +167,11 @@
    <class>ObjectBrowser</class>
    <extends>QTreeWidget</extends>
    <header location="global">objectbrowser.h</header>
+  </customwidget>
+  <customwidget>
+   <class>PropertyTable</class>
+   <extends>QTableWidget</extends>
+   <header>propertytable.h</header>
   </customwidget>
  </customwidgets>
  <resources>

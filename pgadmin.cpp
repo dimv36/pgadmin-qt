@@ -155,11 +155,15 @@ void PgAdmin::on__actionAddConnection_triggered()
 	}
 }
 
-void PgAdmin::on__objectBrowser_itemClicked(QTreeWidgetItem *item, int column)
+void PgAdmin::on__objectBrowser_itemClicked(QTreeWidgetItem *item, int)
 {
-	qDebug() << "clicked" << endl;
+	PGObject *object = dynamic_cast<PGObject *>(item);
+	object->setMainObjectProperties(_ui->_propertiesWidget);
+}
 
-	PGObject *object = dynamic_cast<PGObject *> (item);
+void PgAdmin::on__objectBrowser_itemDoubleClicked(QTreeWidgetItem *item, int)
+{
+	PGObject *object = dynamic_cast<PGObject *>(item);
 
 	switch (object->objectType())
 	{
