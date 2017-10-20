@@ -12,7 +12,7 @@ class PGServer : public PGObject
 public:
 	PGServer(const QString &connectionName, const QString &host, const int port,
 			 const QString &dbname, const QString &username, const QString &password);
-	PGServer(bool isCollection = true);
+	PGServer();
 	~PGServer();
 
 	void connect();
@@ -31,6 +31,11 @@ private slots:
 
 private:
 	PGConnection *_connection;
+	QString _connectionName;
+	QString _host;
+	int _port;
+	QString _dbname;
+	QString _username;
 };
 
 #endif // PGSERVER_H

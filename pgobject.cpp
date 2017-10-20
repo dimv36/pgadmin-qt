@@ -3,10 +3,9 @@
 #include "propertytable.h"
 #include <QDebug>
 
-PGObject::PGObject(ObjectType objtype, const QString &name, const QIcon &icon, bool isCollection)
+PGObject::PGObject(ObjectType objtype, const QString &name, const QIcon &icon)
 : _objtype(objtype),
-  _name(name),
-  _isCollection(isCollection)
+  _name(name)
 {
 	setText(ColumnText, name);
 	setIcon(ColumnText, icon);
@@ -24,13 +23,6 @@ void PGObject::formContextMenu(QMenu *menu)
 		menu->addAction(QObject::tr("Refresh"), this, SLOT(slotActionRefresh()));
 		menu->addSeparator();
 	}
-}
-
-void PGObject::setMainObjectProperties(PropertyTable *tab)
-{
-	tab->removeRows();
-	for (auto it = _properties.begin(); it != _properties.end(); ++it)
-		tab->addRow((*it).first, (*it).second, QIcon(":/property.png"));
 }
 
 void PGObject::slotActionRefresh()

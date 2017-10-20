@@ -19,18 +19,17 @@ PGServer::PGServer(const QString &connectionName,
 	_connection = new PGConnection(host, port, dbname, username, password);
 
 	// Set server properties
-	_properties.push_back(PropertyItem(QObject::tr("Name"), connectionName));
-	_properties.push_back(PropertyItem(QObject::tr("Host"), host));
-	_properties.push_back(PropertyItem(QObject::tr("Port"), QString::number(port)));
-	_properties.push_back(PropertyItem(QObject::tr("Database"), dbname));
-	_properties.push_back(PropertyItem(QObject::tr("Username"), username));
+	_connectionName = connectionName;
+	_host = host;
+	_port = port;
+	_dbname = dbname;
+	_username = username;
 }
 
-PGServer::PGServer(bool isCollection)
+PGServer::PGServer()
 : PGObject(COLLECTION_SERVERS,
 		   QObject::tr("Servers"),
-		   QIcon(":/servers.png"),
-		   isCollection)
+		   QIcon(":/servers.png"))
 {
 	_connection = nullptr;
 }
@@ -62,11 +61,19 @@ bool PGServer::connected() const
 
 void PGServer::setMainObjectProperties(PropertyTable *tab)
 {
-	tab->removeRows();
-	if (!connected())
-		return;
+	bool isConnected = connected();
 
-	PGObject::setMainObjectProperties(tab);
+	tab->removeRows();
+	tab->addRow(QObject::tr("Name"), _connectionName);
+	tab->addRow(QObject::tr("Host"), _host);
+	tab->addRow(QObject::tr("Port"), QString::number(_port));
+	tab->addRow(QObject::tr("Database"), _dbname);
+	tab->addRow(QObject::tr("Username"), _username);
+	tab->addRow(QObject::tr("Connected?"), isConnected);
+	if (isConnected)
+	{
+
+	}
 }
 
 void PGServer::formContextMenu(QMenu *menu)

@@ -5,6 +5,27 @@
 #include <QString>
 #include <QMutex>
 
+class PGSet;
+
+typedef struct PGError
+{
+	QString severity;
+	QString sqlState;
+	QString messagePrimary;
+	QString messageDetail;
+	QString messageHint;
+	QString statementPosition;
+	QString internalPosition;
+	QString internalQuery;
+	QString context;
+	QString sourceFile;
+	QString sourceLine;
+	QString sourceFunction;
+	QString formattedMessage;
+
+	void setError(PGresult *result = NULL);
+} PGError;
+
 class PGConnection
 {
 public:
@@ -19,11 +40,18 @@ public:
 	void disconnect();
 	void reconnect();
 
+	QString executeScalar(const QString &query);
+	bool executeVoid(const QString &query);
+	PGSet *executeSet(const QString &query);
+
 	QString lastError() const;
 
 	void setCancel();
 	void cancelQuery();
 	void resetCancel();
+
+protected:
+	void setLastResultError(PGresult *result = NULL, const QString &error = QString());
 
 private:
 	void close();
@@ -38,8 +66,11 @@ private:
 	QMutex *_cancelMutex;
 	QString _connstr;
 
+	bool _needColumnQuoting;
+
 	PGconn *_connection;
 	PGcancel *_cancel;
+	PGError _lastResultError;
 };
 
 #endif // PGCONNECTION_H

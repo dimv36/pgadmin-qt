@@ -30,7 +30,8 @@ SOURCES += \
     connectiondialog.cpp \
     pgserver.cpp \
     pgconnection.cpp \
-    propertytable.cpp
+    propertytable.cpp \
+    pgset.cpp
 
 HEADERS += \
         pgadmin.h \
@@ -41,7 +42,8 @@ HEADERS += \
     pgserver.h \
     pgconnection.h \
     settings.h \
-    propertytable.h
+    propertytable.h \
+    pgset.h
 
 FORMS += \
         pgadmin.ui \

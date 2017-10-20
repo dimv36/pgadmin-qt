@@ -10,7 +10,8 @@ class PropertyTable : public QTableWidget
 public:
 	PropertyTable(QWidget *parent = 0);
 
-	void addRow(const QString &property, const QString &value, const QIcon &icon = QIcon());
+	void addRow(const QString &property, const QString &value, const QIcon &icon = QIcon(":/property.png"));
+	void addRow(const QString &property, const bool &value, const QIcon &icon = QIcon(":/property.png"));
 	void removeRows();
 
 private:
