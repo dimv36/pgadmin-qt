@@ -245,6 +245,21 @@ QString PGConnection::databaseName() const
 	return _dbname;
 }
 
+Oid PGConnection::databaseOid() const
+{
+	return _dbOid;
+}
+
+QString PGConnection::encoding() const
+{
+	return _encoding;
+}
+
+Oid PGConnection::lastSystemOid() const
+{
+	return _lastSystemOid;
+}
+
 void PGConnection::setLastResultError(PGresult *result, const QString &message)
 {
 	if (result)
@@ -362,11 +377,41 @@ bool PGConnection::initialize()
 			_versionNum = QString("%1.%2").arg(_major).arg(_minor);
 		}
 
-		// TODO: Get information about database
+		// We does not support any PG backends, that older 9.2
+		if (_major < 9 || ((_major == 9) && (_minor < 2)))
+			QMessageBox::warning(nullptr,
+								 QObject::tr("PgAdmin"),
+								 QObject::tr("Those version of PostgreSQL (%1) does not supported by PgAdmin.\n"
+											 "Supported versions are: > 9.2"),
+								 QMessageBox::Ok);
+
+		QString sql = QString("SELECT oid, "
+							  "       pg_encoding_to_char(encoding) AS encoding, "
+							  "       datlastsysoid "
+							  " FROM pg_database WHERE datname = %1").arg(dbString(_dbname));
+
+		PGSet *set = executeSet(sql);
+		if (set)
+		{
+			_dbOid = set->oidValue("oid");
+			_encoding = set->value("encoding"),
+			_lastSystemOid = set->oidValue("datlastsysoid");
+
+			delete set;
+		}
 
 		return true;
 	}
 	return false;
+}
+
+QString PGConnection::dbString(const QString &str)
+{
+	QString result = str;
+
+	result.replace("\\", "\\\\");
+	result.replace("'", "\\'");
+	return QString("'%1'").arg(result);
 }
 
 void PGConnection::close()

@@ -77,6 +77,8 @@ void PGServer::refreshProperties(PropertyTable *tab)
 	{
 		tab->addRow(QObject::tr("Server version"), _connection->version());
 		tab->addRow(QObject::tr("Server version string"), _connection->versionString());
+		tab->addRow(QObject::tr("Encoding"), _connection->encoding());
+		tab->addRow(QObject::tr("Last system OID"), QString::number(_connection->lastSystemOid()));
 	}
 }
 

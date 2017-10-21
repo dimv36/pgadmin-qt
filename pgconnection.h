@@ -59,6 +59,8 @@ public:
 
 	QString databaseName() const;
 	Oid databaseOid() const;
+	QString encoding() const;
+	Oid lastSystemOid() const;
 
 protected:
 	void setLastResultError(PGresult *result = nullptr, const QString &error = QString());
@@ -66,6 +68,7 @@ protected:
 private:
 	void close();
 	bool initialize();
+	QString dbString(const QString &str);
 
 protected:
 	void *_noticeArg;
@@ -88,6 +91,10 @@ private:
 	QString _versionStr;
 	int _major;
 	int _minor;
+
+	Oid _dbOid;
+	QString _encoding;
+	Oid _lastSystemOid;
 };
 
 #endif // PGCONNECTION_H

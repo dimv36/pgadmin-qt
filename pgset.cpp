@@ -87,6 +87,16 @@ QString PGSet::value(const QString &column) const
 	return QString(charPtr(column));
 }
 
+Oid PGSet::oidValue(const int column) const
+{
+	return QString(charPtr(column)).toInt();
+}
+
+Oid PGSet::oidValue(const QString &column) const
+{
+	return QString(charPtr(column)).toInt();
+}
+
 char *PGSet::charPtr(const int column) const
 {
 	return PQgetvalue(_result, _position - 1, column);
