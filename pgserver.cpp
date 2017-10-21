@@ -49,6 +49,7 @@ void PGServer::connect()
 		return;
 	}
 	setIcon(ColumnText, QIcon(":/server-connected.png"));
+	emit signalDataChanged(this);
 }
 
 bool PGServer::connected() const
@@ -59,20 +60,23 @@ bool PGServer::connected() const
 		return false;
 }
 
-void PGServer::setMainObjectProperties(PropertyTable *tab)
+void PGServer::refreshProperties(PropertyTable *tab)
 {
+	if (_objtype == COLLECTION_SERVERS)
+		return;
+
 	bool isConnected = connected();
 
-	tab->removeRows();
-	tab->addRow(QObject::tr("Name"), _connectionName);
-	tab->addRow(QObject::tr("Host"), _host);
+	tab->addRow(QObject::tr("Description"), _connectionName);
+	tab->addRow(QObject::tr("Hostname"), _host);
 	tab->addRow(QObject::tr("Port"), QString::number(_port));
-	tab->addRow(QObject::tr("Database"), _dbname);
+	tab->addRow(QObject::tr("Maintenance database"), _dbname);
 	tab->addRow(QObject::tr("Username"), _username);
 	tab->addRow(QObject::tr("Connected?"), isConnected);
 	if (isConnected)
 	{
-
+		tab->addRow(QObject::tr("Server version"), _connection->version());
+		tab->addRow(QObject::tr("Server version string"), _connection->versionString());
 	}
 }
 
@@ -103,7 +107,7 @@ void PGServer::slotServerReconnect()
 
 void PGServer::slotServerDisconnect()
 {
-	if (_connection->connected())
-		_connection->disconnect();
+	_connection->disconnect();
 	setIcon(ColumnText, QIcon(":/server-disconnected.png"));
+	emit signalDataChanged(this);
 }

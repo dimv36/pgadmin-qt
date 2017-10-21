@@ -5,6 +5,8 @@
 #include <QString>
 #include <QMutex>
 
+typedef unsigned int Oid;
+
 class PGSet;
 
 typedef struct PGError
@@ -23,7 +25,7 @@ typedef struct PGError
 	QString sourceFunction;
 	QString formattedMessage;
 
-	void setError(PGresult *result = NULL);
+	void setError(PGresult *result = nullptr);
 } PGError;
 
 class PGConnection
@@ -50,12 +52,24 @@ public:
 	void cancelQuery();
 	void resetCancel();
 
+	void notice(const char *message);
+
+	QString versionString() const;
+	QString version() const;
+
+	QString databaseName() const;
+	Oid databaseOid() const;
+
 protected:
-	void setLastResultError(PGresult *result = NULL, const QString &error = QString());
+	void setLastResultError(PGresult *result = nullptr, const QString &error = QString());
 
 private:
 	void close();
 	bool initialize();
+
+protected:
+	void *_noticeArg;
+	PQnoticeProcessor _noticeProc;
 
 private:
 	QString _host;
@@ -66,11 +80,14 @@ private:
 	QMutex *_cancelMutex;
 	QString _connstr;
 
-	bool _needColumnQuoting;
-
 	PGconn *_connection;
 	PGcancel *_cancel;
 	PGError _lastResultError;
+
+	QString _versionNum;
+	QString _versionStr;
+	int _major;
+	int _minor;
 };
 
 #endif // PGCONNECTION_H

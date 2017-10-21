@@ -5,6 +5,7 @@
 #include <QMenu>
 #include <QTableWidget>
 #include <QPair>
+#include <QDebug>
 #include "enums.h"
 
 class ObjectBrowser;
@@ -18,16 +19,15 @@ public:
 	PGObject(ObjectType objtype, const QString &name = QString(), const QIcon &icon = QIcon());
 	PGObject(ObjectType objtype, bool isCollection);
 	ObjectType objectType() const;
+	QString objectName() const;
 
 public:
-	virtual void setMainObjectProperties(PropertyTable *tab) = 0;
-
-protected:
-	friend class ObjectBrowser;
-
+	virtual void refreshProperties(PropertyTable *) = 0;
+	virtual void refresh(QTabWidget *) {}
 	virtual void formContextMenu(QMenu *menu);
-	virtual void setObjectProperties(QTabWidget *tab) {}
-	virtual void refreshItem() {}
+
+signals:
+	void signalDataChanged(PGObject *);
 
 protected slots:
 	void slotActionRefresh();

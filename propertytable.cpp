@@ -1,9 +1,12 @@
 #include "propertytable.h"
 #include <QDebug>
+#include <QHeaderView>
 
 PropertyTable::PropertyTable(QWidget *parent)
 : QTableWidget(parent)
 {
+	resizeColumnsToContents();
+	verticalHeader()->setStretchLastSection(true);
 }
 
 void PropertyTable::addRow(const QString &property, const QString &value, const QIcon &icon)
@@ -22,6 +25,8 @@ void PropertyTable::addRow(const QString &property, const bool &value, const QIc
 {
 	QString valuestr = value ? QObject::tr("yes") : QObject::tr("no");
 	addRow(property, valuestr, icon);
+	resizeColumnsToContents();
+	horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
 }
 
 void PropertyTable::removeRows()

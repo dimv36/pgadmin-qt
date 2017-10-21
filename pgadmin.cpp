@@ -14,8 +14,12 @@ PgAdmin::PgAdmin(QWidget *parent)
 	_ui->setupUi(this);
 	_servers = new PGServer();
 	readSettings();
-	_ui->_objectBrowser->addTopLevelItem(_servers);
+	_ui->_objectBrowser->addItem(_servers);
 	_ui->_objectBrowser->expandAll();
+	connect(_ui->_objectBrowser,
+			SIGNAL(signalRefreshItem(PGObject *)),
+			this,
+			SLOT(slotRefreshObject(PGObject*)));
 }
 
 PgAdmin::~PgAdmin()
@@ -79,7 +83,7 @@ void PgAdmin::readSettings()
 		// Add new server item
 		PGServer *server = new PGServer(conname, host, port,
 										dbname, username, password);
-		_servers->addChild(server);
+		_ui->_objectBrowser->addItem(server, _servers);
 
 		_serverSettings.push_back(serverSetting);
 	}
@@ -125,6 +129,15 @@ void PgAdmin::writeSettings()
 	}
 }
 
+void PgAdmin::slotRefreshObject(PGObject *object)
+{
+	_ui->_quickObjectView->clear();
+	_ui->_propertiesWidget->removeRows();
+
+	object->refreshProperties(_ui->_propertiesWidget);
+	object->refresh(_ui->_objectProperties);
+}
+
 void PgAdmin::on__actionAddConnection_triggered()
 {
 	ConnectionDialog dialog;
@@ -150,7 +163,7 @@ void PgAdmin::on__actionAddConnection_triggered()
 
 		// Add new server item
 		PGServer *server = new PGServer(connection, host, port, dbname, username, password);
-		_servers->addChild(server);
+		_ui->_objectBrowser->addItem(server, _servers);
 		_ui->_objectBrowser->expandAll();
 	}
 }
@@ -158,7 +171,8 @@ void PgAdmin::on__actionAddConnection_triggered()
 void PgAdmin::on__objectBrowser_itemClicked(QTreeWidgetItem *item, int)
 {
 	PGObject *object = dynamic_cast<PGObject *>(item);
-	object->setMainObjectProperties(_ui->_propertiesWidget);
+
+	slotRefreshObject(object);
 }
 
 void PgAdmin::on__objectBrowser_itemDoubleClicked(QTreeWidgetItem *item, int)

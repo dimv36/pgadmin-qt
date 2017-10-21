@@ -16,6 +16,11 @@ ObjectType PGObject::objectType() const
 	return _objtype;
 }
 
+QString PGObject::objectName() const
+{
+	return _name;
+}
+
 void PGObject::formContextMenu(QMenu *menu)
 {
 	if (_objtype != COLLECTION_SERVERS)
@@ -27,6 +32,6 @@ void PGObject::formContextMenu(QMenu *menu)
 
 void PGObject::slotActionRefresh()
 {
-	return refreshItem();
+	emit signalDataChanged(this);
 }
 

@@ -19,7 +19,7 @@ public:
 	bool connected() const;
 	void disconnect();
 
-	virtual void setMainObjectProperties(PropertyTable *tab);
+	virtual void refreshProperties(PropertyTable *table);
 
 protected:
 	virtual void formContextMenu(QMenu *menu);

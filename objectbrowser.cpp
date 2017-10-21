@@ -14,9 +14,13 @@ ObjectBrowser::ObjectBrowser(QWidget *parent)
 			SLOT(onCustomContextMenuRequested(const QPoint&)));
 }
 
-void ObjectBrowser::addTopItem(PGObject *obj)
+void ObjectBrowser::addItem(PGObject *item, PGObject *parent)
 {
-	addTopLevelItem(obj);
+	if (!parent)
+		addTopLevelItem(item);
+	else
+		parent->addChild(item);
+	connect(item, SIGNAL(signalDataChanged(PGObject *)), this, SLOT(slotItemNeedRefreshing(PGObject *)));
 }
 
 void ObjectBrowser::showContextMenu(PGObject *object, const QPoint &pos)
@@ -24,12 +28,13 @@ void ObjectBrowser::showContextMenu(PGObject *object, const QPoint &pos)
 	QMenu menu;
 
 	object->formContextMenu(&menu);
-	menu.exec(pos);
+	QAction *action = menu.exec(pos);
+	qDebug() << action << endl;
 }
 
 void ObjectBrowser::onCustomContextMenuRequested(const QPoint &point)
 {
-	QTreeWidgetItem* item = itemAt(point);
+	QTreeWidgetItem *item = itemAt(point);
 
 	if (item)
 	{
@@ -37,4 +42,9 @@ void ObjectBrowser::onCustomContextMenuRequested(const QPoint &point)
 
 		showContextMenu(object, viewport()->mapToGlobal(point));
 	}
+}
+
+void ObjectBrowser::slotItemNeedRefreshing(PGObject *object)
+{
+	emit signalRefreshItem(object);
 }

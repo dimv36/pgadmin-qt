@@ -1,7 +1,13 @@
 #include "pgconnection.h"
 #include "pgset.h"
 #include <QMutexLocker>
+#include <QMessageBox>
 #include <QDebug>
+
+static void pgNoticeProcessor(void *arg, const char *message)
+{
+	((PGConnection *) arg)->notice(message);
+}
 
 
 PGConnection::PGConnection(const QString &host, const int port,
@@ -25,7 +31,8 @@ PGConnection::PGConnection(const QString &host, const int port,
 		_connstr += QString(" password=%1").arg(_password);
 	_connection = nullptr;
 	_cancel = nullptr;
-	_needColumnQuoting = false;
+	_noticeArg = nullptr;
+	_noticeProc = nullptr;
 }
 
 PGConnection::~PGConnection()
@@ -72,7 +79,7 @@ QString PGConnection::executeScalar(const QString &query)
 
 	if (connected())
 	{
-		PGresult *res = NULL;
+		PGresult *res = nullptr;
 
 		setCancel();
 		res = PQexec(_connection, qPrintable(query));
@@ -105,7 +112,7 @@ bool PGConnection::executeVoid(const QString &query)
 	if (!connected())
 		return false;
 
-	PGresult *result = NULL;
+	PGresult *result = nullptr;
 
 	setCancel();
 	result = PQexec(_connection, qPrintable(query));
@@ -141,7 +148,7 @@ PGSet *PGConnection::executeSet(const QString &query)
 
 		if (execStatus == PGRES_TUPLES_OK || execStatus == PGRES_COMMAND_OK)
 		{
-			PGSet *set = new PGSet(result, this, _needColumnQuoting);
+			PGSet *set = new PGSet(result, this);
 			if (!set)
 				PQclear(result);
 			return set;
@@ -154,12 +161,10 @@ PGSet *PGConnection::executeSet(const QString &query)
 
 QString PGConnection::lastError() const
 {
-	char *error = NULL;
+	char *error = nullptr;
 
-	if (_connection && (error = PQerrorMessage(_connection)) != NULL)
-	{
+	if (_connection && (error = PQerrorMessage(_connection)))
 		return error;
-	}
 	return QString();
 }
 
@@ -168,9 +173,9 @@ void PGConnection::setCancel()
 	QMutexLocker lock(_cancelMutex);
 	PGcancel *oldCancelConn = _cancel;
 
-	_cancel = NULL;
+	_cancel = nullptr;
 
-	if (oldCancelConn != NULL)
+	if (oldCancelConn)
 		PQfreeCancel(oldCancelConn);
 
 	if (!_connection)
@@ -188,12 +193,12 @@ void PGConnection::cancelQuery()
 	if (_cancel)
 	{
 		PGcancel *cancelConn = _cancel;
-		_cancel = NULL;
+		_cancel = nullptr;
 
 		if (PQcancel(cancelConn, errbuf, sizeof(errbuf)))
-			setLastResultError(NULL, QObject::tr("Cancel request sent"));
+			setLastResultError(nullptr, QObject::tr("Cancel request sent"));
 		else
-			setLastResultError(NULL, QString("Could not send cancel request:\n%1").arg(errbuf));
+			setLastResultError(nullptr, QString("Could not send cancel request:\n%1").arg(errbuf));
 		PQfreeCancel(cancelConn);
 	}
 }
@@ -203,10 +208,41 @@ void PGConnection::resetCancel()
 	QMutexLocker lock(_cancelMutex);
 	PGcancel *oldCancelConn = _cancel;
 
-	_cancel = NULL;
+	_cancel = nullptr;
 
-	if (oldCancelConn != NULL)
+	if (oldCancelConn)
 		PQfreeCancel(oldCancelConn);
+}
+
+void PGConnection::notice(const char *message)
+{
+	if (_noticeArg && _noticeProc)
+		(*_noticeProc) (_noticeArg, message);
+	else
+	{
+		QString str(message);
+
+		// TODO: Опциональный показ замечаний
+		QMessageBox::information(nullptr,
+								 QObject::tr("Notice"),
+								 str,
+								 QMessageBox::Ok);
+	}
+}
+
+QString PGConnection::versionString() const
+{
+	return _versionStr;
+}
+
+QString PGConnection::version() const
+{
+	return _versionNum;
+}
+
+QString PGConnection::databaseName() const
+{
+	return _dbname;
 }
 
 void PGConnection::setLastResultError(PGresult *result, const QString &message)
@@ -296,7 +332,41 @@ void PGConnection::setLastResultError(PGresult *result, const QString &message)
 
 bool PGConnection::initialize()
 {
-	return true;
+	if (PQstatus(_connection) == CONNECTION_OK)
+	{
+		PQsetNoticeProcessor(_connection, pgNoticeProcessor, this);
+
+		// Initialize sesssion settings
+		executeVoid("SET DateStyle TO ISO;");
+		executeVoid("SET client_min_messages TO 'notice';");
+		executeVoid("SET bytea_output TO escape;");
+
+		// Determine versions
+		_versionStr = executeScalar("SELECT version();");
+		int version = executeScalar("SELECT setting FROM pg_settings WHERE name = 'server_version_num';").toInt();
+
+		// Determine actual version of server
+		if (version < 100000)
+		{
+			// This is x.x.x server version so
+			_major = version / 10000;
+			_minor = (version  - (_major * 10000)) / 100;
+			int patch = (version - (_major * 10000) - (_minor * 100));
+			_versionNum = QString("%1.%2.%3").arg(_major).arg(_minor).arg(patch);
+		}
+		else
+		{
+			// This is x.x server version, so
+			_major = version / 100000;
+			_minor = version - (_major * 100000);
+			_versionNum = QString("%1.%2").arg(_major).arg(_minor);
+		}
+
+		// TODO: Get information about database
+
+		return true;
+	}
+	return false;
 }
 
 void PGConnection::close()
@@ -307,5 +377,9 @@ void PGConnection::close()
 		PQfinish(_connection);
 	}
 	_connection = nullptr;
+	_versionNum.clear();
+	_versionStr.clear();
+	_major = 0;
+	_minor = 0;
 }
 
