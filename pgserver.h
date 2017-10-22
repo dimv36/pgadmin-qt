@@ -20,6 +20,7 @@ public:
 	void disconnect();
 
 	virtual void refreshProperties(PropertyTable *table);
+	virtual void appendCollectionItems();
 
 protected:
 	virtual void formContextMenu(QMenu *menu);

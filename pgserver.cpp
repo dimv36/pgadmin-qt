@@ -1,6 +1,9 @@
 #include <QMessageBox>
 #include "pgserver.h"
-#include "pgobject.h"
+#include "pgdatabase.h"
+#include "pgtablespace.h"
+#include "pggroup.h"
+#include "pguser.h"
 #include "propertytable.h"
 
 
@@ -48,6 +51,7 @@ void PGServer::connect()
 							  _connection->lastError());
 		return;
 	}
+	appendCollectionItems();
 	setIcon(ColumnText, QIcon(":/server-connected.png"));
 	emit signalDataChanged(this);
 }
@@ -82,6 +86,14 @@ void PGServer::refreshProperties(PropertyTable *tab)
 	}
 }
 
+void PGServer::appendCollectionItems()
+{
+	addChild(new PGDatabase());
+	addChild(new PGTablespace());
+	addChild(new PGUser());
+	addChild(new PGGroup());
+}
+
 void PGServer::formContextMenu(QMenu *menu)
 {
 	if (_connection->connected())
@@ -111,5 +123,6 @@ void PGServer::slotServerDisconnect()
 {
 	_connection->disconnect();
 	setIcon(ColumnText, QIcon(":/server-disconnected.png"));
+	removeChildrens();
 	emit signalDataChanged(this);
 }

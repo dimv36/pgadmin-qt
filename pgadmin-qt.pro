@@ -31,7 +31,11 @@ SOURCES += \
     pgserver.cpp \
     pgconnection.cpp \
     propertytable.cpp \
-    pgset.cpp
+    pgset.cpp \
+    pgdatabase.cpp \
+    pguser.cpp \
+    pgtablespace.cpp \
+    pggroup.cpp
 
 HEADERS += \
         pgadmin.h \
@@ -43,7 +47,11 @@ HEADERS += \
     pgconnection.h \
     settings.h \
     propertytable.h \
-    pgset.h
+    pgset.h \
+    pgdatabase.h \
+    pguser.h \
+    pgtablespace.h \
+    pggroup.h
 
 FORMS += \
         pgadmin.ui \

@@ -6,5 +6,13 @@
         <file alias="server-connected.png">img/server.png</file>
         <file alias="servers.png">img/servers.png</file>
         <file alias="property.png">img/property.png</file>
+        <file alias="databases.png">img/databases.png</file>
+        <file alias="database.png">img/database.png</file>
+        <file alias="group.png">img/group.png</file>
+        <file alias="groups.png">img/roles.png</file>
+        <file alias="user.png">img/user.png</file>
+        <file alias="users.png">img/loginroles.png</file>
+        <file alias="tablespaces.png">img/tablespaces.png</file>
+        <file alias="tablespace.png">img/tablespace.png</file>
     </qresource>
 </RCC>

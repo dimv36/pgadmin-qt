@@ -5,6 +5,7 @@
 #include "ui_pgadmin.h"
 #include "connectiondialog.h"
 #include "pgserver.h"
+#include "pgdatabase.h"
 #include "settings.h"
 
 PgAdmin::PgAdmin(QWidget *parent)
@@ -182,8 +183,11 @@ void PgAdmin::on__objectBrowser_itemDoubleClicked(QTreeWidgetItem *item, int)
 	switch (object->objectType())
 	{
 		case OBJECT_SERVER:
-			(dynamic_cast<PGServer *>(item))->connect();
-			break;
+		{
+			PGServer *server = dynamic_cast<PGServer *>(item);
+			server->connect();
+		}
+		break;
 
 		default:
 			break;
