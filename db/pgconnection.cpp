@@ -1,5 +1,4 @@
-#include "pgconnection.h"
-#include "pgset.h"
+#include "db/pgconnection.h"
 #include <QMutexLocker>
 #include <QMessageBox>
 #include <QDebug>

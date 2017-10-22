@@ -1,4 +1,4 @@
-#include "pgadmin.h"
+#include "form/pgadmin.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])

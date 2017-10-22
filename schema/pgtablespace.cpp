@@ -1,4 +1,4 @@
-#include "pgtablespace.h"
+#include "schema/pgtablespace.h"
 
 PGTablespace::PGTablespace(PGConnection *connection)
 : PGObject(COLLECTION_TABLESPACES, QObject::tr("Tablespaces"), QIcon(":/tablespaces.png"), QIcon(":/tablespace.png"))

@@ -1,11 +1,10 @@
 #include <QSettings>
 #include <QDir>
 #include <QFile>
-#include "pgadmin.h"
+#include "form/pgadmin.h"
 #include "ui_pgadmin.h"
-#include "connectiondialog.h"
-#include "pgserver.h"
-#include "pgdatabase.h"
+#include "dialog/connectiondialog.h"
+#include "schema/pgserver.h"
 #include "settings.h"
 
 PgAdmin::PgAdmin(QWidget *parent)

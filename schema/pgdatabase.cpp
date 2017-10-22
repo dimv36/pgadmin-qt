@@ -1,5 +1,4 @@
-#include "pgdatabase.h"
-#include "pgconnection.h"
+#include "schema/pgdatabase.h"
 
 PGDatabase::PGDatabase(const QString &name)
 : PGObject(OBJECT_DATABASE, name, QIcon(":/database.png"))

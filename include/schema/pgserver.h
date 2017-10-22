@@ -4,7 +4,7 @@
 #include <QString>
 
 #include "pgobject.h"
-#include "pgconnection.h"
+#include "db/pgconnection.h"
 
 class PGServer : public PGObject
 {

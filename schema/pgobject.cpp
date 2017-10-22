@@ -1,6 +1,4 @@
-#include "pgobject.h"
-#include "objectbrowser.h"
-#include <QDebug>
+#include "schema/pgobject.h"
 
 PGObject::PGObject(ObjectType objtype, const QString &name, const QIcon &icon, const QIcon &objIcon)
 : _objtype(objtype),

@@ -1,4 +1,4 @@
-#include "pggroup.h"
+#include "schema/pggroup.h"
 
 PGGroup::PGGroup(PGConnection *connection)
 	: PGObject(COLLECTION_GROUPS, QObject::tr("Group roles"), QIcon(":/groups.png"), QIcon(":/group.png"))

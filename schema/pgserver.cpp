@@ -1,10 +1,10 @@
 #include <QMessageBox>
-#include "pgserver.h"
-#include "pgdatabase.h"
-#include "pgtablespace.h"
-#include "pggroup.h"
-#include "pguser.h"
-#include "propertytable.h"
+#include "schema/pgserver.h"
+#include "schema/pgdatabase.h"
+#include "schema/pgtablespace.h"
+#include "schema/pggroup.h"
+#include "schema/pguser.h"
+#include "widget/propertytable.h"
 
 
 PGServer::PGServer(const QString &connectionName,

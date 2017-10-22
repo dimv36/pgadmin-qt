@@ -1,4 +1,4 @@
-#include "propertytable.h"
+#include "widget/propertytable.h"
 #include <QDebug>
 #include <QHeaderView>
 

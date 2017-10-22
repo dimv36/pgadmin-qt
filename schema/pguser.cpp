@@ -1,4 +1,4 @@
-#include "pguser.h"
+#include "schema/pguser.h"
 
 PGUser::PGUser(PGConnection *connection)
 : PGObject(COLLECTION_USERS, QObject::tr("Login roles"), QIcon(":/users.png"), QIcon(":/user.png"))

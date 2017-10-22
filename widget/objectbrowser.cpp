@@ -1,8 +1,6 @@
 #include <QMenu>
-#include "objectbrowser.h"
-#include "pgobject.h"
-#include "pgserver.h"
-#include "pgdatabase.h"
+#include "widget/objectbrowser.h"
+#include "schema/pgobject.h"
 
 
 ObjectBrowser::ObjectBrowser(QWidget *parent)

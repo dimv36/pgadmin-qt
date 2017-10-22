@@ -7,8 +7,8 @@
 #include <QPair>
 #include <QDebug>
 #include "enums.h"
-#include "pgconnection.h"
-#include "propertytable.h"
+#include "db/pgconnection.h"
+#include "widget/propertytable.h"
 
 
 class PGObject : public QObject, public QTreeWidgetItem

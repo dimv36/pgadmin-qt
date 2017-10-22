@@ -24,43 +24,45 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        pgadmin.cpp \
-    pgobject.cpp \
-    objectbrowser.cpp \
-    connectiondialog.cpp \
-    pgserver.cpp \
-    pgconnection.cpp \
-    propertytable.cpp \
-    pgset.cpp \
-    pgdatabase.cpp \
-    pguser.cpp \
-    pgtablespace.cpp \
-    pggroup.cpp
+        form/pgadmin.cpp \
+        dialog/connectiondialog.cpp \
+        db/pgconnection.cpp \
+        db/pgset.cpp \
+        schema/pgobject.cpp \
+        schema/pgserver.cpp \
+        schema/pgdatabase.cpp \
+        schema/pguser.cpp \
+        schema/pgtablespace.cpp \
+        schema/pggroup.cpp \
+        widget/objectbrowser.cpp \
+        widget/propertytable.cpp
 
 HEADERS += \
-        pgadmin.h \
-    pgobject.h \
-    enums.h \
-    objectbrowser.h \
-    connectiondialog.h \
-    pgserver.h \
-    pgconnection.h \
-    settings.h \
-    propertytable.h \
-    pgset.h \
-    pgdatabase.h \
-    pguser.h \
-    pgtablespace.h \
-    pggroup.h
+        include/form/pgadmin.h \
+        include/dialog/connectiondialog.h \
+        include/db/pgconnection.h \
+        include/db/pgset.h \
+        include/schema/pgobject.h \
+        include/schema/pgserver.h \
+        include/schema/pgdatabase.h \
+        include/schema/pguser.h \
+        include/schema/pgtablespace.h \
+        include/schema/pggroup.h \
+        include/widget/objectbrowser.h \
+        include/widget/propertytable.h \
+        include/enums.h \
+        include/settings.h
 
 FORMS += \
-        pgadmin.ui \
-    connectiondialog.ui
+        ui/pgadmin.ui \
+        ui/connectiondialog.ui
 
 DISTFILES +=
 
 RESOURCES += \
-    pgadmin.qrc
+        resources/pgadmin.qrc
+
+INCLUDEPATH += include
 
 PG_CONFIG = $$system("which pg_config")
 message(PG_CONFIG: "$$PG_CONFIG")

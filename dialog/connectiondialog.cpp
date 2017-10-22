@@ -1,4 +1,4 @@
-#include "connectiondialog.h"
+#include "dialog/connectiondialog.h"
 #include "ui_connectiondialog.h"
 #include <QDialogButtonBox>
 #include <QPushButton>
