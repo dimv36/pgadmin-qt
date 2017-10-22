@@ -7,9 +7,9 @@ class PGUser : public PGObject
 {
 	Q_OBJECT
 public:
-	PGUser();
+	PGUser(PGConnection *connection);
 
-	void refreshProperties(PropertyTable *);
+	void refreshObjectProperties(PropertyTable *);
 };
 
 #endif // PGUSER_H

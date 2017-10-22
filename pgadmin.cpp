@@ -16,7 +16,7 @@ PgAdmin::PgAdmin(QWidget *parent)
 	_servers = new PGServer();
 	readSettings();
 	_ui->_objectBrowser->addItem(_servers);
-	_ui->_objectBrowser->expandAll();
+	_ui->_objectBrowser->expandToDepth(0);
 	connect(_ui->_objectBrowser,
 			SIGNAL(signalRefreshItem(PGObject *)),
 			this,

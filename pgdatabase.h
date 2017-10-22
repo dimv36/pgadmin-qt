@@ -8,9 +8,9 @@ class PGDatabase : public PGObject
 	Q_OBJECT
 public:
 	PGDatabase(const QString &name);
-	PGDatabase();
+	PGDatabase(PGConnection *connection);
 
-	void refreshProperties(PropertyTable *);
+	virtual void refreshObjectProperties(PropertyTable *);
 };
 
 #endif // PGDATABASE_H

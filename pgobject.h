@@ -7,9 +7,8 @@
 #include <QPair>
 #include <QDebug>
 #include "enums.h"
-
-class ObjectBrowser;
-class PropertyTable;
+#include "pgconnection.h"
+#include "propertytable.h"
 
 
 class PGObject : public QObject, public QTreeWidgetItem
@@ -17,14 +16,18 @@ class PGObject : public QObject, public QTreeWidgetItem
 	Q_OBJECT
 
 public:
-	PGObject(ObjectType objtype, const QString &name = QString(), const QIcon &icon = QIcon());
+	PGObject(ObjectType objtype, const QString &name = QString(), const QIcon &icon = QIcon(), const QIcon &objIcon = QIcon());
 	ObjectType objectType() const;
 	QString objectName() const;
 
 	void addChild(PGObject *object, bool unique = true);
 	void removeChildrens();
 
-	virtual void refreshProperties(PropertyTable *) = 0;
+	void setConnection(PGConnection *connection);
+
+	void refreshProperties(PropertyTable *tab);
+	virtual void refreshObjectProperties(PropertyTable *) = 0;
+
 	virtual void refresh(QTabWidget *) {}
 	virtual void formContextMenu(QMenu *menu);
 	virtual void appendCollectionItems() {}
@@ -38,6 +41,10 @@ protected slots:
 protected:
 	ObjectType _objtype;
 	QString _name;
+	PGConnection *_connection;
+
+	QString _propertiesSQL;
+	QIcon _objectIcon;
 };
 
 #endif // PGOBJECT_H

@@ -90,6 +90,9 @@ QString PGConnection::executeScalar(const QString &query)
 
 		if (execResult != PGRES_TUPLES_OK && execResult != PGRES_COMMAND_OK)
 		{
+			QMessageBox::critical(nullptr,
+								  QObject::tr("Error query execution"),
+								  QObject::tr("Query:\n\n%1\n\n%2").arg(query).arg(lastError()));
 			PQclear(res);
 			return QString();
 		}
@@ -124,6 +127,9 @@ bool PGConnection::executeVoid(const QString &query)
 	if (execResult != PGRES_TUPLES_OK &&
 		execResult != PGRES_COMMAND_OK)
 	{
+		QMessageBox::critical(nullptr,
+							  QObject::tr("Error query execution"),
+							  QObject::tr("Query:\n\n%1\n\n%2").arg(query).arg(lastError()));
 		PQclear(result);
 		return false;
 	}
@@ -154,7 +160,12 @@ PGSet *PGConnection::executeSet(const QString &query)
 			return set;
 		}
 		else
+		{
 			PQclear(result);
+			QMessageBox::critical(nullptr,
+								  QObject::tr("Error query execution"),
+								  QObject::tr("Query:\n\n%1\n\n%2").arg(query).arg(lastError()));
+		}
 	}
 	return new PGSet();
 }

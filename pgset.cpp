@@ -60,6 +60,11 @@ bool PGSet::bef() const
 	return (!_nRows || _position < 1);
 }
 
+bool PGSet::eof() const
+{
+	return (!_nRows || _position > _nRows);
+}
+
 QString PGSet::columnName(const int column) const
 {
 	if (column > _nColumns)

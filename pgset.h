@@ -24,6 +24,7 @@ public:
 	void moveLast();
 
 	bool bef() const;
+	bool eof() const;
 
 	QString columnName(const int column) const;
 	int columnNumber(const QString &columnName) const;

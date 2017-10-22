@@ -6,8 +6,8 @@
 class PGGroup : public PGObject
 {
 public:
-	PGGroup();
-	virtual void refreshProperties(PropertyTable *);
+	PGGroup(PGConnection *connection);
+	virtual void refreshObjectProperties(PropertyTable *);
 };
 
 #endif // PGGROUP_H

@@ -7,10 +7,9 @@ class PGTablespace : public PGObject
 {
 	Q_OBJECT
 public:
-	PGTablespace();
-	~PGTablespace();
+	PGTablespace(PGConnection *connection);
 
-	void refreshProperties(PropertyTable *);
+	void refreshObjectProperties(PropertyTable *);
 };
 
 #endif // PGTABLESPACE_H

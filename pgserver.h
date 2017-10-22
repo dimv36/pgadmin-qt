@@ -19,7 +19,7 @@ public:
 	bool connected() const;
 	void disconnect();
 
-	virtual void refreshProperties(PropertyTable *table);
+	virtual void refreshObjectProperties(PropertyTable *table);
 	virtual void appendCollectionItems();
 
 protected:
@@ -31,7 +31,6 @@ private slots:
 	void slotServerDisconnect();
 
 private:
-	PGConnection *_connection;
 	QString _connectionName;
 	QString _host;
 	int _port;

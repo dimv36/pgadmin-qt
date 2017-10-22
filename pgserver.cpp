@@ -53,6 +53,7 @@ void PGServer::connect()
 	}
 	appendCollectionItems();
 	setIcon(ColumnText, QIcon(":/server-connected.png"));
+	treeWidget()->expandItem(this);
 	emit signalDataChanged(this);
 }
 
@@ -64,12 +65,11 @@ bool PGServer::connected() const
 		return false;
 }
 
-void PGServer::refreshProperties(PropertyTable *tab)
+void PGServer::refreshObjectProperties(PropertyTable *tab)
 {
-	if (_objtype == COLLECTION_SERVERS)
-		return;
-
 	bool isConnected = connected();
+
+	tab->setHeaders();
 
 	tab->addRow(QObject::tr("Description"), _connectionName);
 	tab->addRow(QObject::tr("Hostname"), _host);
@@ -88,10 +88,10 @@ void PGServer::refreshProperties(PropertyTable *tab)
 
 void PGServer::appendCollectionItems()
 {
-	addChild(new PGDatabase());
-	addChild(new PGTablespace());
-	addChild(new PGUser());
-	addChild(new PGGroup());
+	addChild(new PGDatabase(_connection));
+	addChild(new PGTablespace(_connection));
+	addChild(new PGUser(_connection));
+	addChild(new PGGroup(_connection));
 }
 
 void PGServer::formContextMenu(QMenu *menu)

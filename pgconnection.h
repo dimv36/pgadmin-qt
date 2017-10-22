@@ -4,10 +4,9 @@
 #include <libpq-fe.h>
 #include <QString>
 #include <QMutex>
+#include "pgset.h"
 
 typedef unsigned int Oid;
-
-class PGSet;
 
 typedef struct PGError
 {
