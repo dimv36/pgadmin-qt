@@ -23,6 +23,9 @@ void PGObject::addChild(PGObject *object, bool unique)
 {
 	bool found = false;
 
+	if (!object)
+		return;
+
 	for (int i = 0; i < childCount(); i++)
 	{
 		PGObject *ch = dynamic_cast<PGObject *> (child(i));
@@ -56,6 +59,11 @@ void PGObject::setConnection(PGConnection *connection)
 	_connection = connection;
 }
 
+PGObject *PGObject::appendObject(const QString &)
+{
+	return nullptr;
+}
+
 void PGObject::refreshProperties(PropertyTable *tab)
 {
 	if (_objtype < COLLECTION_LAST_ITEM)
@@ -68,12 +76,18 @@ void PGObject::refreshProperties(PropertyTable *tab)
 				tab->setHeaders(PropertiesSummary);
 				while (!set->eof())
 				{
-					QString datname = set->value("objname");
+					QString objname = set->value("objname");
+					QString owner = set->hasColumn("owner") ? set->value("owner") : QString();
 					QString comment = set->value("comment");
 
-					tab->addRow(datname, comment, _objectIcon);
+					// Add new object as child
+					addChild(appendObject(objname));
+
+					tab->addRowSummary(objname, owner, comment, _objectIcon);
 					set->moveNext();
 				}
+				// Update objects counter
+				setText(ColumnText, QString("%1 (%2)").arg(objectName()).arg(set->rowsCount()));
 			}
 		}
 	}

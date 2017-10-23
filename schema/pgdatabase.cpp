@@ -11,13 +11,17 @@ PGDatabase::PGDatabase(PGConnection *connection)
 {
 	setConnection(connection);
 	_propertiesSQL = "SELECT dat.datname AS objname,\n"
+					"        pg_get_userbyid(datdba) AS owner,\n"
 					 "       des.description AS comment\n"
 					 "FROM pg_database dat\n"
 					 "LEFT JOIN pg_shdescription des\n"
 					 "ON dat.oid = des.objoid\n"
 					 "ORDER by dat.oid;";
-	int count = _connection->executeScalar("SELECT count(*) FROM pg_database").toInt();
-	setText(ColumnText, QString("%1 (%2)").arg(text(ColumnText)).arg(QString::number(count)));
+}
+
+PGDatabase *PGDatabase::appendObject(const QString &name)
+{
+	return new PGDatabase(name);
 }
 
 void PGDatabase::refreshObjectProperties(PropertyTable *tab)

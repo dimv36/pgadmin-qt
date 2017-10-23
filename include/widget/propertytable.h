@@ -15,15 +15,24 @@ public:
 
 	void addRow(const QString &property, const QString &value, const QIcon &icon = QIcon(":/property.png"));
 	void addRow(const QString &property, const bool &value, const QIcon &icon = QIcon(":/property.png"));
+	void addRowSummary(const QString &objname, const QString &owner, const QString &comment, const QIcon &icon = QIcon());
 	void removeRows();
 
 private:
-	typedef enum ColumType
+	typedef enum ColumnTypeProperty
 	{
 		ColumnPropery,
 		ColumnValue,
-		ColumnCount
-	} ColumType;
+		ColumnTypePropertyLast
+	} ColumnType;
+
+	typedef enum ColumnTypeObjectSummary
+	{
+		ColumnName,
+		ColumnOwner,
+		ColumnComment,
+		ColumnTypeObjectSummaryLast
+	} ColumnTypeObjectSummary;
 };
 
 #endif // PROPERTYTABLE_H

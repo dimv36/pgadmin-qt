@@ -382,8 +382,8 @@ bool PGConnection::initialize()
 		else
 		{
 			// This is x.x server version, so
-			_major = version / 100000;
-			_minor = version - (_major * 100000);
+			_major = version / 10000;
+			_minor = version - (_major * 10000);
 			_versionNum = QString("%1.%2").arg(_major).arg(_minor);
 		}
 
@@ -392,7 +392,7 @@ bool PGConnection::initialize()
 			QMessageBox::warning(nullptr,
 								 QObject::tr("PgAdmin"),
 								 QObject::tr("Those version of PostgreSQL (%1) does not supported by PgAdmin.\n"
-											 "Supported versions are: > 9.2"),
+											 "Supported versions are: > 9.2").arg(_versionNum),
 								 QMessageBox::Ok);
 
 		QString sql = QString("SELECT oid, "

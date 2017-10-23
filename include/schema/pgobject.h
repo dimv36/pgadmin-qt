@@ -25,6 +25,7 @@ public:
 
 	void setConnection(PGConnection *connection);
 
+	virtual PGObject *appendObject(const QString &);
 	void refreshProperties(PropertyTable *tab);
 	virtual void refreshObjectProperties(PropertyTable *) = 0;
 

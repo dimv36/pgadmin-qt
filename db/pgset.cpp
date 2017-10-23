@@ -30,6 +30,21 @@ PGSet::~PGSet()
 	_result = nullptr;
 }
 
+int PGSet::rowsCount() const
+{
+	return _nRows;
+}
+
+int PGSet::columnsCount() const
+{
+	return _nColumns;
+}
+
+int PGSet::currentPosition() const
+{
+	return _position;
+}
+
 void PGSet::moveFirst()
 {
 	if (_nRows)
@@ -80,6 +95,11 @@ int PGSet::columnNumber(const QString &columnName) const
 bool PGSet::columnIsNull(const int column) const
 {
 	return PQgetisnull(_result, _position - 1, column);
+}
+
+bool PGSet::hasColumn(const QString name) const
+{
+	return (PQfnumber(_result, qPrintable(name)) < 0 ? false : true);
 }
 
 QString PGSet::value(const int column) const

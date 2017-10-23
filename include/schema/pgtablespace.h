@@ -7,8 +7,10 @@ class PGTablespace : public PGObject
 {
 	Q_OBJECT
 public:
+	PGTablespace(const QString &name);
 	PGTablespace(PGConnection *connection);
 
+	virtual PGTablespace* appendObject(const QString &);
 	void refreshObjectProperties(PropertyTable *);
 };
 

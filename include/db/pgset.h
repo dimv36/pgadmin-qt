@@ -29,6 +29,7 @@ public:
 	QString columnName(const int column) const;
 	int columnNumber(const QString &columnName) const;
 	bool columnIsNull(const int column) const;
+	bool hasColumn(const QString name) const;
 
 	QString value(const int column) const;
 	QString value(const QString &column) const;

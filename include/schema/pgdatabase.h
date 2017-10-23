@@ -10,6 +10,7 @@ public:
 	PGDatabase(const QString &name);
 	PGDatabase(PGConnection *connection);
 
+	virtual PGDatabase* appendObject(const QString &);
 	virtual void refreshObjectProperties(PropertyTable *);
 };
 
