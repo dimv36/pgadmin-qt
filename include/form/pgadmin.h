@@ -24,9 +24,10 @@ private:
 
 private slots:
 	void on__actionAddConnection_triggered();
-	void on__objectBrowser_itemClicked(QTreeWidgetItem *item, int);
-	void on__objectBrowser_itemDoubleClicked(QTreeWidgetItem *item, int);
 	void slotRefreshObject(PGObject *);
+	void slotBrowserItemClicked(QTreeWidgetItem *item, int);
+//	void slotBrowserItemSelectionChanged();
+	void slotBrowserItemDoubleClicked(QTreeWidgetItem *item, int);
 
 private:
 	Ui::PgAdmin *_ui;

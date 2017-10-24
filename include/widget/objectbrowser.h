@@ -12,15 +12,14 @@ public:
 	explicit ObjectBrowser(QWidget *parent = nullptr);
 	void addItem(PGObject *item, PGObject *parent = nullptr);
 
-signals:
-	void signalRefreshItem(PGObject *);
-
 private:
 	void showContextMenu(PGObject *object, const QPoint &pos);
 
+signals:
+	void signalRefreshItem(PGObject *);
+
 private slots:
-	void onCustomContextMenuRequested(const QPoint &point);
-	void slotItemNeedRefreshing(PGObject *);
+	void slotCustomContextMenuRequested(const QPoint &point);
 };
 
 #endif // OBJECTBROWSER_H

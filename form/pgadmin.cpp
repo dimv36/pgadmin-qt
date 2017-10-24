@@ -16,10 +16,19 @@ PgAdmin::PgAdmin(QWidget *parent)
 	readSettings();
 	_ui->_objectBrowser->addItem(_servers);
 	_ui->_objectBrowser->expandToDepth(0);
+
+	connect(_ui->_objectBrowser,
+			SIGNAL(itemClicked(QTreeWidgetItem *, int)),
+			this,
+			SLOT(slotBrowserItemClicked(QTreeWidgetItem *, int)));
+	connect(_ui->_objectBrowser,
+			SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)),
+			this,
+			SLOT(slotBrowserItemDoubleClicked(QTreeWidgetItem *, int)));
 	connect(_ui->_objectBrowser,
 			SIGNAL(signalRefreshItem(PGObject *)),
 			this,
-			SLOT(slotRefreshObject(PGObject*)));
+			SLOT(slotRefreshObject(PGObject *)));
 }
 
 PgAdmin::~PgAdmin()
@@ -168,14 +177,13 @@ void PgAdmin::on__actionAddConnection_triggered()
 	}
 }
 
-void PgAdmin::on__objectBrowser_itemClicked(QTreeWidgetItem *item, int)
+void PgAdmin::slotBrowserItemClicked(QTreeWidgetItem *item, int)
 {
 	PGObject *object = dynamic_cast<PGObject *>(item);
-
 	slotRefreshObject(object);
 }
 
-void PgAdmin::on__objectBrowser_itemDoubleClicked(QTreeWidgetItem *item, int)
+void PgAdmin::slotBrowserItemDoubleClicked(QTreeWidgetItem *item, int)
 {
 	PGObject *object = dynamic_cast<PGObject *>(item);
 

@@ -13,7 +13,6 @@ public:
 	PGServer(const QString &connectionName, const QString &host, const int port,
 			 const QString &dbname, const QString &username, const QString &password);
 	PGServer();
-	~PGServer();
 
 	void connect();
 	bool connected() const;

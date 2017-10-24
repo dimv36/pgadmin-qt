@@ -37,11 +37,6 @@ PGServer::PGServer()
 	_connection = nullptr;
 }
 
-PGServer::~PGServer()
-{
-
-}
-
 void PGServer::connect()
 {
 	if (!_connection->connect())
