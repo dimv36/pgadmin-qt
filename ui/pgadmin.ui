@@ -135,7 +135,7 @@
    <addaction name="_menuEdit"/>
    <addaction name="_menuView"/>
   </widget>
-  <widget class="QToolBar" name="mainToolBar">
+  <widget class="QToolBar" name="_mainToolBar">
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
@@ -144,18 +144,7 @@
    </attribute>
    <addaction name="_actionAddConnection"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
-  <widget class="QToolBar" name="toolBar">
-   <property name="windowTitle">
-    <string>toolBar</string>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-  </widget>
+  <widget class="QStatusBar" name="_statusBar"/>
   <action name="_actionAddConnection">
    <property name="icon">
     <iconset resource="../resources/pgadmin.qrc">
