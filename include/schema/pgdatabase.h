@@ -7,10 +7,10 @@ class PGDatabase : public PGObject
 {
 	Q_OBJECT
 public:
-	PGDatabase(const QString &name);
+	PGDatabase(const PGConnection *connection, const QString &name);
 	PGDatabase(PGConnection *connection);
 
-	virtual PGDatabase* appendObject(const QString &);
+	virtual PGDatabase* appendObject(const PGConnection *connection, const QString &);
 	virtual void refreshObjectProperties(PropertyTable *);
 };
 

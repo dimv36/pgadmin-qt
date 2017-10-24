@@ -1,15 +1,14 @@
 #include "schema/pgtablespace.h"
 
-PGTablespace::PGTablespace(const QString &name)
-: PGObject(OBJECT_TABLESPACE, name, QIcon(":/tablespace.png"))
+PGTablespace::PGTablespace(const PGConnection *connection, const QString &name)
+: PGObject(connection, OBJECT_TABLESPACE, name, QIcon(":/tablespace.png"))
 {
 
 }
 
 PGTablespace::PGTablespace(PGConnection *connection)
-: PGObject(COLLECTION_TABLESPACES, QObject::tr("Tablespaces"), QIcon(":/tablespaces.png"), QIcon(":/tablespace.png"))
+: PGObject(connection, COLLECTION_TABLESPACES, QObject::tr("Tablespaces"), QIcon(":/tablespaces.png"), QIcon(":/tablespace.png"))
 {
-	setConnection(connection);
 	_propertiesSQL = "SELECT spc.spcname AS objname,\n"
 					 "       pg_get_userbyid(spc.spcowner) AS owner,\n"
 					 "       des.description AS comment\n"
@@ -24,7 +23,7 @@ void PGTablespace::refreshObjectProperties(PropertyTable *)
 
 }
 
-PGTablespace* PGTablespace::appendObject(const QString &name)
+PGTablespace* PGTablespace::appendObject(const PGConnection *connection, const QString &name)
 {
-	return new PGTablespace(name);
+	return new PGTablespace(connection, name);
 }

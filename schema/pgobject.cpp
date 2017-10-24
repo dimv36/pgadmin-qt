@@ -1,12 +1,13 @@
 #include "schema/pgobject.h"
 
-PGObject::PGObject(ObjectType objtype, const QString &name, const QIcon &icon, const QIcon &objIcon)
+PGObject::PGObject(const PGConnection *connection, ObjectType objtype, const QString &name, const QIcon &icon, const QIcon &objIcon)
 : _objtype(objtype),
   _name(name),
   _objectIcon(objIcon)
 {
 	setText(ColumnText, name);
 	setIcon(ColumnText, icon);
+	_connection = (PGConnection *) connection;
 }
 
 ObjectType PGObject::objectType() const
@@ -59,7 +60,7 @@ void PGObject::setConnection(PGConnection *connection)
 	_connection = connection;
 }
 
-PGObject *PGObject::appendObject(const QString &)
+PGObject *PGObject::appendObject(const PGConnection *, const QString &)
 {
 	return nullptr;
 }
@@ -81,7 +82,7 @@ void PGObject::refreshProperties(PropertyTable *tab)
 					QString comment = set->value("comment");
 
 					// Add new object as child
-					addChild(appendObject(objname));
+					addChild(appendObject(_connection, objname));
 
 					tab->addRowSummary(objname, owner, comment, _objectIcon);
 					set->moveNext();

@@ -8,6 +8,7 @@
         <file alias="property.png">img/property.png</file>
         <file alias="databases.png">img/databases.png</file>
         <file alias="database.png">img/database.png</file>
+        <file alias="database-disconnected.png">img/closeddatabase.png</file>
         <file alias="group.png">img/group.png</file>
         <file alias="groups.png">img/roles.png</file>
         <file alias="user.png">img/user.png</file>

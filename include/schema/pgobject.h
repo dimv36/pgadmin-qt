@@ -16,7 +16,8 @@ class PGObject : public QObject, public QTreeWidgetItem
 	Q_OBJECT
 
 public:
-	PGObject(ObjectType objtype, const QString &name = QString(), const QIcon &icon = QIcon(), const QIcon &objIcon = QIcon());
+	PGObject(const PGConnection *connection, ObjectType objtype, const QString &name = QString(), const QIcon &icon = QIcon(), const QIcon &objIcon = QIcon());
+
 	ObjectType objectType() const;
 	QString objectName() const;
 
@@ -25,7 +26,7 @@ public:
 
 	void setConnection(PGConnection *connection);
 
-	virtual PGObject *appendObject(const QString &);
+	virtual PGObject *appendObject(const PGConnection *, const QString &);
 	void refreshProperties(PropertyTable *tab);
 	virtual void refreshObjectProperties(PropertyTable *) = 0;
 

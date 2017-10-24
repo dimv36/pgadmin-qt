@@ -6,11 +6,11 @@
 class PGGroup : public PGObject
 {
 public:
-	PGGroup(const QString &name);
+	PGGroup(const PGConnection *connection, const QString &name);
 	PGGroup(PGConnection *connection);
 	virtual void refreshObjectProperties(PropertyTable *);
 
-	virtual PGGroup* appendObject(const QString &);
+	virtual PGGroup* appendObject(const PGConnection *connection, const QString &);
 };
 
 #endif // PGGROUP_H

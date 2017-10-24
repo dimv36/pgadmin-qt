@@ -13,7 +13,8 @@ PGServer::PGServer(const QString &connectionName,
 				   const QString &dbname,
 				   const QString &username,
 				   const QString &password)
-: PGObject(OBJECT_SERVER,
+: PGObject(nullptr,
+		   OBJECT_SERVER,
 		   QString("%1 (%2:%3)").arg(connectionName)
 								.arg(host.isEmpty() ? QObject::tr("local") : host)
 								.arg(QString::number(port)),
@@ -30,7 +31,8 @@ PGServer::PGServer(const QString &connectionName,
 }
 
 PGServer::PGServer()
-: PGObject(COLLECTION_SERVERS,
+: PGObject(nullptr,
+		   COLLECTION_SERVERS,
 		   QObject::tr("Servers"),
 		   QIcon(":/servers.png"))
 {

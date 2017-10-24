@@ -1,15 +1,14 @@
 #include "schema/pggroup.h"
 
-PGGroup::PGGroup(const QString &name)
-: PGObject(OBJECT_GROUP, name, QIcon(":/group.png"))
+PGGroup::PGGroup(const PGConnection *connection, const QString &name)
+: PGObject(connection, OBJECT_GROUP, name, QIcon(":/group.png"))
 {
 
 }
 
 PGGroup::PGGroup(PGConnection *connection)
-	: PGObject(COLLECTION_GROUPS, QObject::tr("Group roles"), QIcon(":/groups.png"), QIcon(":/group.png"))
+: PGObject(connection, COLLECTION_GROUPS, QObject::tr("Group roles"), QIcon(":/groups.png"), QIcon(":/group.png"))
 {
-	setConnection(connection);
 	_propertiesSQL = "SELECT gro.groname AS objname,\n"
 					 "       des.description AS comment\n"
 					 "FROM pg_group gro\n"
@@ -22,7 +21,7 @@ void PGGroup::refreshObjectProperties(PropertyTable *)
 
 }
 
-PGGroup *PGGroup::appendObject(const QString &name)
+PGGroup *PGGroup::appendObject(const PGConnection *connection, const QString &name)
 {
-	return new PGGroup(name);
+	return new PGGroup(connection, name);
 }

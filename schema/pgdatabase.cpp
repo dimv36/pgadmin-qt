@@ -1,15 +1,15 @@
 #include "schema/pgdatabase.h"
 
-PGDatabase::PGDatabase(const QString &name)
-: PGObject(OBJECT_DATABASE, name, QIcon(":/database.png"))
+PGDatabase::PGDatabase(const PGConnection *connection, const QString &name)
+: PGObject(connection, OBJECT_DATABASE, name, QIcon(":/database.png"))
 {
-
+	if (!(connection->databaseName() == name))
+		setIcon(ColumnText, QIcon(":/database-disconnected.png"));
 }
 
 PGDatabase::PGDatabase(PGConnection *connection)
-: PGObject(COLLECTION_DATABASES, QObject::tr("Databases"), QIcon(":/databases.png"), QIcon(":/database.png"))
+: PGObject(connection, COLLECTION_DATABASES, QObject::tr("Databases"), QIcon(":/databases.png"), QIcon(":/database.png"))
 {
-	setConnection(connection);
 	_propertiesSQL = "SELECT dat.datname AS objname,\n"
 					"        pg_get_userbyid(datdba) AS owner,\n"
 					 "       des.description AS comment\n"
@@ -19,9 +19,9 @@ PGDatabase::PGDatabase(PGConnection *connection)
 					 "ORDER by dat.oid;";
 }
 
-PGDatabase *PGDatabase::appendObject(const QString &name)
+PGDatabase *PGDatabase::appendObject(const PGConnection *connection, const QString &name)
 {
-	return new PGDatabase(name);
+	return new PGDatabase(connection, name);
 }
 
 void PGDatabase::refreshObjectProperties(PropertyTable *tab)

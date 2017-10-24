@@ -7,10 +7,10 @@ class PGUser : public PGObject
 {
 	Q_OBJECT
 public:
-	PGUser(const QString &name);
+	PGUser(const PGConnection *connection, const QString &name);
 	PGUser(PGConnection *connection);
 
-	PGUser *appendObject(const QString &);
+	PGUser *appendObject(const PGConnection *connection, const QString &);
 	void refreshObjectProperties(PropertyTable *);
 };
 
