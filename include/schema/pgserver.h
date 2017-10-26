@@ -21,6 +21,13 @@ public:
 	virtual void refreshObjectProperties(PropertyTable *table);
 	virtual void appendCollectionItems();
 
+	QString connectionName() const;
+	QString host() const;
+	int port() const;
+	QString dbname() const;
+	QString username() const;
+	QString password() const;
+
 protected:
 	virtual void formContextMenu(QMenu *menu);
 
@@ -28,6 +35,7 @@ private slots:
 	void slotServerConnect();
 	void slotServerReconnect();
 	void slotServerDisconnect();
+	void slotServerDelete();
 
 private:
 	QString _connectionName;
@@ -35,6 +43,7 @@ private:
 	int _port;
 	QString _dbname;
 	QString _username;
+	QString _password;
 };
 
 #endif // PGSERVER_H

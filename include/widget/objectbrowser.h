@@ -17,6 +17,7 @@ private:
 
 signals:
 	void signalRefreshItem(PGObject *);
+	void signalServerRemoved(int);
 
 private slots:
 	void slotCustomContextMenuRequested(const QPoint &point);

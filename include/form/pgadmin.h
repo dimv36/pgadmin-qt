@@ -26,15 +26,11 @@ private slots:
 	void on__actionAddConnection_triggered();
 	void slotRefreshObject(PGObject *);
 	void slotBrowserItemClicked(QTreeWidgetItem *item, int);
-//	void slotBrowserItemSelectionChanged();
 	void slotBrowserItemDoubleClicked(QTreeWidgetItem *item, int);
 
 private:
 	Ui::PgAdmin *_ui;
 	PGObject *_servers;
-
-	typedef QMap<QString, QVariant> PGServerSettings;
-	QVector <PGServerSettings> _serverSettings;
 };
 
 #endif // PGADMIN_H

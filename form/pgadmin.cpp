@@ -74,7 +74,6 @@ void PgAdmin::readSettings()
 	{
 		settings.setArrayIndex(i);
 
-		PGServerSettings serverSetting;
 		QString conname = settings.value(SETTINGS_CONNECTION_NAME).toString();
 		QString host = settings.value(SETTINGS_CONNECTION_HOST).toString();
 		int port = settings.value(SETTINGS_CONNECTION_PORT).toInt();
@@ -82,19 +81,10 @@ void PgAdmin::readSettings()
 		QString username = settings.value(SETTINGS_CONNECTION_USERNAME).toString();
 		QString password = settings.value(SETTINGS_CONNECTION_PASSWORD).toString();
 
-		serverSetting[SETTINGS_CONNECTION_NAME] = conname;
-		serverSetting[SETTINGS_CONNECTION_HOST] = host;
-		serverSetting[SETTINGS_CONNECTION_PORT] = port;
-		serverSetting[SETTINGS_CONNECTION_DBNAME] = dbname;
-		serverSetting[SETTINGS_CONNECTION_USERNAME] = username;
-		serverSetting[SETTINGS_CONNECTION_PASSWORD] = password;
-
 		// Add new server item
 		PGServer *server = new PGServer(conname, host, port,
 										dbname, username, password);
 		_ui->_objectBrowser->addItem(server, _servers);
-
-		_serverSettings.push_back(serverSetting);
 	}
 	settings.endArray();
 }
@@ -119,20 +109,22 @@ void PgAdmin::writeSettings()
 	settings.setValue(SETTINGS_MAIN_VSLIDER_POS, _ui->_splitterVertical->saveState());
 	settings.setValue(SETTINGS_MAIN_HSLIDER_POS, _ui->_splitterHorizontal->saveState());
 	settings.endGroup();
-	if (_serverSettings.count())
-	{
-		int i = 0;
 
-		settings.beginWriteArray(SETTINGS_CONNECTIONS, _serverSettings.count());
-		for (auto it = _serverSettings.begin();
-			 it != _serverSettings.end();
-			 ++it)
+	if (_servers->childCount())
+	{
+		settings.beginWriteArray(SETTINGS_CONNECTIONS, _servers->childCount());
+		for (int i = 0; i < _servers->childCount(); i++)
 		{
+			PGServer *server = dynamic_cast<PGServer *>(_servers->child(i));
+
 			settings.setArrayIndex(i);
-			PGServerSettings serverSetting = *it;
-			for (auto sit : serverSetting.keys())
-				settings.setValue(sit, serverSetting.value(sit));
-			++i;
+
+			settings.setValue(SETTINGS_CONNECTION_NAME, server->connectionName());
+			settings.setValue(SETTINGS_CONNECTION_HOST, server->host());
+			settings.setValue(SETTINGS_CONNECTION_PORT, server->port());
+			settings.setValue(SETTINGS_CONNECTION_DBNAME, server->dbname());
+			settings.setValue(SETTINGS_CONNECTION_USERNAME, server->username());
+			settings.setValue(SETTINGS_CONNECTION_PASSWORD, server->password());
 		}
 		settings.endArray();
 	}
@@ -143,8 +135,11 @@ void PgAdmin::slotRefreshObject(PGObject *object)
 	_ui->_quickObjectView->clear();
 	_ui->_propertiesWidget->removeRows();
 
-	object->refreshProperties(_ui->_propertiesWidget);
-	object->refresh(_ui->_objectProperties);
+	if (object)
+	{
+		object->refreshProperties(_ui->_propertiesWidget);
+		object->refresh(_ui->_objectProperties);
+	}
 }
 
 void PgAdmin::on__actionAddConnection_triggered()
@@ -159,16 +154,6 @@ void PgAdmin::on__actionAddConnection_triggered()
 		QString dbname = dialog.dbnane();
 		QString username = dialog.username();
 		QString password = dialog.password();
-
-		// Save connection settings
-		PGServerSettings serverSetting;
-		serverSetting[SETTINGS_CONNECTION_NAME] = connection;
-		serverSetting[SETTINGS_CONNECTION_HOST] = host;
-		serverSetting[SETTINGS_CONNECTION_PORT] = port;
-		serverSetting[SETTINGS_CONNECTION_DBNAME] = dbname;
-		serverSetting[SETTINGS_CONNECTION_USERNAME] = username;
-		serverSetting[SETTINGS_CONNECTION_PASSWORD] = password;
-		_serverSettings.push_back(serverSetting);
 
 		// Add new server item
 		PGServer *server = new PGServer(connection, host, port, dbname, username, password);

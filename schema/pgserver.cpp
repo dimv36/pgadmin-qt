@@ -28,6 +28,7 @@ PGServer::PGServer(const QString &connectionName,
 	_port = port;
 	_dbname = dbname;
 	_username = username;
+	_password = password;
 }
 
 PGServer::PGServer()
@@ -103,6 +104,7 @@ void PGServer::formContextMenu(QMenu *menu)
 	{
 		menu->addAction(QObject::tr("Connect"), this, SLOT(slotServerConnect()));
 	}
+	menu->addAction(QObject::tr("Delete"), this, SLOT(slotServerDelete()));
 }
 
 void PGServer::slotServerConnect()
@@ -122,4 +124,39 @@ void PGServer::slotServerDisconnect()
 	setIcon(ColumnText, QIcon(":/server-disconnected.png"));
 	removeChildrens();
 	emit signalDataChanged(this);
+}
+
+void PGServer::slotServerDelete()
+{
+	delete this;
+}
+
+QString PGServer::password() const
+{
+	return _password;
+}
+
+QString PGServer::username() const
+{
+	return _username;
+}
+
+QString PGServer::dbname() const
+{
+	return _dbname;
+}
+
+int PGServer::port() const
+{
+	return _port;
+}
+
+QString PGServer::host() const
+{
+	return _host;
+}
+
+QString PGServer::connectionName() const
+{
+	return _connectionName;
 }

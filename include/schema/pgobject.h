@@ -14,12 +14,13 @@
 class PGObject : public QObject, public QTreeWidgetItem
 {
 	Q_OBJECT
-
 public:
 	PGObject(const PGConnection *connection, ObjectType objtype, const QString &name = QString(), const QIcon &icon = QIcon(), const QIcon &objIcon = QIcon());
 
 	ObjectType objectType() const;
 	QString objectName() const;
+
+	PGObject *parentItem() const;
 
 	void addChild(PGObject *object, bool unique = true);
 	void removeChildrens();

@@ -29,7 +29,12 @@ void ObjectBrowser::showContextMenu(PGObject *object, const QPoint &pos)
 	object->formContextMenu(&menu);
 	QAction *action = menu.exec(pos);
 	if (action)
-		emit signalRefreshItem(object);
+	{
+		if (action->text() == QObject::tr("Delete"))
+			emit signalRefreshItem(nullptr);
+		else
+			emit signalRefreshItem(object);
+	}
 }
 
 void ObjectBrowser::slotCustomContextMenuRequested(const QPoint &point)

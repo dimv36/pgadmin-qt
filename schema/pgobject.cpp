@@ -1,4 +1,6 @@
 #include "schema/pgobject.h"
+#include <QObject>
+#include <QMenu>
 
 PGObject::PGObject(const PGConnection *connection, ObjectType objtype, const QString &name, const QIcon &icon, const QIcon &objIcon)
 : _objtype(objtype),
@@ -18,6 +20,12 @@ ObjectType PGObject::objectType() const
 QString PGObject::objectName() const
 {
 	return _name;
+}
+
+PGObject *PGObject::parentItem() const
+{
+	QTreeWidgetItem *parent = QTreeWidgetItem::parent();
+	return dynamic_cast<PGObject *>(parent);
 }
 
 void PGObject::addChild(PGObject *object, bool unique)
