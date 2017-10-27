@@ -10,8 +10,20 @@ public:
 	PGDatabase(const PGConnection *connection, const QString &name);
 	PGDatabase(PGConnection *connection);
 
-	virtual PGDatabase* appendObject(const PGConnection *connection, const QString &);
+	void connect();
+	bool connected() const;
+	void disconnect();
+
+	virtual PGDatabase *appendObject(const PGConnection *connection, const QString &);
 	virtual void refreshObjectProperties(PropertyTable *);
+
+protected slots:
+	void slotReconnect();
+	void slotConnect();
+	void slotDisconnect();
+
+protected:
+	virtual void formContextMenu(QMenu *menu);
 };
 
 #endif // PGDATABASE_H

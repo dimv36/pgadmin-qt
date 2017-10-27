@@ -5,6 +5,7 @@
 #include "ui_pgadmin.h"
 #include "dialog/connectiondialog.h"
 #include "schema/pgserver.h"
+#include "schema/pgdatabase.h"
 #include "settings.h"
 
 PgAdmin::PgAdmin(QWidget *parent)
@@ -178,6 +179,13 @@ void PgAdmin::slotBrowserItemDoubleClicked(QTreeWidgetItem *item, int)
 		{
 			PGServer *server = dynamic_cast<PGServer *>(item);
 			server->connect();
+		}
+		break;
+
+		case OBJECT_DATABASE:
+		{
+			PGDatabase *database = dynamic_cast<PGDatabase *>(item);
+			database->connect();
 		}
 		break;
 

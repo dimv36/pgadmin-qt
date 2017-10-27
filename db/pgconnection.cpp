@@ -255,6 +255,11 @@ QString PGConnection::databaseName() const
 	return _dbname;
 }
 
+void PGConnection::setDatabaseName(const QString &name)
+{
+	_dbname = name;
+}
+
 Oid PGConnection::databaseOid() const
 {
 	return _dbOid;

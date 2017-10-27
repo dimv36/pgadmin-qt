@@ -57,6 +57,8 @@ public:
 	QString version() const;
 
 	QString databaseName() const;
+	void setDatabaseName(const QString &name);
+
 	Oid databaseOid() const;
 	QString encoding() const;
 	Oid lastSystemOid() const;
