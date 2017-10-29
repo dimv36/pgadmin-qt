@@ -10,6 +10,8 @@
 #include "db/pgconnection.h"
 #include "widget/propertytable.h"
 
+/* as defined at access/transam.h */
+#define FirstNormalObjectId 16384
 
 class PGObject : public QObject, public QTreeWidgetItem
 {
@@ -35,6 +37,11 @@ public:
 	virtual void formContextMenu(QMenu *menu);
 	virtual void appendCollectionItems() {}
 
+	virtual bool isSystemObject();
+
+	void setOid(const Oid oid);
+	Oid oid() const;
+
 signals:
 	void signalDataChanged(PGObject *);
 
@@ -48,6 +55,8 @@ protected:
 
 	QString _propertiesSQL;
 	QIcon _objectIcon;
+
+	Oid _oid;
 };
 
 #endif // PGOBJECT_H

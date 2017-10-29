@@ -1,3 +1,4 @@
+#include <QDebug>
 #include "db/pgset.h"
 
 
@@ -120,6 +121,16 @@ Oid PGSet::oidValue(const int column) const
 Oid PGSet::oidValue(const QString &column) const
 {
 	return QString(charPtr(column)).toInt();
+}
+
+bool PGSet::boolValue(const int column) const
+{
+	return (QString(charPtr(column)) == "t");
+}
+
+bool PGSet::boolValue(const QString &column) const
+{
+	return (QString(charPtr(column)) == "t");
 }
 
 char *PGSet::charPtr(const int column) const

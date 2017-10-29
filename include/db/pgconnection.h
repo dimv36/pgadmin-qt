@@ -70,6 +70,7 @@ private:
 	void close();
 	bool initialize();
 	QString dbString(const QString &str);
+	void formConnectionString();
 
 protected:
 	void *_noticeArg;

@@ -18,16 +18,7 @@ PGConnection::PGConnection(const QString &host, const int port,
   _password(password),
   _cancelMutex(new QMutex())
 {
-	if (!_host.isEmpty())
-		_connstr += QString(" host=%1").arg(_host);
-	if (_port)
-		_connstr += QString(" port=%1").arg(QString::number(_port));
-	if (!_dbname.isEmpty())
-		_connstr += QString(" dbname=%1").arg(_dbname);
-	if (!_username.isEmpty())
-		_connstr += QString(" user=%1").arg(_username);
-	if (!_password.isEmpty())
-		_connstr += QString(" password=%1").arg(_password);
+	formConnectionString();
 	_connection = nullptr;
 	_cancel = nullptr;
 	_noticeArg = nullptr;
@@ -258,6 +249,7 @@ QString PGConnection::databaseName() const
 void PGConnection::setDatabaseName(const QString &name)
 {
 	_dbname = name;
+	formConnectionString();
 }
 
 Oid PGConnection::databaseOid() const
@@ -427,6 +419,20 @@ QString PGConnection::dbString(const QString &str)
 	result.replace("\\", "\\\\");
 	result.replace("'", "\\'");
 	return QString("'%1'").arg(result);
+}
+
+void PGConnection::formConnectionString()
+{
+	if (!_host.isEmpty())
+		_connstr += QString(" host=%1").arg(_host);
+	if (_port)
+		_connstr += QString(" port=%1").arg(QString::number(_port));
+	if (!_dbname.isEmpty())
+		_connstr += QString(" dbname=%1").arg(_dbname);
+	if (!_username.isEmpty())
+		_connstr += QString(" user=%1").arg(_username);
+	if (!_password.isEmpty())
+		_connstr += QString(" password=%1").arg(_password);
 }
 
 void PGConnection::close()

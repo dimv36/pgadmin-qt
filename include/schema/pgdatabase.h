@@ -24,6 +24,18 @@ protected slots:
 
 protected:
 	virtual void formContextMenu(QMenu *menu);
+
+private:
+	void setDefaultParams();
+
+private:
+	int _missingFk;
+	QString _searchPath;
+
+	QString _defPrivsOnTables;
+	QString _defPrivsOnSeqs;
+	QString _defPrivsOnFuncs;
+	QString _defPrivsOnTypes;
 };
 
 #endif // PGDATABASE_H

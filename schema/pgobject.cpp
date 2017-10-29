@@ -85,12 +85,17 @@ void PGObject::refreshProperties(PropertyTable *tab)
 				tab->setHeaders(PropertiesSummary);
 				while (!set->eof())
 				{
+					Oid objectId = set->oidValue("oid");
 					QString objname = set->value("objname");
 					QString owner = set->hasColumn("owner") ? set->value("owner") : QString();
 					QString comment = set->value("comment");
 
+					qDebug() << "objname: " << objname << " oid: " << objectId << endl;
+
 					// Add new object as child
-					addChild(appendObject(_connection, objname));
+					PGObject *object = appendObject(_connection, objname);
+					object->setOid(objectId);
+					addChild(object);
 
 					tab->addRowSummary(objname, owner, comment, _objectIcon);
 					set->moveNext();
@@ -111,6 +116,21 @@ void PGObject::formContextMenu(QMenu *menu)
 		menu->addAction(QObject::tr("Refresh"), this, SLOT(slotActionRefresh()));
 		menu->addSeparator();
 	}
+}
+
+bool PGObject::isSystemObject()
+{
+	return (_oid <  FirstNormalObjectId);
+}
+
+void PGObject::setOid(const Oid oid)
+{
+	_oid = oid;
+}
+
+Oid PGObject::oid() const
+{
+	return _oid;
 }
 
 void PGObject::slotActionRefresh()

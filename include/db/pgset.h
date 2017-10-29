@@ -37,6 +37,9 @@ public:
 	Oid oidValue(const int column) const;
 	Oid oidValue(const QString &column) const;
 
+	bool boolValue(const int column) const;
+	bool boolValue(const QString &column) const;
+
 	char *charPtr(const int column) const;
 	char *charPtr(const QString &column) const;
 
