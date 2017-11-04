@@ -64,6 +64,16 @@ void PropertyTable::addRow(const QString &property, const bool &value, const QIc
 	addRow(property, valuestr, icon);
 }
 
+void PropertyTable::addRow(const QString &property, const Oid &value, const QIcon &icon)
+{
+	addRow(property, QString::number(value), icon);
+}
+
+void PropertyTable::addRow(const QString &property, const int &value, const QIcon &icon)
+{
+	addRow(property, QString::number(value), icon);
+}
+
 void PropertyTable::removeRows()
 {
 	setRowCount(0);

@@ -133,6 +133,16 @@ bool PGSet::boolValue(const QString &column) const
 	return (QString(charPtr(column)) == "t");
 }
 
+int PGSet::intValue(const int column) const
+{
+	return (QString(charPtr(column)).toInt());
+}
+
+int PGSet::intValue(const QString &column) const
+{
+	return (QString(charPtr(column)).toInt());
+}
+
 char *PGSet::charPtr(const int column) const
 {
 	return PQgetvalue(_result, _position - 1, column);

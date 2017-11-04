@@ -5,8 +5,7 @@
 #include <QString>
 #include <QMutex>
 #include "pgset.h"
-
-typedef unsigned int Oid;
+#include "includes.h"
 
 typedef struct PGError
 {

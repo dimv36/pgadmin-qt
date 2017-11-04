@@ -12,21 +12,54 @@ PGDatabase::PGDatabase(const PGConnection *connection, const QString &name)
 PGDatabase::PGDatabase(PGConnection *connection)
 : PGObject(connection, COLLECTION_DATABASES, QObject::tr("Databases"), QIcon(":/databases.png"), QIcon(":/database.png"))
 {
-	_propertiesSQL = "SELECT dat.oid AS oid, dat.datname AS objname,\n"
-					"        pg_get_userbyid(datdba) AS owner,\n"
-					 "       des.description AS comment\n"
-					 "FROM pg_database dat\n"
-					 "LEFT JOIN pg_shdescription des\n"
-					 "ON dat.oid = des.objoid\n"
-					 "ORDER by dat.oid;";
+	QString query = "SELECT db.oid AS oid, datname, db.dattablespace AS spcoid, datallowconn, spcname, datacl, \n"
+					"pg_encoding_to_char(encoding) AS server_encoding, pg_get_userbyid(datdba) AS datowner, \n"
+					"has_database_privilege(db.oid, 'CREATE') AS cancreate, \n"
+					"current_setting('default_tablespace') AS default_tablespace, \n"
+					"descr.description AS comment, db.datconnlimit AS connection_limit, \n"
+					"db.datctype AS ctype, db.datcollate AS collate, \n"
+					"(SELECT array_agg(label) FROM pg_shseclabel sl1 WHERE sl1.objoid = db.oid) AS labels, \n"
+					"(SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid=db.oid) AS providers \n"
+					"  FROM pg_database db\n"
+					"  LEFT OUTER JOIN pg_tablespace ta ON db.dattablespace=ta.OID\n"
+					"  LEFT OUTER JOIN pg_shdescription descr ON (db.oid=descr.objoid AND descr.classoid='pg_database'::regclass)\n";
+	PGSet *set = _connection->executeSet(query);
+
+	if (set)
+	{
+		while (!set->eof())
+		{
+			QString datname = set->value("datname");
+
+			PGDatabase *database = new PGDatabase(_connection, datname);
+			database->setObjectAttribute("oid", set->oidValue("oid"));
+			database->setObjectAttribute("owner", set->value("datowner"));
+			database->setObjectAttribute("comment", set->value("comment"));
+			database->setObjectAttribute("acl", set->value("datacl"));
+			database->setObjectAttribute("spcname", set->value("spcname"));
+			database->setObjectAttribute("default_tablespace", set->value("default_tablespace"));
+			database->setObjectAttribute("encoding", set->value("server_encoding"));
+			database->setObjectAttribute("collate", set->value("collate"));
+			database->setObjectAttribute("ctype", set->value("ctype"));
+			database->setObjectAttribute("allow_connections", set->boolValue("datallowconn"));
+			database->setObjectAttribute("connection_limit", set->intValue("connection_limit"));
+
+			browser()->addItem(database, this);
+
+			set->moveNext();
+		}
+		// Update item count on collection
+		setText(ColumnText, QString("%1 (%2)").arg(text(ColumnText)).arg(set->rowsCount()));
+		delete set;
+	}
 }
 
 void PGDatabase::connect()
 {
-	if (_connection->databaseName() != _name)
+	if (_connection->databaseName() != objectName())
 	{
 		_connection->disconnect();
-		_connection->setDatabaseName(_name);
+		_connection->setDatabaseName(objectName());
 	}
 	if (!_connection->connected())
 	{
@@ -48,7 +81,7 @@ void PGDatabase::connect()
 
 bool PGDatabase::connected() const
 {
-	return ((_connection->databaseName() == _name) &&
+	return ((_connection->databaseName() == objectName()) &&
 			_connection->connected());
 }
 
@@ -58,52 +91,29 @@ void PGDatabase::disconnect()
 	setIcon(ColumnText, QIcon(":/database-disconnected.png"));
 }
 
-PGDatabase *PGDatabase::appendObject(const PGConnection *connection, const QString &name)
-{
-	return new PGDatabase(connection, name);
-}
-
 void PGDatabase::refreshObjectProperties(PropertyTable *tab)
 {
 	tab->setHeaders();
 
-	QString query = "SELECT db.oid, datname, db.dattablespace AS spcoid, spcname, datacl, "
-					"pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner,"
-					"has_database_privilege(db.oid, 'CREATE') AS cancreate, \n"
-					"current_setting('default_tablespace') AS default_tablespace, \n"
-					"descr.description AS comment, db.datconnlimit AS connectionlimit, \n"
-					"db.datctype AS ctype, db.datcollate AS collate, \n"
-					"(SELECT array_agg(label) FROM pg_shseclabel sl1 WHERE sl1.objoid = db.oid) AS labels, \n"
-					"(SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid=db.oid) AS providers \n"
-					"  FROM pg_database db\n"
-					"  LEFT OUTER JOIN pg_tablespace ta ON db.dattablespace=ta.OID\n"
-					"  LEFT OUTER JOIN pg_shdescription descr ON (db.oid=descr.objoid AND descr.classoid='pg_database'::regclass)\n"
-					"  WHERE datname=" + QString("'%1'").arg(_name);
-
-	PGSet *set = _connection->executeSet(query);
-	if (set)
-	{
-		tab->addRow(QObject::tr("Name"), _name);
-		tab->addRow(QObject::tr("OID"), set->value("oid"));
-		tab->addRow(QObject::tr("Owner"), set->value("datowner"));
-		tab->addRow(QObject::tr("ACL"), set->value("datacl"));
-		tab->addRow(QObject::tr("Tablespace"), set->value("spcname"));
-		tab->addRow(QObject::tr("Default tablespace"), set->value("default_tablespace"));
-		tab->addRow(QObject::tr("Encoding"), set->value("serverencoding"));
-		tab->addRow(QObject::tr("Collation"), set->value("collate"));
-		tab->addRow(QObject::tr("Character type"), set->value("ctype"));
-		tab->addRow(QObject::tr("Search path"), _searchPath);
-		tab->addRow(QObject::tr("Default table ACL"), _defPrivsOnTables);
-		tab->addRow(QObject::tr("Default sequence ACL"), _defPrivsOnSeqs);
-		tab->addRow(QObject::tr("Default function ACL"), _defPrivsOnFuncs);
-		tab->addRow(QObject::tr("Default type ACL"), _defPrivsOnFuncs);
-//		tab->addRow(QObject::tr("Allow connections?"), _allowConnections);
-		tab->addRow(QObject::tr("Connected?"), connected());
-		tab->addRow(QObject::tr("Connection limit"), set->value("connectionlimit"));
-		tab->addRow(QObject::tr("System database?"), isSystemObject());
-		tab->addRow(QObject::tr("Comment"), set->value("comment"));
-	}
-	delete set;
+	tab->addRow(QObject::tr("Name"), objectName());
+	tab->addRow(QObject::tr("OID"), _objectProperties.oid());
+	tab->addRow(QObject::tr("Owner"), _objectProperties.owner());
+	tab->addRow(QObject::tr("ACL"), _objectProperties.acl());
+	tab->addRow(QObject::tr("Tablespace"), _objectProperties.stringValue("spcname"));
+	tab->addRow(QObject::tr("Default tablespace"), _objectProperties.stringValue("default_tablespace"));
+	tab->addRow(QObject::tr("Encoding"), _objectProperties.stringValue("serverencoding"));
+	tab->addRow(QObject::tr("Collation"), _objectProperties.stringValue("collate"));
+	tab->addRow(QObject::tr("Character type"), _objectProperties.stringValue("ctype"));
+	tab->addRow(QObject::tr("Search path"), _searchPath);
+	tab->addRow(QObject::tr("Default table ACL"), _defPrivsOnTables);
+	tab->addRow(QObject::tr("Default sequence ACL"), _defPrivsOnSeqs);
+	tab->addRow(QObject::tr("Default function ACL"), _defPrivsOnFuncs);
+	tab->addRow(QObject::tr("Default type ACL"), _defPrivsOnFuncs);
+	tab->addRow(QObject::tr("Allow connections?"), _objectProperties.boolValue("allow_connections"));
+	tab->addRow(QObject::tr("Connected?"), connected());
+	tab->addRow(QObject::tr("Connection limit"), _objectProperties.intValue("connection_limit"));
+	tab->addRow(QObject::tr("System database?"), isSystemObject());
+	tab->addRow(QObject::tr("Comment"), _objectProperties.comment());
 }
 
 void PGDatabase::slotReconnect()

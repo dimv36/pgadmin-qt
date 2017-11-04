@@ -9,19 +9,16 @@ PGUser::PGUser(const PGConnection *connection, const QString &name)
 PGUser::PGUser(PGConnection *connection)
 : PGObject(connection, COLLECTION_USERS, QObject::tr("Login roles"), QIcon(":/users.png"), QIcon(":/user.png"))
 {
-	_propertiesSQL = "SELECT use.usesysid AS oid, use.usename AS objname,\n"
-					 "       des.description AS comment\n"
-					 "FROM pg_user use\n"
-					 "LEFT JOIN pg_description des\n"
-					 "ON use.usesysid = des.objoid";
+//	_propertiesSQL = "SELECT use.usesysid AS oid, use.usename AS objname,\n"
+//					 "       des.description AS comment\n"
+//					 "FROM pg_user use\n"
+//					 "LEFT JOIN pg_description des\n"
+//					 "ON use.usesysid = des.objoid";
 }
 
-PGUser *PGUser::appendObject(const PGConnection *connection, const QString &name)
+void PGUser::refreshObjectProperties(PropertyTable *tab)
 {
-	return new PGUser(connection, name);
-}
-
-void PGUser::refreshObjectProperties(PropertyTable *)
-{
-
+	tab->setHeaders();
+	
+	
 }

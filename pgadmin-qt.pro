@@ -28,6 +28,7 @@ SOURCES += \
         dialog/connectiondialog.cpp \
         db/pgconnection.cpp \
         db/pgset.cpp \
+        db/pgproperties.cpp \
         schema/pgobject.cpp \
         schema/pgserver.cpp \
         schema/pgdatabase.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
         include/dialog/connectiondialog.h \
         include/db/pgconnection.h \
         include/db/pgset.h \
+        include/db/pgproperties.h \
         include/schema/pgobject.h \
         include/schema/pgserver.h \
         include/schema/pgdatabase.h \
@@ -51,7 +53,8 @@ HEADERS += \
         include/widget/objectbrowser.h \
         include/widget/propertytable.h \
         include/enums.h \
-        include/settings.h
+        include/settings.h \
+    include/includes.h
 
 FORMS += \
         ui/pgadmin.ui \

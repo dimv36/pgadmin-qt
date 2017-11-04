@@ -10,7 +10,6 @@ public:
 	PGUser(const PGConnection *connection, const QString &name);
 	PGUser(PGConnection *connection);
 
-	PGUser *appendObject(const PGConnection *connection, const QString &);
 	void refreshObjectProperties(PropertyTable *);
 };
 

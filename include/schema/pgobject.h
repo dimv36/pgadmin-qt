@@ -8,7 +8,9 @@
 #include <QDebug>
 #include "enums.h"
 #include "db/pgconnection.h"
+#include "db/pgproperties.h"
 #include "widget/propertytable.h"
+#include "widget/objectbrowser.h"
 
 /* as defined at access/transam.h */
 #define FirstNormalObjectId 16384
@@ -29,7 +31,6 @@ public:
 
 	void setConnection(PGConnection *connection);
 
-	virtual PGObject *appendObject(const PGConnection *, const QString &);
 	void refreshProperties(PropertyTable *tab);
 	virtual void refreshObjectProperties(PropertyTable *) = 0;
 
@@ -39,8 +40,15 @@ public:
 
 	virtual bool isSystemObject();
 
-	void setOid(const Oid oid);
-	Oid oid() const;
+	void setObjectAttribute(const QString &attribute, const QVariant &value);
+
+	int intObjectAttribute(const QString &attribute);
+	Oid oidObjectAttribute(const QString &attribute);
+	bool boolObjectAttribute(const QString &attribute);
+	QString stringObjectAttribute(const QString &attribute);
+
+protected:
+	ObjectBrowser *browser() const;
 
 signals:
 	void signalDataChanged(PGObject *);
@@ -50,13 +58,11 @@ protected slots:
 
 protected:
 	ObjectType _objtype;
-	QString _name;
 	PGConnection *_connection;
 
-	QString _propertiesSQL;
-	QIcon _objectIcon;
+	PGProperties _objectProperties;
 
-	Oid _oid;
+	QIcon _objectIcon;
 };
 
 #endif // PGOBJECT_H

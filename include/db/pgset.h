@@ -40,6 +40,9 @@ public:
 	bool boolValue(const int column) const;
 	bool boolValue(const QString &column) const;
 
+	int intValue(const int column) const;
+	int intValue(const QString &column) const;
+
 	char *charPtr(const int column) const;
 	char *charPtr(const QString &column) const;
 
