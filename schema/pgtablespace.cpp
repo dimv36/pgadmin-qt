@@ -9,37 +9,42 @@ PGTablespace::PGTablespace(const PGConnection *connection, const QString &name)
 PGTablespace::PGTablespace(PGConnection *connection)
 : PGObject(connection, COLLECTION_TABLESPACES, QObject::tr("Tablespaces"), QIcon(":/tablespaces.png"), QIcon(":/tablespace.png"))
 {
-//	_propertiesSQL = "SELECT spc.oid AS oid, spc.spcname AS objname,\n"
-//					 "       pg_get_userbyid(spc.spcowner) AS owner,\n"
-//					 "       des.description AS comment\n"
-//					 "FROM pg_tablespace spc\n"
-//					 "LEFT JOIN pg_shdescription des\n"
-//					 "ON spc.oid = des.objoid\n"
-//					 "ORDER BY spc.oid;";
+	QString query = "SELECT ts.oid AS oid, spcname, pg_catalog.pg_tablespace_location(ts.oid) AS spclocation, spcoptions, \n"
+					"       pg_get_userbyid(spcowner) AS owner, spcacl, \n"
+					"       pg_catalog.shobj_description(oid, 'pg_tablespace') AS comment, \n"
+					"       (SELECT array_agg(label) FROM pg_shseclabel sl1 WHERE sl1.objoid=ts.oid) AS labels, \n"
+					"       (SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid=ts.oid) AS providers \n"
+					"       FROM pg_tablespace ts";
+
+	PGSet *set = _connection->executeSet(query);
+
+	if (set)
+	{
+		while (!set->eof())
+		{
+			QString spcname = set->value("spcname");
+
+			PGTablespace *tablespace = new PGTablespace(_connection, spcname);
+			tablespace->setObjectAttribute("oid", set->oidValue("oid"));
+			tablespace->setObjectAttribute("owner", set->value("owner"));
+			tablespace->setObjectAttribute("location", set->value("spclocation"));
+			tablespace->setObjectAttribute("acl", set->value("spcacl"));
+			tablespace->setObjectAttribute("comment", set->value("comment"));
+
+			addChild(tablespace);
+			set->moveNext();
+		}
+		refreshCollectionTitle(set->rowsCount());
+		delete set;
+	}
 }
 
 void PGTablespace::refreshObjectProperties(PropertyTable *tab)
 {
-//	tab->setHeaders();
-
-//	QString query = "SELECT ts.oid, spcname, pg_catalog.pg_tablespace_location(ts.oid) AS spclocation, spcoptions, "
-//					"       pg_get_userbyid(spcowner) as spcuser, spcacl, "
-//					"       pg_catalog.shobj_description(oid, 'pg_tablespace') AS description, "
-//					"       (SELECT array_agg(label) FROM pg_shseclabel sl1 WHERE sl1.objoid=ts.oid) AS labels, "
-//					"       (SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid=ts.oid) AS providers "
-//					"       FROM pg_tablespace ts\n"
-//					"WHERE ts.oid = " + QString::number(_oid);
-
-//	PGSet *set = _connection->executeSet(query);
-
-//	if (set)
-//	{
-//		tab->addRow(QObject::tr("Name"), _name);
-//		tab->addRow(QObject::tr("OID"), QString::number(_oid));
-//		tab->addRow(QObject::tr("Owner"), set->value("spcuser"));
-//		tab->addRow(QObject::tr("Location"), set->value("spclocation"));
-//		tab->addRow(QObject::tr("ACL"), set->value("spcacl"));
-//		tab->addRow(QObject::tr("Comment"), set->value("description"));
-//		delete set;
-//	}
+	tab->addRow(QObject::tr("Name"), _objectProperties.name());
+	tab->addRow(QObject::tr("OID"), _objectProperties.oid());
+	tab->addRow(QObject::tr("Owner"), _objectProperties.owner());
+	tab->addRow(QObject::tr("Location"), _objectProperties.stringValue("location"));
+	tab->addRow(QObject::tr("ACL"), _objectProperties.acl());
+	tab->addRow(QObject::tr("Comment"), _objectProperties.comment());
 }

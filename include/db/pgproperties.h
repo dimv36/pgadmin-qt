@@ -5,6 +5,26 @@
 #include <QVariant>
 #include "includes.h"
 
+class PGSecurityLabel : public QPair<QString, QString>
+{
+public:
+	PGSecurityLabel();
+	PGSecurityLabel(const QString &provider, const QString &label);
+
+	QString provider() const;
+	void setProvider(const QString &provider);
+
+	QString label() const;
+	void setLabel(const QString &label);
+};
+
+class PGSecurityLabels : public QVector<PGSecurityLabel>
+{
+public:
+	PGSecurityLabels();
+};
+Q_DECLARE_METATYPE(PGSecurityLabels)
+
 class PGProperties : public QMap<QString, QVariant>
 {
 public:
@@ -24,6 +44,8 @@ public:
 
 	QString acl() const;
 	void setAcl(const QString &acl);
+
+	PGSecurityLabels seclabels() const;
 
 	int intValue(const QString &key) const;
 	Oid oidValue(const QString &key) const;

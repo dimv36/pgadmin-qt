@@ -22,7 +22,6 @@ public:
 	PGObject(const PGConnection *connection, ObjectType objtype, const QString &name = QString(), const QIcon &icon = QIcon(), const QIcon &objIcon = QIcon());
 
 	ObjectType objectType() const;
-	QString objectName() const;
 
 	PGObject *parentItem() const;
 
@@ -47,8 +46,14 @@ public:
 	bool boolObjectAttribute(const QString &attribute);
 	QString stringObjectAttribute(const QString &attribute);
 
+	void parseSecurityLabels(const QString &providers, const QString &labels);
+	void appendSecurityLabels(PropertyTable *tab);
+
 protected:
 	ObjectBrowser *browser() const;
+	void refreshCollectionTitle(const int childCount);
+
+	void setObjectAttribute(const QString &attribute, const QVector<QVariant> &value);
 
 signals:
 	void signalDataChanged(PGObject *);

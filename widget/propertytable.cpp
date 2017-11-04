@@ -3,7 +3,8 @@
 #include <QHeaderView>
 
 PropertyTable::PropertyTable(QWidget *parent)
-: QTableWidget(parent)
+: QTableWidget(parent),
+  _propertiesType(PropertiesSummary)
 {
 	resizeColumnsToContents();
 	verticalHeader()->setStretchLastSection(true);
@@ -12,6 +13,9 @@ PropertyTable::PropertyTable(QWidget *parent)
 void PropertyTable::setHeaders(const PropertiesType type)
 {
 	QStringList headerItems;
+
+	if (_propertiesType == type)
+		return;
 
 	switch (type)
 	{
@@ -26,8 +30,10 @@ void PropertyTable::setHeaders(const PropertiesType type)
 						<< QObject::tr("Comment");
 			break;
 	}
+	_propertiesType = type;
 	setColumnCount(headerItems.length());
 	setHorizontalHeaderLabels(headerItems);
+	horizontalHeader()->setStretchLastSection(true);
 }
 
 void PropertyTable::addRowSummary(const QString &objname, const QString &owner, const QString &comment, const QIcon &icon)

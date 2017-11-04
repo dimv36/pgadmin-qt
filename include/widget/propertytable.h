@@ -37,6 +37,8 @@ private:
 		ColumnComment,
 		ColumnTypeObjectSummaryLast
 	} ColumnTypeObjectSummary;
+
+	PropertiesType _propertiesType;
 };
 
 #endif // PROPERTYTABLE_H

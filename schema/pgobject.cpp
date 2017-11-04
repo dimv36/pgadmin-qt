@@ -1,4 +1,5 @@
 #include "schema/pgobject.h"
+#include "db/pgproperties.h"
 #include <QObject>
 #include <QMenu>
 
@@ -15,11 +16,6 @@ PGObject::PGObject(const PGConnection *connection, ObjectType objtype, const QSt
 ObjectType PGObject::objectType() const
 {
 	return _objtype;
-}
-
-QString PGObject::objectName() const
-{
-	return _objectProperties.name();
 }
 
 PGObject *PGObject::parentItem() const
@@ -39,7 +35,7 @@ void PGObject::addChild(PGObject *object, bool unique)
 	{
 		PGObject *ch = dynamic_cast<PGObject *> (child(i));
 
-		if ((ch->objectName() == object->objectName()) &&
+		if ((ch->_objectProperties.name() == _objectProperties.name()) &&
 			(ch->objectType() == object->objectType()))
 		{
 			found = true;
@@ -83,7 +79,10 @@ void PGObject::refreshProperties(PropertyTable *tab)
 		}
 	}
 	else
+	{
+		tab->setHeaders(PropertiesKeyValue);
 		refreshObjectProperties(tab);
+	}
 }
 
 void PGObject::formContextMenu(QMenu *menu)
@@ -128,6 +127,53 @@ QString PGObject::stringObjectAttribute(const QString &attribute)
 ObjectBrowser *PGObject::browser() const
 {
 	return dynamic_cast<ObjectBrowser *>(treeWidget());
+}
+
+void PGObject::refreshCollectionTitle(const int childCount)
+{
+	if (_objtype > COLLECTION_LAST_ITEM)
+		return;
+
+	setText(ColumnText, QString("%1 (%2)").arg(text(ColumnText)).arg(childCount));
+}
+
+void PGObject::parseSecurityLabels(const QString &providers, const QString &labels)
+{
+	PGSecurityLabels seclabelsArray;
+
+	QString providersStr = providers;
+	QString labelsStr = labels;
+
+	// Because we have an arrays, remove symbols { and }
+	providersStr = providersStr.remove('{').remove('}');
+	labelsStr = labelsStr.remove('{').remove('}');
+
+	// Next, split them by ',' symbol
+	QStringList providersList = providersStr.split(',');
+	QStringList labelsList = labelsStr.split(',');
+
+	for (int i = 0; i < providersList.size(); i++)
+	{
+		if (i >= labelsList.size())
+			break;
+
+		PGSecurityLabel seclabel(providersList.at(i), labelsList.at(i));
+		seclabelsArray.push_back(seclabel);
+	}
+	setObjectAttribute("seclabels", QVariant::fromValue(seclabelsArray));
+}
+
+void PGObject::appendSecurityLabels(PropertyTable *tab)
+{
+	PGSecurityLabels seclabels = _objectProperties.seclabels();
+
+	for (auto it = seclabels.begin(); it != seclabels.end(); ++it)
+	{
+		PGSecurityLabel seclabel = *it;
+
+		tab->addRow(QObject::tr("Security label(%1)").arg(seclabel.provider()),
+					seclabel.label());
+	}
 }
 
 void PGObject::slotActionRefresh()

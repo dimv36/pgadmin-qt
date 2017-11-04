@@ -44,22 +44,24 @@ PGDatabase::PGDatabase(PGConnection *connection)
 			database->setObjectAttribute("allow_connections", set->boolValue("datallowconn"));
 			database->setObjectAttribute("connection_limit", set->intValue("connection_limit"));
 
-			browser()->addItem(database, this);
+			database->parseSecurityLabels(set->value("providers"), set->value("labels"));
+
+			addChild(database);
 
 			set->moveNext();
 		}
 		// Update item count on collection
-		setText(ColumnText, QString("%1 (%2)").arg(text(ColumnText)).arg(set->rowsCount()));
+		refreshCollectionTitle(set->rowsCount());
 		delete set;
 	}
 }
 
 void PGDatabase::connect()
 {
-	if (_connection->databaseName() != objectName())
+	if (_connection->databaseName() != _objectProperties.name())
 	{
 		_connection->disconnect();
-		_connection->setDatabaseName(objectName());
+		_connection->setDatabaseName(_objectProperties.name());
 	}
 	if (!_connection->connected())
 	{
@@ -81,7 +83,7 @@ void PGDatabase::connect()
 
 bool PGDatabase::connected() const
 {
-	return ((_connection->databaseName() == objectName()) &&
+	return ((_connection->databaseName() == _objectProperties.name()) &&
 			_connection->connected());
 }
 
@@ -93,9 +95,7 @@ void PGDatabase::disconnect()
 
 void PGDatabase::refreshObjectProperties(PropertyTable *tab)
 {
-	tab->setHeaders();
-
-	tab->addRow(QObject::tr("Name"), objectName());
+	tab->addRow(QObject::tr("Name"), _objectProperties.name());
 	tab->addRow(QObject::tr("OID"), _objectProperties.oid());
 	tab->addRow(QObject::tr("Owner"), _objectProperties.owner());
 	tab->addRow(QObject::tr("ACL"), _objectProperties.acl());
@@ -114,6 +114,7 @@ void PGDatabase::refreshObjectProperties(PropertyTable *tab)
 	tab->addRow(QObject::tr("Connection limit"), _objectProperties.intValue("connection_limit"));
 	tab->addRow(QObject::tr("System database?"), isSystemObject());
 	tab->addRow(QObject::tr("Comment"), _objectProperties.comment());
+	appendSecurityLabels(tab);
 }
 
 void PGDatabase::slotReconnect()
