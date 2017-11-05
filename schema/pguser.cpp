@@ -6,7 +6,7 @@ PGUser::PGUser(const PGConnection *connection, const QString &name)
 
 }
 
-PGUser::PGUser(PGConnection *connection)
+PGUser::PGUser(const PGConnection *connection)
 : PGRole(connection, COLLECTION_USERS, QObject::tr("Login roles"), QIcon(":/users.png"), QIcon(":/user.png"), true)
 {
 }

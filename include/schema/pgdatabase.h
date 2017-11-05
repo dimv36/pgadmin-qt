@@ -8,12 +8,14 @@ class PGDatabase : public PGObject
 	Q_OBJECT
 public:
 	PGDatabase(const PGConnection *connection, const QString &name);
-	PGDatabase(PGConnection *connection);
+	PGDatabase(const PGConnection *connection);
 
 	void connect();
 	bool connected() const;
 	void disconnect();
 
+	virtual void appendOrRefreshObject(PGObject * = nullptr);
+	virtual void refresh();
 	virtual void showSingleObjectProperties(PropertyTable *);
 
 protected slots:
@@ -29,7 +31,6 @@ private:
 	void setDefaultParams();
 
 private:
-	int _missingFk;
 	QString _searchPath;
 
 	QString _defPrivsOnTables;

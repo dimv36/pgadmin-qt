@@ -138,8 +138,8 @@ void PgAdmin::slotRefreshObject(PGObject *object)
 
 	if (object)
 	{
+		object->refresh();
 		object->showObjectProperties(_ui->_propertiesWidget);
-		object->refresh(_ui->_objectProperties);
 	}
 }
 

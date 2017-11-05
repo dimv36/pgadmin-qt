@@ -2,20 +2,24 @@
 
 PGTablespace::PGTablespace(const PGConnection *connection, const QString &name)
 : PGObject(connection, OBJECT_TABLESPACE, name, QIcon(":/tablespace.png"))
-{
+{}
 
-}
-
-PGTablespace::PGTablespace(PGConnection *connection)
+PGTablespace::PGTablespace(const PGConnection *connection)
 : PGObject(connection, COLLECTION_TABLESPACES, QObject::tr("Tablespaces"), QIcon(":/tablespaces.png"), QIcon(":/tablespace.png"))
+{}
+
+void PGTablespace::appendOrRefreshObject(PGObject *object)
 {
+	PGTablespace *tablespace = nullptr;
+
 	QString query = "SELECT ts.oid AS oid, spcname, pg_catalog.pg_tablespace_location(ts.oid) AS spclocation, spcoptions, \n"
 					"       pg_get_userbyid(spcowner) AS owner, spcacl, \n"
 					"       pg_catalog.shobj_description(oid, 'pg_tablespace') AS comment, \n"
 					"       (SELECT array_agg(label) FROM pg_shseclabel sl1 WHERE sl1.objoid=ts.oid) AS labels, \n"
 					"       (SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid=ts.oid) AS providers \n"
 					"       FROM pg_tablespace ts";
-
+	if (object)
+		query += QString("WHERE ts.oid = %1").arg(object->oidObjectAttribute("oid"));
 	PGSet *set = _connection->executeSet(query);
 
 	if (set)
@@ -24,17 +28,21 @@ PGTablespace::PGTablespace(PGConnection *connection)
 		{
 			QString spcname = set->value("spcname");
 
-			PGTablespace *tablespace = new PGTablespace(_connection, spcname);
+			if (!object)
+				tablespace = new PGTablespace(_connection, spcname);
+			else
+				tablespace = dynamic_cast<PGTablespace *> (object);
 			tablespace->setObjectAttribute("oid", set->oidValue("oid"));
 			tablespace->setObjectAttribute("owner", set->value("owner"));
 			tablespace->setObjectAttribute("location", set->value("spclocation"));
 			tablespace->setObjectAttribute("acl", set->value("spcacl"));
 			tablespace->setObjectAttribute("comment", set->value("comment"));
+			tablespace->parseSecurityLabels(set->value("providers"), set->value("labels"));
 
-			addChild(tablespace);
+			if (!object)
+				addChild(tablespace);
 			set->moveNext();
 		}
-		refreshCollectionTitle(set->rowsCount());
 		delete set;
 	}
 }

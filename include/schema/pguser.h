@@ -8,7 +8,7 @@ class PGUser : public PGRole
 	Q_OBJECT
 public:
 	PGUser(const PGConnection *connection, const QString &name);
-	PGUser(PGConnection *connection);
+	PGUser(const PGConnection *connection);
 };
 
 #endif // PGUSER_H

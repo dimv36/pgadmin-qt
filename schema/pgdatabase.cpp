@@ -2,59 +2,15 @@
 #include "schema/pgdatabase.h"
 
 PGDatabase::PGDatabase(const PGConnection *connection, const QString &name)
-: PGObject(connection, OBJECT_DATABASE, name, QIcon(":/database.png")),
-  _missingFk(0)
+: PGObject(connection, OBJECT_DATABASE, name, QIcon(":/database.png"))
 {
 	if (!(connection->databaseName() == name))
 		setIcon(ColumnText, QIcon(":/database-disconnected.png"));
 }
 
-PGDatabase::PGDatabase(PGConnection *connection)
+PGDatabase::PGDatabase(const PGConnection *connection)
 : PGObject(connection, COLLECTION_DATABASES, QObject::tr("Databases"), QIcon(":/databases.png"), QIcon(":/database.png"))
-{
-	QString query = "SELECT db.oid AS oid, datname, db.dattablespace AS spcoid, datallowconn, spcname, datacl, \n"
-					"pg_encoding_to_char(encoding) AS server_encoding, pg_get_userbyid(datdba) AS datowner, \n"
-					"has_database_privilege(db.oid, 'CREATE') AS cancreate, \n"
-					"current_setting('default_tablespace') AS default_tablespace, \n"
-					"descr.description AS comment, db.datconnlimit AS connection_limit, \n"
-					"db.datctype AS ctype, db.datcollate AS collate, \n"
-					"(SELECT array_agg(label) FROM pg_shseclabel sl1 WHERE sl1.objoid = db.oid) AS labels, \n"
-					"(SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid=db.oid) AS providers \n"
-					"  FROM pg_database db\n"
-					"  LEFT OUTER JOIN pg_tablespace ta ON db.dattablespace=ta.OID\n"
-					"  LEFT OUTER JOIN pg_shdescription descr ON (db.oid=descr.objoid AND descr.classoid='pg_database'::regclass)\n";
-	PGSet *set = _connection->executeSet(query);
-
-	if (set)
-	{
-		while (!set->eof())
-		{
-			QString datname = set->value("datname");
-
-			PGDatabase *database = new PGDatabase(_connection, datname);
-			database->setObjectAttribute("oid", set->oidValue("oid"));
-			database->setObjectAttribute("owner", set->value("datowner"));
-			database->setObjectAttribute("comment", set->value("comment"));
-			database->setObjectAttribute("acl", set->value("datacl"));
-			database->setObjectAttribute("spcname", set->value("spcname"));
-			database->setObjectAttribute("default_tablespace", set->value("default_tablespace"));
-			database->setObjectAttribute("encoding", set->value("server_encoding"));
-			database->setObjectAttribute("collate", set->value("collate"));
-			database->setObjectAttribute("ctype", set->value("ctype"));
-			database->setObjectAttribute("allow_connections", set->boolValue("datallowconn"));
-			database->setObjectAttribute("connection_limit", set->intValue("connection_limit"));
-
-			database->parseSecurityLabels(set->value("providers"), set->value("labels"));
-
-			addChild(database);
-
-			set->moveNext();
-		}
-		// Update item count on collection
-		refreshCollectionTitle(set->rowsCount());
-		delete set;
-	}
-}
+{}
 
 void PGDatabase::connect()
 {
@@ -91,6 +47,66 @@ void PGDatabase::disconnect()
 {
 	_connection->disconnect();
 	setIcon(ColumnText, QIcon(":/database-disconnected.png"));
+}
+
+void PGDatabase::appendOrRefreshObject(PGObject *object)
+{
+	PGDatabase *database = nullptr;
+
+	QString query = "SELECT db.oid AS oid, datname, db.dattablespace AS spcoid, datallowconn, spcname, datacl, \n"
+					"pg_encoding_to_char(encoding) AS server_encoding, pg_get_userbyid(datdba) AS datowner, \n"
+					"has_database_privilege(db.oid, 'CREATE') AS cancreate, \n"
+					"current_setting('default_tablespace') AS default_tablespace, \n"
+					"descr.description AS comment, db.datconnlimit AS connection_limit, \n"
+					"db.datctype AS ctype, db.datcollate AS collate, \n"
+					"(SELECT array_agg(label) FROM pg_shseclabel sl1 WHERE sl1.objoid = db.oid) AS labels, \n"
+					"(SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid=db.oid) AS providers \n"
+					"  FROM pg_database db\n"
+					"  LEFT OUTER JOIN pg_tablespace ta ON db.dattablespace=ta.OID\n"
+					"  LEFT OUTER JOIN pg_shdescription descr ON (db.oid=descr.objoid AND descr.classoid='pg_database'::regclass) \n";
+	if (object)
+		query += QString("WHERE db.oid = %1").arg(object->oidObjectAttribute("oid"));
+	PGSet *set = _connection->executeSet(query);
+
+	if (set)
+	{
+		while (!set->eof())
+		{
+			QString datname = set->value("datname");
+
+			if (!object)
+				database = new PGDatabase(_connection, datname);
+			else
+				database = dynamic_cast<PGDatabase *>(object);
+			database->setObjectAttribute("oid", set->oidValue("oid"));
+			database->setObjectAttribute("owner", set->value("datowner"));
+			database->setObjectAttribute("comment", set->value("comment"));
+			database->setObjectAttribute("acl", set->value("datacl"));
+			database->setObjectAttribute("spcname", set->value("spcname"));
+			database->setObjectAttribute("default_tablespace", set->value("default_tablespace"));
+			database->setObjectAttribute("encoding", set->value("server_encoding"));
+			database->setObjectAttribute("collate", set->value("collate"));
+			database->setObjectAttribute("ctype", set->value("ctype"));
+			database->setObjectAttribute("allow_connections", set->boolValue("datallowconn"));
+			database->setObjectAttribute("connection_limit", set->intValue("connection_limit"));
+
+			database->parseSecurityLabels(set->value("providers"), set->value("labels"));
+
+			if (!object)
+				addChild(database);
+
+			set->moveNext();
+		}
+		delete set;
+	}
+}
+
+void PGDatabase::refresh()
+{
+//	if (!IsCollectionItem(_objtype))
+//		appendOrRefreshObject(this);
+//	else
+//		appendOrRefreshObject();
 }
 
 void PGDatabase::showSingleObjectProperties(PropertyTable *tab)

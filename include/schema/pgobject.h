@@ -21,6 +21,8 @@ class PGObject : public QObject, public QTreeWidgetItem
 public:
 	PGObject(const PGConnection *connection, ObjectType objtype, const QString &name = QString(), const QIcon &icon = QIcon(), const QIcon &objIcon = QIcon());
 
+	virtual void afterConstruction();
+
 	ObjectType objectType() const;
 
 	PGObject *parentItem() const;
@@ -33,7 +35,8 @@ public:
 	void showObjectProperties(PropertyTable *);
 	virtual void showSingleObjectProperties(PropertyTable *) = 0;
 
-	virtual void refresh(QTabWidget *) {}
+	virtual void appendOrRefreshObject(PGObject * = nullptr) {}
+	virtual void refresh() {}
 	virtual void formContextMenu(QMenu *menu);
 	virtual void appendCollectionItems() {}
 
@@ -69,5 +72,13 @@ protected:
 
 	QIcon _objectIcon;
 };
+
+template <class T>
+T *newPGObject(const PGConnection *connection)
+{
+	T* pgobject = new T(connection);
+	pgobject->afterConstruction();
+	return pgobject;
+}
 
 #endif // PGOBJECT_H

@@ -25,6 +25,7 @@ public:
 	PGProperties();
 
 	Oid oid() const;
+	QString oidString() const;
 	void setOid(const Oid oid);
 
 	QString name() const;

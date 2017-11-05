@@ -84,10 +84,10 @@ void PGServer::showSingleObjectProperties(PropertyTable *tab)
 
 void PGServer::appendCollectionItems()
 {
-	addChild(new PGDatabase(_connection));
-	addChild(new PGTablespace(_connection));
-	addChild(new PGUser(_connection));
-	addChild(new PGGroup(_connection));
+	addChild(newPGObject<PGDatabase>(_connection));
+	addChild(newPGObject<PGTablespace>(_connection));
+	addChild(newPGObject<PGGroup>(_connection));
+	addChild(newPGObject<PGUser>(_connection));
 }
 
 void PGServer::formContextMenu(QMenu *menu)

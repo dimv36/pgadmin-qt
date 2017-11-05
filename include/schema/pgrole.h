@@ -8,9 +8,10 @@ class PGRole : public PGObject
 public:
 	PGRole(const PGConnection *connection, const ObjectType objectType,
 		   const QString &name, const QIcon &icon = QIcon());
-	PGRole(PGConnection *connection, const ObjectType objectType,
+	PGRole(const PGConnection *connection, const ObjectType objectType,
 		   const QString &name, const QIcon &collectionIcon, const QIcon &objectIcon, bool canLogin);
 
+	virtual void appendOrRefreshObject(PGObject * = nullptr);
 	virtual void showSingleObjectProperties(PropertyTable *);
 
 private:

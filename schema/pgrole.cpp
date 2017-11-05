@@ -6,10 +6,14 @@ PGRole::PGRole(const PGConnection *connection, const ObjectType objectType, cons
 : PGObject(connection, objectType, name, icon)
 {}
 
-PGRole::PGRole(PGConnection *connection, const ObjectType objectType, const QString &name, const QIcon &collectionIcon, const QIcon &objectIcon, bool canLogin)
+PGRole::PGRole(const PGConnection *connection, const ObjectType objectType, const QString &name, const QIcon &collectionIcon, const QIcon &objectIcon, bool canLogin)
 : PGObject(connection, objectType, name, collectionIcon, objectIcon),
   _canlogin(canLogin)
+{}
+
+void PGRole::appendOrRefreshObject(PGObject *object)
 {
+	PGRole *role = nullptr;
 	QString table;
 	if (_connection->hasPrivilege("TABLE", "pg_authid", "SELECT"))
 		table = "pg_authid";
@@ -21,8 +25,14 @@ PGRole::PGRole(PGConnection *connection, const ObjectType objectType, const QStr
 					"(SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid = tab.oid) AS providers\n "
 					"FROM %1 tab\n "
 					"WHERE rolcanlogin %2\n "
+					"%3\n "
 					"ORDER BY rolname";
 	query = query.arg(table).arg(_canlogin ? "IS TRUE" : "IS FALSE");
+
+	if (object)
+		query = query.arg("AND tab.oid = %1").arg(object->oidObjectAttribute("oid"));
+	else
+		query = query.arg("");
 
 	PGSet *set = _connection->executeSet(query);
 	if (set)
@@ -30,12 +40,16 @@ PGRole::PGRole(PGConnection *connection, const ObjectType objectType, const QStr
 		while (!set->eof())
 		{
 			QString rolename = set->value("rolname");
-			PGRole *role = nullptr;
 
-			if (_objtype == COLLECTION_GROUPS)
-				role = new PGGroup(_connection, rolename);
-			else if (_objtype == COLLECTION_USERS)
-				role = new PGUser(_connection, rolename);
+			if (!object)
+			{
+				if (_objtype == COLLECTION_GROUPS)
+					role = new PGGroup(_connection, rolename);
+				else if (_objtype == COLLECTION_USERS)
+					role = new PGUser(_connection, rolename);
+			}
+			else
+				role = dynamic_cast<PGRole *> (object);
 
 			role->setObjectAttribute("oid", set->oidValue("oid"));
 			role->setObjectAttribute("canlogin", set->boolValue("rolcanlogin"));
@@ -72,10 +86,10 @@ PGRole::PGRole(PGConnection *connection, const ObjectType objectType, const QStr
 			// Get configuration
 			role->getConfigurationVariables();
 
-			addChild(role);
+			if (!object)
+				addChild(role);
 			set->moveNext();
 		}
-		refreshCollectionTitle(set->rowsCount());
 		delete set;
 	}
 }

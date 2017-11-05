@@ -26,6 +26,11 @@ Oid PGProperties::oid() const
 	return oidValue("oid");
 }
 
+QString PGProperties::oidString() const
+{
+	return stringValue("oid");
+}
+
 void PGProperties::setOid(const Oid oid)
 {
 	operator []("oid") = oid;

@@ -13,6 +13,15 @@ PGObject::PGObject(const PGConnection *connection, ObjectType objtype, const QSt
 	setIcon(ColumnText, icon);
 }
 
+void PGObject::afterConstruction()
+{
+	if (IsCollectionItem(_objtype))
+	{
+		appendOrRefreshObject();
+		refreshCollectionTitle(childCount());
+	}
+}
+
 ObjectType PGObject::objectType() const
 {
 	return _objtype;

@@ -34,4 +34,6 @@ typedef enum ObjectType
 	OBJECT_LAST_ITEM
 } ObjectType;
 
+#define IsCollectionItem(_obj) ((_obj) < COLLECTION_LAST_ITEM)
+
 #endif // ENUMS_H
