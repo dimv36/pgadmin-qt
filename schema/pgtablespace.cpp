@@ -47,4 +47,5 @@ void PGTablespace::refreshObjectProperties(PropertyTable *tab)
 	tab->addRow(QObject::tr("Location"), _objectProperties.stringValue("location"));
 	tab->addRow(QObject::tr("ACL"), _objectProperties.acl());
 	tab->addRow(QObject::tr("Comment"), _objectProperties.comment());
+	appendSecurityLabels(tab);
 }

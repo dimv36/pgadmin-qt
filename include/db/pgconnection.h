@@ -41,6 +41,7 @@ public:
 	void reconnect();
 
 	QString executeScalar(const QString &query);
+	bool executeScalarBool(const QString &query);
 	bool executeVoid(const QString &query);
 	PGSet *executeSet(const QString &query);
 
@@ -62,13 +63,17 @@ public:
 	QString encoding() const;
 	Oid lastSystemOid() const;
 
+	bool backendVersionGE(const int maj, const int min) const;
+	bool hasPrivilege(const QString &objectType, const QString &objectName, const QString &privilege);
+
+	static QString dbString(const QString &str);
+
 protected:
 	void setLastResultError(PGresult *result = nullptr, const QString &error = QString());
 
 private:
 	void close();
 	bool initialize();
-	QString dbString(const QString &str);
 	void formConnectionString();
 
 protected:

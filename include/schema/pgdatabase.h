@@ -23,6 +23,7 @@ protected slots:
 
 protected:
 	virtual void formContextMenu(QMenu *menu);
+	void getDatabaseSettings();
 
 private:
 	void setDefaultParams();

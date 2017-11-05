@@ -100,6 +100,12 @@ QString PGConnection::executeScalar(const QString &query)
 	return result;
 }
 
+bool PGConnection::executeScalarBool(const QString &query)
+{
+	QString result = executeScalar(query);
+	return (result == "t");
+}
+
 bool PGConnection::executeVoid(const QString &query)
 {
 	if (!connected())
@@ -265,6 +271,19 @@ QString PGConnection::encoding() const
 Oid PGConnection::lastSystemOid() const
 {
 	return _lastSystemOid;
+}
+
+bool PGConnection::backendVersionGE(const int maj, const int min) const
+{
+	return ((_major >= maj) || ((_major == maj) || (_minor >= min)));
+}
+
+bool PGConnection::hasPrivilege(const QString &objectType, const QString &objectName, const QString &privilege)
+{
+	QString query = QString("SELECT has_%1_privilege(%2, %3)").arg(objectType.toLower(),
+																   PGConnection::dbString(objectName),
+																   PGConnection::dbString(privilege));
+	return executeScalarBool(query);
 }
 
 void PGConnection::setLastResultError(PGresult *result, const QString &message)

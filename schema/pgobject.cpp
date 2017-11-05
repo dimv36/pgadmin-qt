@@ -139,7 +139,7 @@ void PGObject::refreshCollectionTitle(const int childCount)
 
 void PGObject::parseSecurityLabels(const QString &providers, const QString &labels)
 {
-	PGSecurityLabels seclabelsArray;
+	PGKeyValueSettings seclabelsArray;
 
 	QString providersStr = providers;
 	QString labelsStr = labels;
@@ -157,7 +157,7 @@ void PGObject::parseSecurityLabels(const QString &providers, const QString &labe
 		if (i >= labelsList.size())
 			break;
 
-		PGSecurityLabel seclabel(providersList.at(i), labelsList.at(i));
+		PGKeyValueSetting seclabel(providersList.at(i), labelsList.at(i));
 		seclabelsArray.push_back(seclabel);
 	}
 	setObjectAttribute("seclabels", QVariant::fromValue(seclabelsArray));
@@ -165,14 +165,14 @@ void PGObject::parseSecurityLabels(const QString &providers, const QString &labe
 
 void PGObject::appendSecurityLabels(PropertyTable *tab)
 {
-	PGSecurityLabels seclabels = _objectProperties.seclabels();
+	PGKeyValueSettings seclabels = _objectProperties.seclabels();
 
 	for (auto it = seclabels.begin(); it != seclabels.end(); ++it)
 	{
-		PGSecurityLabel seclabel = *it;
+		PGKeyValueSetting seclabel = *it;
 
-		tab->addRow(QObject::tr("Security label(%1)").arg(seclabel.provider()),
-					seclabel.label());
+		tab->addRow(QObject::tr("Security label (%1)").arg(seclabel.first),
+					seclabel.second);
 	}
 }
 

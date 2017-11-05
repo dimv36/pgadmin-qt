@@ -3,6 +3,7 @@
 
 #include <libpq-fe.h>
 #include <QString>
+#include <QDateTime>
 
 class PGConnection;
 
@@ -42,6 +43,9 @@ public:
 
 	int intValue(const int column) const;
 	int intValue(const QString &column) const;
+
+	QDateTime datetimeValue(const int column) const;
+	QDateTime datetimeValue(const QString &column) const;
 
 	char *charPtr(const int column) const;
 	char *charPtr(const QString &column) const;

@@ -143,6 +143,16 @@ int PGSet::intValue(const QString &column) const
 	return (QString(charPtr(column)).toInt());
 }
 
+QDateTime PGSet::datetimeValue(const int column) const
+{
+	return QDateTime::fromString(charPtr(column), Qt::ISODate);
+}
+
+QDateTime PGSet::datetimeValue(const QString &column) const
+{
+	return QDateTime::fromString(charPtr(column), Qt::ISODate);
+}
+
 char *PGSet::charPtr(const int column) const
 {
 	return PQgetvalue(_result, _position - 1, column);

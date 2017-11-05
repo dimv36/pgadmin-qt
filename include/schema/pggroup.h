@@ -1,9 +1,9 @@
 #ifndef PGGROUP_H
 #define PGGROUP_H
 
-#include "pgobject.h"
+#include "pgrole.h"
 
-class PGGroup : public PGObject
+class PGGroup : public PGRole
 {
 public:
 	PGGroup(const PGConnection *connection, const QString &name);

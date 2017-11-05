@@ -95,6 +95,8 @@ void PGDatabase::disconnect()
 
 void PGDatabase::refreshObjectProperties(PropertyTable *tab)
 {
+	getDatabaseSettings();
+
 	tab->addRow(QObject::tr("Name"), _objectProperties.name());
 	tab->addRow(QObject::tr("OID"), _objectProperties.oid());
 	tab->addRow(QObject::tr("Owner"), _objectProperties.owner());
@@ -115,6 +117,13 @@ void PGDatabase::refreshObjectProperties(PropertyTable *tab)
 	tab->addRow(QObject::tr("System database?"), isSystemObject());
 	tab->addRow(QObject::tr("Comment"), _objectProperties.comment());
 	appendSecurityLabels(tab);
+	// Append settings
+	PGKeyValueSettings settings = _objectProperties.variables();
+	for (auto it = settings.begin(); it != settings.end(); ++it)
+	{
+		PGKeyValueSetting setting = *it;
+		tab->addRow(setting.first, setting.second);
+	}
 }
 
 void PGDatabase::slotReconnect()
@@ -145,6 +154,47 @@ void PGDatabase::formContextMenu(QMenu *menu)
 	{
 		menu->addAction(QObject::tr("Connect"), this, SLOT(slotConnect()));
 	}
+}
+
+void PGDatabase::getDatabaseSettings()
+{
+	PGKeyValueSettings settingsArray;
+
+	QString query = "WITH configs\n"
+					"AS\n "
+					"(\n"
+					"    SELECT rolname, unnest(setconfig) AS config\n "
+					"    FROM pg_db_role_setting s\n "
+					"    LEFT JOIN pg_roles r ON r.oid = s.setrole\n "
+					"    WHERE s.setdatabase = %1\n "
+					")\n "
+					"SELECT rolname, split_part(config, '=', 1) AS variable, \n"
+					"       replace(config, split_part(config, '=', 1) || '=', '') AS value\n "
+					"FROM configs";
+	query = query.arg(_objectProperties.oid());
+	PGSet *set = _connection->executeSet(query);
+	if (set)
+	{
+		while (!set->eof())
+		{
+			QString username = set->value("rolname");
+			QString variable = set->value("variable");
+			QString value = set->value("value");
+			PGKeyValueSetting setting;
+
+			if (username.isEmpty())
+				setting.first = variable;
+			else
+				setting.first = QObject::tr("%1 (role %2)").arg(variable).arg(username);
+			setting.second = value;
+
+			settingsArray.push_back(setting);
+
+			set->moveNext();
+		}
+		delete set;
+	}
+	setObjectAttribute("variables", QVariant::fromValue(settingsArray));
 }
 
 void PGDatabase::setDefaultParams()

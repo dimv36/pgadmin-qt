@@ -1,6 +1,22 @@
 #include <QDebug>
 #include <QString>
+#include <QDateTime>
 #include "db/pgproperties.h"
+
+PGKeyValueSetting::PGKeyValueSetting()
+: QPair<QString, QString>()
+{}
+
+PGKeyValueSetting::PGKeyValueSetting(const QString &key, const QString &value)
+: QPair<QString, QString>(key, value)
+{}
+
+PGKeyValueSettings::PGKeyValueSettings()
+: QVector<PGKeyValueSetting>()
+{}
+
+
+/************************************************************************************* */
 
 PGProperties::PGProperties()
 {}
@@ -55,10 +71,16 @@ void PGProperties::setAcl(const QString &acl)
 	operator []("acl") = acl;
 }
 
-PGSecurityLabels PGProperties::seclabels() const
+PGKeyValueSettings PGProperties::seclabels() const
 {
 	QVariant variant = operator [] ("seclabels");
-	return qvariant_cast<PGSecurityLabels>(variant);
+	return qvariant_cast<PGKeyValueSettings>(variant);
+}
+
+PGKeyValueSettings PGProperties::variables() const
+{
+	QVariant variant = operator [] ("variables");
+	return qvariant_cast<PGKeyValueSettings>(variant);
 }
 
 int PGProperties::intValue(const QString &key) const
@@ -89,34 +111,9 @@ bool PGProperties::boolValue(const QString &key) const
 	return false;
 }
 
-PGSecurityLabel::PGSecurityLabel()
-: QPair<QString, QString>()
-{}
-
-PGSecurityLabel::PGSecurityLabel(const QString &provider, const QString &label)
-: QPair<QString, QString>(provider, label)
-{}
-
-QString PGSecurityLabel::provider() const
+QString PGProperties::dateTimeStringValue(const QString &key) const
 {
-	return first;
+	if (contains(key))
+		return value(key).toDateTime().toString(Qt::LocalDate);
+	return QString();
 }
-
-void PGSecurityLabel::setProvider(const QString &provider)
-{
-	first = provider;
-}
-
-QString PGSecurityLabel::label() const
-{
-	return second;
-}
-
-void PGSecurityLabel::setLabel(const QString &label)
-{
-	second = label;
-}
-
-PGSecurityLabels::PGSecurityLabels()
-: QVector<PGSecurityLabel>()
-{}

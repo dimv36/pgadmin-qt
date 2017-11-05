@@ -1,9 +1,9 @@
 #ifndef PGUSER_H
 #define PGUSER_H
 
-#include "pgobject.h"
+#include "pgrole.h"
 
-class PGUser : public PGObject
+class PGUser : public PGRole
 {
 	Q_OBJECT
 public:

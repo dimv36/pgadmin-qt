@@ -5,25 +5,19 @@
 #include <QVariant>
 #include "includes.h"
 
-class PGSecurityLabel : public QPair<QString, QString>
+class PGKeyValueSetting : public QPair<QString, QString>
 {
 public:
-	PGSecurityLabel();
-	PGSecurityLabel(const QString &provider, const QString &label);
-
-	QString provider() const;
-	void setProvider(const QString &provider);
-
-	QString label() const;
-	void setLabel(const QString &label);
+	PGKeyValueSetting();
+	PGKeyValueSetting(const QString &first, const QString &second);
 };
 
-class PGSecurityLabels : public QVector<PGSecurityLabel>
+class PGKeyValueSettings : public QVector<PGKeyValueSetting>
 {
 public:
-	PGSecurityLabels();
+	PGKeyValueSettings();
 };
-Q_DECLARE_METATYPE(PGSecurityLabels)
+Q_DECLARE_METATYPE(PGKeyValueSettings)
 
 class PGProperties : public QMap<QString, QVariant>
 {
@@ -45,12 +39,14 @@ public:
 	QString acl() const;
 	void setAcl(const QString &acl);
 
-	PGSecurityLabels seclabels() const;
+	PGKeyValueSettings seclabels() const;
+	PGKeyValueSettings variables() const;
 
 	int intValue(const QString &key) const;
 	Oid oidValue(const QString &key) const;
 	QString stringValue(const QString &key) const;
 	bool boolValue(const QString &key) const;
+	QString dateTimeStringValue(const QString &key) const;
 };
 
 #endif // PGPROPERTIES_H
