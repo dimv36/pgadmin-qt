@@ -17,7 +17,7 @@ void PGTablespace::appendOrRefreshObject(PGObject *object)
 					"       pg_catalog.shobj_description(oid, 'pg_tablespace') AS comment, \n"
 					"       (SELECT array_agg(label) FROM pg_shseclabel sl1 WHERE sl1.objoid=ts.oid) AS labels, \n"
 					"       (SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid=ts.oid) AS providers \n"
-					"       FROM pg_tablespace ts";
+					"       FROM pg_tablespace ts \n";
 	if (object)
 		query += QString("WHERE ts.oid = %1").arg(object->oidObjectAttribute("oid"));
 	PGSet *set = _connection->executeSet(query);

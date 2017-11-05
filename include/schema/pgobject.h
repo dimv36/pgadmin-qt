@@ -36,7 +36,7 @@ public:
 	virtual void showSingleObjectProperties(PropertyTable *) = 0;
 
 	virtual void appendOrRefreshObject(PGObject * = nullptr) {}
-	virtual void refresh() {}
+	void refresh();
 	virtual void formContextMenu(QMenu *menu);
 	virtual void appendCollectionItems() {}
 

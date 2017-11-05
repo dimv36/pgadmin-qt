@@ -94,6 +94,12 @@ void PGObject::showObjectProperties(PropertyTable *tab)
 	}
 }
 
+void PGObject::refresh()
+{
+	if (!IsCollectionItem(_objtype))
+		appendOrRefreshObject(this);
+}
+
 void PGObject::formContextMenu(QMenu *menu)
 {
 	if (_objtype != COLLECTION_SERVERS)
