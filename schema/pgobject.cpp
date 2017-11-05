@@ -64,7 +64,7 @@ void PGObject::setConnection(PGConnection *connection)
 	_connection = connection;
 }
 
-void PGObject::refreshProperties(PropertyTable *tab)
+void PGObject::showObjectProperties(PropertyTable *tab)
 {
 	if (_objtype < COLLECTION_LAST_ITEM)
 	{
@@ -81,7 +81,7 @@ void PGObject::refreshProperties(PropertyTable *tab)
 	else
 	{
 		tab->setHeaders(PropertiesKeyValue);
-		refreshObjectProperties(tab);
+		showSingleObjectProperties(tab);
 	}
 }
 
@@ -170,6 +170,9 @@ void PGObject::appendSecurityLabels(PropertyTable *tab)
 	for (auto it = seclabels.begin(); it != seclabels.end(); ++it)
 	{
 		PGKeyValueSetting seclabel = *it;
+
+		if (seclabel.first.isEmpty() && seclabel.second.isEmpty())
+			return;
 
 		tab->addRow(QObject::tr("Security label (%1)").arg(seclabel.first),
 					seclabel.second);

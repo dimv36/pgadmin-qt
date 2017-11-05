@@ -10,7 +10,11 @@ public:
 		   const QString &name, const QIcon &icon = QIcon());
 	PGRole(PGConnection *connection, const ObjectType objectType,
 		   const QString &name, const QIcon &collectionIcon, const QIcon &objectIcon, bool canLogin);
-	virtual void refreshObjectProperties(PropertyTable *);
+
+	virtual void showSingleObjectProperties(PropertyTable *);
+
+private:
+	void getConfigurationVariables();
 
 protected:
 	bool _canlogin;

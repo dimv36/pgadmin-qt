@@ -14,7 +14,7 @@ public:
 	bool connected() const;
 	void disconnect();
 
-	virtual void refreshObjectProperties(PropertyTable *);
+	virtual void showSingleObjectProperties(PropertyTable *);
 
 protected slots:
 	void slotReconnect();

@@ -18,7 +18,7 @@ public:
 	bool connected() const;
 	void disconnect();
 
-	virtual void refreshObjectProperties(PropertyTable *table);
+	virtual void showSingleObjectProperties(PropertyTable *table);
 	virtual void appendCollectionItems();
 
 	QString connectionName() const;

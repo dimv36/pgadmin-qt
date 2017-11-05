@@ -67,8 +67,10 @@ PGRole::PGRole(PGConnection *connection, const ObjectType objectType, const QStr
 										"WHERE oid <> %1").arg(QString::number(role->oidObjectAttribute("oid")));
 			QString members = _connection->executeScalar(roleQuery);
 			members = members.remove('{').remove('}').replace(',', ", ");
-
 			role->setObjectAttribute("members", members);
+
+			// Get configuration
+			role->getConfigurationVariables();
 
 			addChild(role);
 			set->moveNext();
@@ -78,7 +80,7 @@ PGRole::PGRole(PGConnection *connection, const ObjectType objectType, const QStr
 	}
 }
 
-void PGRole::refreshObjectProperties(PropertyTable *tab)
+void PGRole::showSingleObjectProperties(PropertyTable *tab)
 {
 	tab->addRow(QObject::tr("Name"), _objectProperties.name());
 	tab->addRow(QObject::tr("OID"), _objectProperties.oid());
@@ -94,6 +96,53 @@ void PGRole::refreshObjectProperties(PropertyTable *tab)
 	tab->addRow(QObject::tr("Connection limit"), _objectProperties.intValue("connlimit"));
 	tab->addRow(QObject::tr("Comment"), _objectProperties.comment());
 	tab->addRow(QObject::tr("Members of"), _objectProperties.stringValue("members"));
-
+	// Append settings
+	PGKeyValueSettings settings = _objectProperties.variables();
+	for (auto it = settings.begin(); it != settings.end(); ++it)
+	{
+		PGKeyValueSetting setting = *it;
+		tab->addRow(setting.first, setting.second, QIcon(":/variable.png"));
+	}
 	appendSecurityLabels(tab);
+}
+
+void PGRole::getConfigurationVariables()
+{
+	PGKeyValueSettings settingsArray;
+
+	QString query = "WITH configs\n"
+					"AS\n "
+					"(\n"
+					"    SELECT datname, unnest(setconfig) AS config\n "
+					"    FROM pg_db_role_setting s\n "
+					"    LEFT JOIN pg_database d ON d.oid = s.setdatabase\n "
+					"    WHERE s.setrole = %1\n "
+					")\n "
+					"SELECT datname, split_part(config, '=', 1) AS variable, \n"
+					"       replace(config, split_part(config, '=', 1) || '=', '') AS value\n "
+					"FROM configs";
+	query = query.arg(_objectProperties.oid());
+	PGSet *set = _connection->executeSet(query);
+	if (set)
+	{
+		while (!set->eof())
+		{
+			QString datname = set->value("datname");
+			QString variable = set->value("variable");
+			QString value = set->value("value");
+			PGKeyValueSetting setting;
+
+			if (datname.isEmpty())
+				setting.first = variable;
+			else
+				setting.first = QObject::tr("%1 (database %2)").arg(variable).arg(datname);
+			setting.second = value;
+
+			settingsArray.push_back(setting);
+
+			set->moveNext();
+		}
+		delete set;
+	}
+	setObjectAttribute("variables", QVariant::fromValue(settingsArray));
 }

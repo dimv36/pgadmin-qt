@@ -93,7 +93,7 @@ void PGDatabase::disconnect()
 	setIcon(ColumnText, QIcon(":/database-disconnected.png"));
 }
 
-void PGDatabase::refreshObjectProperties(PropertyTable *tab)
+void PGDatabase::showSingleObjectProperties(PropertyTable *tab)
 {
 	getDatabaseSettings();
 
@@ -122,7 +122,7 @@ void PGDatabase::refreshObjectProperties(PropertyTable *tab)
 	for (auto it = settings.begin(); it != settings.end(); ++it)
 	{
 		PGKeyValueSetting setting = *it;
-		tab->addRow(setting.first, setting.second);
+		tab->addRow(setting.first, setting.second, QIcon(":/variable.png"));
 	}
 }
 

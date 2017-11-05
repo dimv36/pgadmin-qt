@@ -10,8 +10,3 @@ PGGroup::PGGroup(PGConnection *connection)
 : PGRole(connection, COLLECTION_GROUPS, QObject::tr("Group roles"), QIcon(":/groups.png"), QIcon(":/group.png"), false)
 {
 }
-
-void PGGroup::refreshObjectProperties(PropertyTable *tab)
-{
-	PGRole::refreshObjectProperties(tab);
-}

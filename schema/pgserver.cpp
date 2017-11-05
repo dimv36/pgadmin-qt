@@ -63,11 +63,9 @@ bool PGServer::connected() const
 		return false;
 }
 
-void PGServer::refreshObjectProperties(PropertyTable *tab)
+void PGServer::showSingleObjectProperties(PropertyTable *tab)
 {
 	bool isConnected = connected();
-
-	tab->setHeaders();
 
 	tab->addRow(QObject::tr("Description"), _connectionName);
 	tab->addRow(QObject::tr("Hostname"), _host);

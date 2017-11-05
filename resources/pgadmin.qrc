@@ -15,5 +15,6 @@
         <file alias="users.png">img/loginroles.png</file>
         <file alias="tablespaces.png">img/tablespaces.png</file>
         <file alias="tablespace.png">img/tablespace.png</file>
+        <file alias="variable.png">img/variable.png</file>
     </qresource>
 </RCC>

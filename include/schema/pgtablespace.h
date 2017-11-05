@@ -10,7 +10,7 @@ public:
 	PGTablespace(const PGConnection *connection, const QString &name);
 	PGTablespace(PGConnection *connection);
 
-	void refreshObjectProperties(PropertyTable *);
+	void showSingleObjectProperties(PropertyTable *);
 };
 
 #endif // PGTABLESPACE_H

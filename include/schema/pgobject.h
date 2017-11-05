@@ -30,8 +30,8 @@ public:
 
 	void setConnection(PGConnection *connection);
 
-	void refreshProperties(PropertyTable *tab);
-	virtual void refreshObjectProperties(PropertyTable *) = 0;
+	void showObjectProperties(PropertyTable *);
+	virtual void showSingleObjectProperties(PropertyTable *) = 0;
 
 	virtual void refresh(QTabWidget *) {}
 	virtual void formContextMenu(QMenu *menu);

@@ -39,7 +39,7 @@ PGTablespace::PGTablespace(PGConnection *connection)
 	}
 }
 
-void PGTablespace::refreshObjectProperties(PropertyTable *tab)
+void PGTablespace::showSingleObjectProperties(PropertyTable *tab)
 {
 	tab->addRow(QObject::tr("Name"), _objectProperties.name());
 	tab->addRow(QObject::tr("OID"), _objectProperties.oid());

@@ -9,8 +9,6 @@ class PGUser : public PGRole
 public:
 	PGUser(const PGConnection *connection, const QString &name);
 	PGUser(PGConnection *connection);
-
-	void refreshObjectProperties(PropertyTable *);
 };
 
 #endif // PGUSER_H
