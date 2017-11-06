@@ -30,6 +30,7 @@ PgAdmin::PgAdmin(QWidget *parent)
 			SIGNAL(signalRefreshItem(PGObject *)),
 			this,
 			SLOT(slotRefreshObject(PGObject *)));
+	_ui->_objectBrowser->setEditMenu(_ui->_menuEdit);
 }
 
 PgAdmin::~PgAdmin()

@@ -37,7 +37,6 @@ public:
 	virtual void showSingleObjectProperties(PropertyTable *) = 0;
 
 	virtual void appendOrRefreshObject(PGObject * = nullptr) {}
-	void refresh();
 	virtual void formContextMenu(QMenu *menu);
 	virtual void appendCollectionItems() {}
 	virtual bool exists() const = 0;
@@ -54,17 +53,14 @@ public:
 	void parseSecurityLabels(const QString &providers, const QString &labels);
 	void appendSecurityLabels(PropertyTable *tab);
 
+public slots:
+	void refresh();
+
 protected:
 	ObjectBrowser *browser() const;
 	void refreshCollectionTitle();
 
 	void setObjectAttribute(const QString &attribute, const QVector<QVariant> &value);
-
-signals:
-	void signalDataChanged(PGObject *);
-
-protected slots:
-	void slotActionRefresh();
 
 protected:
 	ObjectType _objtype;

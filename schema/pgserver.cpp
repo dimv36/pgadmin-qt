@@ -52,7 +52,6 @@ void PGServer::connect()
 	appendCollectionItems();
 	setIcon(ColumnText, QIcon(":/server-connected.png"));
 	treeWidget()->expandItem(this);
-	emit signalDataChanged(this);
 }
 
 bool PGServer::connected() const
@@ -92,7 +91,7 @@ void PGServer::appendCollectionItems()
 
 void PGServer::formContextMenu(QMenu *menu)
 {
-	if (_connection->connected())
+	if (_connection && _connection->connected())
 	{
 		PGObject::formContextMenu(menu);
 		menu->addAction(QObject::tr("Disconnect"), this, SLOT(slotServerDisconnect()));
@@ -121,7 +120,6 @@ void PGServer::slotServerDisconnect()
 	_connection->disconnect();
 	setIcon(ColumnText, QIcon(":/server-disconnected.png"));
 	removeChildrens();
-	emit signalDataChanged(this);
 }
 
 void PGServer::slotServerDelete()

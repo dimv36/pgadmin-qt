@@ -101,14 +101,6 @@ void PGDatabase::appendOrRefreshObject(PGObject *object)
 	}
 }
 
-void PGDatabase::refresh()
-{
-//	if (!IsCollectionItem(_objtype))
-//		appendOrRefreshObject(this);
-//	else
-//		appendOrRefreshObject();
-}
-
 void PGDatabase::showSingleObjectProperties(PropertyTable *tab)
 {
 	getDatabaseSettings();
@@ -168,15 +160,18 @@ void PGDatabase::slotDisconnect()
 
 void PGDatabase::formContextMenu(QMenu *menu)
 {
-	if (connected())
+	PGObject::formContextMenu(menu);
+	if (!IsCollectionItem(_objtype))
 	{
-		PGObject::formContextMenu(menu);
-		menu->addAction(QObject::tr("Disconnect"), this, SLOT(slotDisconnect()));
-		menu->addAction(QObject::tr("Reconnect"), this, SLOT(slotReconnect()));
-	}
-	else
-	{
-		menu->addAction(QObject::tr("Connect"), this, SLOT(slotConnect()));
+		if (connected())
+		{
+			menu->addAction(QObject::tr("Disconnect"), this, SLOT(slotDisconnect()));
+			menu->addAction(QObject::tr("Reconnect"), this, SLOT(slotReconnect()));
+		}
+		else
+		{
+			menu->addAction(QObject::tr("Connect"), this, SLOT(slotConnect()));
+		}
 	}
 }
 

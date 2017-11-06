@@ -49,6 +49,13 @@ void PGObject::addChild(PGObject *object, bool unique)
 	{
 		PGObject *ch = dynamic_cast<PGObject *> (child(i));
 
+		if (IsCollectionItem(object->objectType()) &&
+			(ch->objectType() == object->objectType()))
+		{
+			found = true;
+			break;
+		}
+
 		if ((ch->_objectProperties.name() == _objectProperties.name()) &&
 			(ch->objectType() == object->objectType()))
 		{
@@ -115,7 +122,7 @@ void PGObject::formContextMenu(QMenu *menu)
 {
 	if (_objtype != COLLECTION_SERVERS)
 	{
-		menu->addAction(QObject::tr("Refresh"), this, SLOT(slotActionRefresh()));
+		menu->addAction(QObject::tr("Refresh"), this, SLOT(refresh()));
 		menu->addSeparator();
 	}
 }
@@ -203,9 +210,4 @@ void PGObject::appendSecurityLabels(PropertyTable *tab)
 		tab->addRow(QObject::tr("Security label (%1)").arg(seclabel.first),
 					seclabel.second);
 	}
-}
-
-void PGObject::slotActionRefresh()
-{
-	emit signalDataChanged(this);
 }

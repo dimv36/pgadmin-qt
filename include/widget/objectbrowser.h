@@ -10,6 +10,8 @@ class ObjectBrowser : public QTreeWidget
 	Q_OBJECT
 public:
 	explicit ObjectBrowser(QWidget *parent = nullptr);
+
+	void setEditMenu(const QMenu *menu);
 	void addItem(PGObject *item, PGObject *parent = nullptr);
 
 private:
@@ -21,6 +23,10 @@ signals:
 
 private slots:
 	void slotCustomContextMenuRequested(const QPoint &point);
+	void slotRefreshMenu();
+
+private:
+	QMenu *_objectMenu;
 };
 
 #endif // OBJECTBROWSER_H

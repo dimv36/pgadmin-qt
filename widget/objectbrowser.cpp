@@ -4,14 +4,25 @@
 
 
 ObjectBrowser::ObjectBrowser(QWidget *parent)
-: QTreeWidget(parent)
+: QTreeWidget(parent),
+  _objectMenu(nullptr)
 {
 	setContextMenuPolicy(Qt::CustomContextMenu);
 
 	connect(this,
-			SIGNAL(customContextMenuRequested(const QPoint&)),
+			SIGNAL(customContextMenuRequested(const QPoint &)),
 			this,
-			SLOT(slotCustomContextMenuRequested(const QPoint&)));
+			SLOT(slotCustomContextMenuRequested(const QPoint &)));
+
+	connect(this,
+			SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)),
+			this,
+			SLOT(slotRefreshMenu()));
+}
+
+void ObjectBrowser::setEditMenu(const QMenu *menu)
+{
+	_objectMenu = (QMenu *) menu;
 }
 
 void ObjectBrowser::addItem(PGObject *item, PGObject *parent)
@@ -34,6 +45,18 @@ void ObjectBrowser::showContextMenu(PGObject *object, const QPoint &pos)
 			emit signalRefreshItem(nullptr);
 		else
 			emit signalRefreshItem(object);
+	}
+}
+
+void ObjectBrowser::slotRefreshMenu()
+{
+	_objectMenu->clear();
+
+	QTreeWidgetItem *curItem = currentItem();
+	if (curItem)
+	{
+		PGObject *currentObject = dynamic_cast<PGObject *>(curItem);
+		currentObject->formContextMenu(_objectMenu);
 	}
 }
 
