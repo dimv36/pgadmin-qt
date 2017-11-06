@@ -13,6 +13,7 @@ public:
 
 	virtual void appendOrRefreshObject(PGObject * = nullptr);
 	virtual void showSingleObjectProperties(PropertyTable *);
+	virtual bool exists() const;
 
 private:
 	void getConfigurationVariables();

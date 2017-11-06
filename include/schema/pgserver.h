@@ -20,6 +20,7 @@ public:
 
 	virtual void showSingleObjectProperties(PropertyTable *table);
 	virtual void appendCollectionItems();
+	virtual bool exists() const { return true; }
 
 	QString connectionName() const;
 	QString host() const;

@@ -24,6 +24,7 @@ public:
 	virtual void afterConstruction();
 
 	ObjectType objectType() const;
+	QString objectName() const;
 
 	PGObject *parentItem() const;
 
@@ -39,6 +40,7 @@ public:
 	void refresh();
 	virtual void formContextMenu(QMenu *menu);
 	virtual void appendCollectionItems() {}
+	virtual bool exists() const = 0;
 
 	virtual bool isSystemObject();
 
@@ -54,7 +56,7 @@ public:
 
 protected:
 	ObjectBrowser *browser() const;
-	void refreshCollectionTitle(const int childCount);
+	void refreshCollectionTitle();
 
 	void setObjectAttribute(const QString &attribute, const QVector<QVariant> &value);
 

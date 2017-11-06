@@ -11,8 +11,8 @@ public:
 	PGTablespace(const PGConnection *connection);
 
 	virtual void appendOrRefreshObject(PGObject * = nullptr);
-//	virtual void refresh();
 	virtual void showSingleObjectProperties(PropertyTable *);
+	virtual bool exists() const;
 };
 
 #endif // PGTABLESPACE_H

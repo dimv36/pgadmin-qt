@@ -120,6 +120,14 @@ void PGRole::showSingleObjectProperties(PropertyTable *tab)
 	appendSecurityLabels(tab);
 }
 
+bool PGRole::exists() const
+{
+	if (IsCollectionItem(_objtype))
+		return true;
+	return _connection->executeScalarBool(QString("SELECT EXISTS (SELECT * FROM pg_roles WHERE oid = %1)")
+										  .arg(_objectProperties.oidString()));
+}
+
 void PGRole::getConfigurationVariables()
 {
 	PGKeyValueSettings settingsArray;

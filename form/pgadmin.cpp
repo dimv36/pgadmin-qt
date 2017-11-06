@@ -139,6 +139,17 @@ void PgAdmin::slotRefreshObject(PGObject *object)
 	if (object)
 	{
 		object->refresh();
+
+		if (!object->exists())
+		{
+			PGObject *parent = object->parentItem();
+
+			delete object;
+			_ui->_objectBrowser->setCurrentItem(parent);
+			parent->refresh();
+			parent->showObjectProperties(_ui->_propertiesWidget);
+			return;
+		}
 		object->showObjectProperties(_ui->_propertiesWidget);
 	}
 }

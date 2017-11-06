@@ -18,13 +18,18 @@ void PGObject::afterConstruction()
 	if (IsCollectionItem(_objtype))
 	{
 		appendOrRefreshObject();
-		refreshCollectionTitle(childCount());
+		refreshCollectionTitle();
 	}
 }
 
 ObjectType PGObject::objectType() const
 {
 	return _objtype;
+}
+
+QString PGObject::objectName() const
+{
+	return _objectProperties.name();
 }
 
 PGObject *PGObject::parentItem() const
@@ -98,6 +103,12 @@ void PGObject::refresh()
 {
 	if (!IsCollectionItem(_objtype))
 		appendOrRefreshObject(this);
+	else
+	{
+		removeChildrens();
+		appendOrRefreshObject();
+		refreshCollectionTitle();
+	}
 }
 
 void PGObject::formContextMenu(QMenu *menu)
@@ -144,12 +155,12 @@ ObjectBrowser *PGObject::browser() const
 	return dynamic_cast<ObjectBrowser *>(treeWidget());
 }
 
-void PGObject::refreshCollectionTitle(const int childCount)
+void PGObject::refreshCollectionTitle()
 {
-	if (_objtype > COLLECTION_LAST_ITEM)
+	if (!IsCollectionItem(_objtype))
 		return;
 
-	setText(ColumnText, QString("%1 (%2)").arg(text(ColumnText)).arg(childCount));
+	setText(ColumnText, QString("%1 (%2)").arg(objectName()).arg(childCount()));
 }
 
 void PGObject::parseSecurityLabels(const QString &providers, const QString &labels)
