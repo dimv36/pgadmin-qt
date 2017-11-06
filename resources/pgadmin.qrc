@@ -16,5 +16,7 @@
         <file alias="tablespaces.png">img/tablespaces.png</file>
         <file alias="tablespace.png">img/tablespace.png</file>
         <file alias="variable.png">img/variable.png</file>
+        <file alias="schema.png">img/namespace.png</file>
+        <file alias="schemas.png">img/namespaces.png</file>
     </qresource>
 </RCC>

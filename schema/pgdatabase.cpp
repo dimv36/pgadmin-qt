@@ -1,11 +1,14 @@
 #include <QMessageBox>
 #include "schema/pgdatabase.h"
+#include "schema/pgschema.h"
 
 PGDatabase::PGDatabase(const PGConnection *connection, const QString &name)
 : PGObject(connection, OBJECT_DATABASE, name, QIcon(":/database.png"))
 {
 	if (!(connection->databaseName() == name))
 		setIcon(ColumnText, QIcon(":/database-disconnected.png"));
+	else
+		connect();
 }
 
 PGDatabase::PGDatabase(const PGConnection *connection)
@@ -35,6 +38,8 @@ void PGDatabase::connect()
 								  _connection->lastError());
 		}
 	}
+	else
+		appendCollectionItems();
 }
 
 bool PGDatabase::connected() const
@@ -47,6 +52,11 @@ void PGDatabase::disconnect()
 {
 	_connection->disconnect();
 	setIcon(ColumnText, QIcon(":/database-disconnected.png"));
+}
+
+void PGDatabase::appendCollectionItems()
+{
+	addChild(newPGObject<PGSchema>(_connection));
 }
 
 void PGDatabase::appendOrRefreshObject(PGObject *object)

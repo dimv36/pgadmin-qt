@@ -36,8 +36,9 @@ SOURCES += \
         schema/pgtablespace.cpp \
         schema/pggroup.cpp \
         schema/pgrole.cpp \
+        schema/pgschema.cpp \
         widget/objectbrowser.cpp \
-        widget/propertytable.cpp
+        widget/propertytable.cpp \
 
 HEADERS += \
         include/form/pgadmin.h \
@@ -52,6 +53,7 @@ HEADERS += \
         include/schema/pgtablespace.h \
         include/schema/pggroup.h \
         include/schema/pgrole.h \
+        include/schema/pgschema.h \
         include/widget/objectbrowser.h \
         include/widget/propertytable.h \
         include/enums.h \

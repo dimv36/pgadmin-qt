@@ -14,6 +14,7 @@ public:
 	bool connected() const;
 	void disconnect();
 
+	virtual void appendCollectionItems();
 	virtual void appendOrRefreshObject(PGObject * = nullptr);
 	virtual void showSingleObjectProperties(PropertyTable *);
 	virtual bool exists() const;
