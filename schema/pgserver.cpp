@@ -90,7 +90,7 @@ void PGServer::appendCollectionItems()
 
 void PGServer::formContextMenu(QMenu *menu)
 {
-	if (IsCollectionItem(_objtype))
+	if (isCollectionItem())
 		return;
 	if (_connection && _connection->connected())
 	{

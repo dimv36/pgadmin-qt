@@ -143,7 +143,7 @@ void PgAdmin::slotRefreshObject(PGObject *object)
 	{
 		object->refresh();
 
-		if (!object->exists())
+		if (!object->isCollectionItem() && !object->exists())
 		{
 			PGObject *parent = object->parentItem();
 

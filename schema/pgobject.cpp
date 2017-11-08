@@ -14,7 +14,7 @@ PGObject::PGObject(const PGConnection *connection, ObjectType objtype, const QSt
 
 void PGObject::afterConstruction()
 {
-	if (IsCollectionItem(_objtype))
+	if (isCollectionItem())
 	{
 		appendOrRefreshObject();
 		refreshCollectionTitle();
@@ -29,6 +29,11 @@ ObjectType PGObject::objectType() const
 QString PGObject::objectName() const
 {
 	return _objectProperties.name();
+}
+
+bool PGObject::isCollectionItem() const
+{
+	return (_objtype < COLLECTION_LAST_ITEM);
 }
 
 PGObject *PGObject::parentItem() const
@@ -48,7 +53,7 @@ void PGObject::addChild(PGObject *object, bool unique)
 	{
 		PGObject *ch = dynamic_cast<PGObject *> (child(i));
 
-		if (IsCollectionItem(object->objectType()) &&
+		if (object->isCollectionItem() &&
 			(ch->objectType() == object->objectType()))
 		{
 			found = true;
@@ -107,7 +112,7 @@ void PGObject::showObjectProperties(PropertyTable *tab)
 
 void PGObject::refresh()
 {
-	if (!IsCollectionItem(_objtype))
+	if (!isCollectionItem())
 		appendOrRefreshObject(this);
 	else
 	{
@@ -163,7 +168,7 @@ ObjectBrowser *PGObject::browser() const
 
 void PGObject::refreshCollectionTitle()
 {
-	if (!IsCollectionItem(_objtype))
+	if (!isCollectionItem())
 		return;
 
 	setText(ColumnText, QString("%1 (%2)").arg(objectName()).arg(childCount()));

@@ -148,8 +148,6 @@ void PGDatabase::showSingleObjectProperties(PropertyTable *tab)
 
 bool PGDatabase::exists() const
 {
-	if (IsCollectionItem(_objtype))
-		return true;
 	return _connection->executeScalarBool(QString("SELECT EXISTS (SELECT * FROM pg_database WHERE oid = %1)")
 										  .arg(_objectProperties.oidString()));
 }
@@ -173,7 +171,7 @@ void PGDatabase::slotDisconnect()
 void PGDatabase::formContextMenu(QMenu *menu)
 {
 	PGObject::formContextMenu(menu);
-	if (!IsCollectionItem(_objtype))
+	if (!isCollectionItem())
 	{
 		if (connected())
 		{

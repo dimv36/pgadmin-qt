@@ -68,8 +68,6 @@ void PGSchema::showSingleObjectProperties(PropertyTable *tab)
 
 bool PGSchema::exists() const
 {
-	if (IsCollectionItem(_objtype))
-		return true;
 	return _connection->executeScalarBool(QString("SELECT EXISTS (SELECT * FROM pg_namespace WHERE oid = %1)")
 										  .arg(_objectProperties.oidString()));
 }

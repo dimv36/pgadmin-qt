@@ -60,8 +60,6 @@ void PGTablespace::showSingleObjectProperties(PropertyTable *tab)
 
 bool PGTablespace::exists() const
 {
-	if (IsCollectionItem(_objtype))
-		return true;
 	return _connection->executeScalarBool(QString("SELECT EXISTS (SELECT * FROM pg_tablespace WHERE oid = %1)")
 										  .arg(_objectProperties.oidString()));
 }

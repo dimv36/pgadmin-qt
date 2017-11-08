@@ -26,6 +26,8 @@ public:
 	ObjectType objectType() const;
 	QString objectName() const;
 
+	bool isCollectionItem() const;
+
 	PGObject *parentItem() const;
 
 	void addChild(PGObject *object, bool unique = true);

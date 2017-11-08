@@ -87,8 +87,6 @@ void PGCast::showSingleObjectProperties(PropertyTable *tab)
 
 bool PGCast::exists() const
 {
-	if (IsCollectionItem(_objtype))
-		return true;
 	return _connection->executeScalarBool(QString("SELECT EXISTS(SELECT * FROM pg_cast WHERE oid = %1)")
 										  .arg(_objectProperties.oidString()));
 }
