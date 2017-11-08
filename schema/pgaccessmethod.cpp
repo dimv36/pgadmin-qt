@@ -58,6 +58,6 @@ void PGAccessMethod::showSingleObjectProperties(PropertyTable *tab)
 	tab->addRow(QObject::tr("OID"), _objectProperties.oid());
 	tab->addRow(QObject::tr("Handler"), _objectProperties.stringValue("handler"));
 	tab->addRow(QObject::tr("Type"), _objectProperties.stringValue("amtype"));
-	tab->addRow(QObject::tr("Is system access method?"), isSystemObject());
+	tab->addRow(QObject::tr("System access method?"), isSystemObject());
 	tab->addRow(QObject::tr("Comment"), _objectProperties.comment());
 }
