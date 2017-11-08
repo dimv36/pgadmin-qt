@@ -5,6 +5,7 @@
 
 class PGAccessMethod : public PGObject
 {
+	Q_OBJECT
 public:
 	PGAccessMethod(const PGConnection *connection, const QString &name);
 	PGAccessMethod(const PGConnection *connection);
