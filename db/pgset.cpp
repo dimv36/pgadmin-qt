@@ -1,5 +1,6 @@
 #include <QDebug>
 #include "db/pgset.h"
+#include "includes.h"
 
 
 PGSet::PGSet()
@@ -119,7 +120,8 @@ Oid PGSet::oidValue(const int column) const
 
 	if (value)
 		return atooid(value);
-	return InvalidOid;}
+	return InvalidOid;
+}
 
 Oid PGSet::oidValue(const QString &column) const
 {

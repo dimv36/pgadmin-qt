@@ -7,4 +7,8 @@ typedef unsigned int Oid;
 	#define InvalidOid ((Oid) 0)
 #endif
 
+#ifndef atooid
+	#define atooid(_data) (strtoul((_data), NULL, 10))
+#endif
+
 #endif // INCLUDES_H
