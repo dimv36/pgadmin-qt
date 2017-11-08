@@ -36,10 +36,11 @@ SOURCES += \
         schema/pgtablespace.cpp \
         schema/pggroup.cpp \
         schema/pgrole.cpp \
+        schema/pgaccessmethod.cpp \
+        schema/pgcast.cpp \
         schema/pgschema.cpp \
         widget/objectbrowser.cpp \
-        widget/propertytable.cpp \
-    schema/pgcast.cpp
+        widget/propertytable.cpp
 
 HEADERS += \
         include/form/pgadmin.h \
@@ -54,13 +55,14 @@ HEADERS += \
         include/schema/pgtablespace.h \
         include/schema/pggroup.h \
         include/schema/pgrole.h \
+        include/schema/pgaccessmethod.h \
+        include/schema/pgcast.h \
         include/schema/pgschema.h \
         include/widget/objectbrowser.h \
         include/widget/propertytable.h \
         include/enums.h \
         include/settings.h \
-        include/includes.h \
-    include/schema/pgcast.h
+        include/includes.h
 
 FORMS += \
         ui/pgadmin.ui \

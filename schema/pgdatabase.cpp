@@ -1,5 +1,6 @@
 #include <QMessageBox>
 #include "schema/pgdatabase.h"
+#include "schema/pgaccessmethod.h"
 #include "schema/pgcast.h"
 #include "schema/pgschema.h"
 
@@ -57,6 +58,8 @@ void PGDatabase::disconnect()
 
 void PGDatabase::appendCollectionItems()
 {
+	if (_connection->backendVersionGE(9, 6))
+		addChild(newPGObject<PGAccessMethod>(_connection));
 	addChild(newPGObject<PGCast>(_connection));
 	addChild(newPGObject<PGSchema>(_connection));
 }

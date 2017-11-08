@@ -23,5 +23,7 @@
         <file alias="trigger.png">img/trigger.png</file>
         <file alias="trigger-disable">img/triggerbad.png</file>
         <file alias="triggers">img/triggers.png</file>
+        <file alias="access-method.png">img/access-method.png</file>
+        <file alias="access-methods.png">img/access-methods.png</file>
     </qresource>
 </RCC>
