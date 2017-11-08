@@ -35,8 +35,13 @@ PgAdmin::PgAdmin(QWidget *parent)
 
 PgAdmin::~PgAdmin()
 {
-	writeSettings();
 	delete _ui;
+}
+
+void PgAdmin::closeEvent(QCloseEvent *ev)
+{
+	writeSettings();
+	QMainWindow::closeEvent(ev);
 }
 
 void PgAdmin::readSettings()
@@ -112,24 +117,21 @@ void PgAdmin::writeSettings()
 	settings.setValue(SETTINGS_MAIN_HSLIDER_POS, _ui->_splitterHorizontal->saveState());
 	settings.endGroup();
 
-	if (_servers->childCount())
+	settings.beginWriteArray(SETTINGS_CONNECTIONS, _servers->childCount());
+	for (int i = 0; i < _servers->childCount(); i++)
 	{
-		settings.beginWriteArray(SETTINGS_CONNECTIONS, _servers->childCount());
-		for (int i = 0; i < _servers->childCount(); i++)
-		{
-			PGServer *server = dynamic_cast<PGServer *>(_servers->child(i));
+		PGServer *server = dynamic_cast<PGServer *>(_servers->child(i));
 
-			settings.setArrayIndex(i);
+		settings.setArrayIndex(i);
 
-			settings.setValue(SETTINGS_CONNECTION_NAME, server->connectionName());
-			settings.setValue(SETTINGS_CONNECTION_HOST, server->host());
-			settings.setValue(SETTINGS_CONNECTION_PORT, server->port());
-			settings.setValue(SETTINGS_CONNECTION_DBNAME, server->dbname());
-			settings.setValue(SETTINGS_CONNECTION_USERNAME, server->username());
-			settings.setValue(SETTINGS_CONNECTION_PASSWORD, server->password());
-		}
-		settings.endArray();
+		settings.setValue(SETTINGS_CONNECTION_NAME, server->connectionName());
+		settings.setValue(SETTINGS_CONNECTION_HOST, server->host());
+		settings.setValue(SETTINGS_CONNECTION_PORT, server->port());
+		settings.setValue(SETTINGS_CONNECTION_DBNAME, server->dbname());
+		settings.setValue(SETTINGS_CONNECTION_USERNAME, server->username());
+		settings.setValue(SETTINGS_CONNECTION_PASSWORD, server->password());
 	}
+	settings.endArray();
 }
 
 void PgAdmin::slotRefreshObject(PGObject *object)

@@ -18,5 +18,7 @@
         <file alias="variable.png">img/variable.png</file>
         <file alias="schema.png">img/namespace.png</file>
         <file alias="schemas.png">img/namespaces.png</file>
+        <file alias="cast.png">img/cast.png</file>
+        <file alias="casts.png">img/casts.png</file>
     </qresource>
 </RCC>

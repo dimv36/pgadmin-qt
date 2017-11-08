@@ -115,12 +115,19 @@ QString PGSet::value(const QString &column) const
 
 Oid PGSet::oidValue(const int column) const
 {
-	return QString(charPtr(column)).toInt();
-}
+	char *value = charPtr(column);
+
+	if (value)
+		return atooid(value);
+	return InvalidOid;}
 
 Oid PGSet::oidValue(const QString &column) const
 {
-	return QString(charPtr(column)).toInt();
+	char *value = charPtr(column);
+
+	if (value)
+		return atooid(value);
+	return InvalidOid;
 }
 
 bool PGSet::boolValue(const int column) const

@@ -1,5 +1,6 @@
 #include <QMessageBox>
 #include "schema/pgdatabase.h"
+#include "schema/pgcast.h"
 #include "schema/pgschema.h"
 
 PGDatabase::PGDatabase(const PGConnection *connection, const QString &name)
@@ -36,10 +37,10 @@ void PGDatabase::connect()
 			QMessageBox::critical(nullptr,
 								  QObject::tr("Connection failed"),
 								  _connection->lastError());
+			return;
 		}
 	}
-	else
-		appendCollectionItems();
+	appendCollectionItems();
 }
 
 bool PGDatabase::connected() const
@@ -56,6 +57,7 @@ void PGDatabase::disconnect()
 
 void PGDatabase::appendCollectionItems()
 {
+	addChild(newPGObject<PGCast>(_connection));
 	addChild(newPGObject<PGSchema>(_connection));
 }
 

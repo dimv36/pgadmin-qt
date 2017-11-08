@@ -22,13 +22,12 @@ PGServer::PGServer(const QString &connectionName,
 {
 	_connection = new PGConnection(host, port, dbname, username, password);
 
-	// Set server properties
-	_connectionName = connectionName;
-	_host = host;
-	_port = port;
-	_dbname = dbname;
-	_username = username;
-	_password = password;
+	setObjectAttribute("name", connectionName);
+	setObjectAttribute("host", host);
+	setObjectAttribute("port", port);
+	setObjectAttribute("dbname", dbname);
+	setObjectAttribute("username", username);
+	setObjectAttribute("password", password);
 }
 
 PGServer::PGServer()
@@ -66,11 +65,11 @@ void PGServer::showSingleObjectProperties(PropertyTable *tab)
 {
 	bool isConnected = connected();
 
-	tab->addRow(QObject::tr("Description"), _connectionName);
-	tab->addRow(QObject::tr("Hostname"), _host);
-	tab->addRow(QObject::tr("Port"), QString::number(_port));
-	tab->addRow(QObject::tr("Maintenance database"), _dbname);
-	tab->addRow(QObject::tr("Username"), _username);
+	tab->addRow(QObject::tr("Connection name"), _objectProperties.stringValue("name"));
+	tab->addRow(QObject::tr("Hostname"), _objectProperties.stringValue("host"));
+	tab->addRow(QObject::tr("Port"), _objectProperties.intValue("port"));
+	tab->addRow(QObject::tr("Maintenance database"), _objectProperties.stringValue("database"));
+	tab->addRow(QObject::tr("Username"), _objectProperties.stringValue("username"));
 	tab->addRow(QObject::tr("Connected?"), isConnected);
 	if (isConnected)
 	{
@@ -91,6 +90,8 @@ void PGServer::appendCollectionItems()
 
 void PGServer::formContextMenu(QMenu *menu)
 {
+	if (IsCollectionItem(_objtype))
+		return;
 	if (_connection && _connection->connected())
 	{
 		PGObject::formContextMenu(menu);
@@ -124,35 +125,36 @@ void PGServer::slotServerDisconnect()
 
 void PGServer::slotServerDelete()
 {
+	slotServerDisconnect();
 	delete this;
 }
 
 QString PGServer::password() const
 {
-	return _password;
+	return _objectProperties.stringValue("password");
 }
 
 QString PGServer::username() const
 {
-	return _username;
+	return _objectProperties.stringValue("username");
 }
 
 QString PGServer::dbname() const
 {
-	return _dbname;
+	return _objectProperties.stringValue("dbname");
 }
 
 int PGServer::port() const
 {
-	return _port;
+	return _objectProperties.intValue("port");
 }
 
 QString PGServer::host() const
 {
-	return _host;
+	return _objectProperties.stringValue("host");
 }
 
 QString PGServer::connectionName() const
 {
-	return _connectionName;
+	return _objectProperties.stringValue("name");
 }

@@ -5,6 +5,7 @@
 
 class PGSchema : public PGObject
 {
+	Q_OBJECT
 public:
 	PGSchema(const PGConnection *connection, const QString &name);
 	PGSchema(const PGConnection *connection);

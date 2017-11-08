@@ -18,6 +18,8 @@ public:
 	explicit PgAdmin(QWidget *parent = 0);
 	~PgAdmin();
 
+	void closeEvent(QCloseEvent *ev);
+
 private:
 	void readSettings();
 	void writeSettings();

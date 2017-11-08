@@ -37,14 +37,6 @@ private slots:
 	void slotServerReconnect();
 	void slotServerDisconnect();
 	void slotServerDelete();
-
-private:
-	QString _connectionName;
-	QString _host;
-	int _port;
-	QString _dbname;
-	QString _username;
-	QString _password;
 };
 
 #endif // PGSERVER_H

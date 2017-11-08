@@ -98,7 +98,11 @@ int PGProperties::intValue(const QString &key) const
 Oid PGProperties::oidValue(const QString &key) const
 {
 	if (contains(key))
-		return value(key).toInt();
+	{
+		const char *data = qPrintable(value(key).toString());
+		if (data)
+			return (Oid) strtoul(data, NULL, 10);
+	}
 	return InvalidOid;
 }
 
