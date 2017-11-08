@@ -13,7 +13,7 @@ PGDatabase::PGDatabase(const PGConnection *connection, const QString &name)
 }
 
 PGDatabase::PGDatabase(const PGConnection *connection)
-: PGObject(connection, COLLECTION_DATABASES, QObject::tr("Databases"), QIcon(":/databases.png"), QIcon(":/database.png"))
+: PGObject(connection, COLLECTION_DATABASES, QObject::tr("Databases"), QIcon(":/databases.png"))
 {}
 
 void PGDatabase::connect()

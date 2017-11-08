@@ -3,9 +3,8 @@
 #include <QObject>
 #include <QMenu>
 
-PGObject::PGObject(const PGConnection *connection, ObjectType objtype, const QString &name, const QIcon &icon, const QIcon &objIcon)
-: _objtype(objtype),
-  _objectIcon(objIcon)
+PGObject::PGObject(const PGConnection *connection, ObjectType objtype, const QString &name, const QIcon &icon)
+: _objtype(objtype)
 {
 	_objectProperties.setName(name);
 	_connection = (PGConnection *) connection;

@@ -7,7 +7,7 @@ PGCast::PGCast(const PGConnection *connection, const QString &name)
 {}
 
 PGCast::PGCast(const PGConnection *connection)
-	: PGObject(connection, COLLECTION_CASTS, QObject::tr("Casts"), QIcon(":/casts.png"), QIcon(":/cast.png"))
+: PGObject(connection, COLLECTION_CASTS, QObject::tr("Casts"), QIcon(":/casts.png"))
 {}
 
 void PGCast::appendOrRefreshObject(PGObject *object)

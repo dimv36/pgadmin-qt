@@ -5,7 +5,7 @@ PGTablespace::PGTablespace(const PGConnection *connection, const QString &name)
 {}
 
 PGTablespace::PGTablespace(const PGConnection *connection)
-: PGObject(connection, COLLECTION_TABLESPACES, QObject::tr("Tablespaces"), QIcon(":/tablespaces.png"), QIcon(":/tablespace.png"))
+: PGObject(connection, COLLECTION_TABLESPACES, QObject::tr("Tablespaces"), QIcon(":/tablespaces.png"))
 {}
 
 void PGTablespace::appendOrRefreshObject(PGObject *object)

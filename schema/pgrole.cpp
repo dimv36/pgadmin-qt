@@ -6,8 +6,8 @@ PGRole::PGRole(const PGConnection *connection, const ObjectType objectType, cons
 : PGObject(connection, objectType, name, icon)
 {}
 
-PGRole::PGRole(const PGConnection *connection, const ObjectType objectType, const QString &name, const QIcon &collectionIcon, const QIcon &objectIcon, bool canLogin)
-: PGObject(connection, objectType, name, collectionIcon, objectIcon),
+PGRole::PGRole(const PGConnection *connection, const ObjectType objectType, const QString &name, const QIcon &collectionIcon, bool canLogin)
+: PGObject(connection, objectType, name, collectionIcon),
   _canlogin(canLogin)
 {}
 

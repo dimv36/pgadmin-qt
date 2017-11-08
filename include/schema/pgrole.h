@@ -9,7 +9,7 @@ public:
 	PGRole(const PGConnection *connection, const ObjectType objectType,
 		   const QString &name, const QIcon &icon = QIcon());
 	PGRole(const PGConnection *connection, const ObjectType objectType,
-		   const QString &name, const QIcon &collectionIcon, const QIcon &objectIcon, bool canLogin);
+		   const QString &name, const QIcon &collectionIcon, bool canLogin);
 
 	virtual void appendOrRefreshObject(PGObject * = nullptr);
 	virtual void showSingleObjectProperties(PropertyTable *);

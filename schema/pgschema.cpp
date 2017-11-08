@@ -6,11 +6,7 @@ PGSchema::PGSchema(const PGConnection *connection, const QString &name)
 {}
 
 PGSchema::PGSchema(const PGConnection *connection)
-: PGObject(connection,
-		   COLLECTION_SCHEMAS,
-		   QObject::tr("Schemas"),
-		   QIcon(":/schemas.png"),
-		   QIcon(":/schema.png"))
+: PGObject(connection, COLLECTION_SCHEMAS, QObject::tr("Schemas"), QIcon(":/schemas.png"))
 {}
 
 void PGSchema::appendOrRefreshObject(PGObject *object)

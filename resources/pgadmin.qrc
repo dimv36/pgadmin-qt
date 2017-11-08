@@ -20,5 +20,8 @@
         <file alias="schemas.png">img/namespaces.png</file>
         <file alias="cast.png">img/cast.png</file>
         <file alias="casts.png">img/casts.png</file>
+        <file alias="trigger.png">img/trigger.png</file>
+        <file alias="trigger-disable">img/triggerbad.png</file>
+        <file alias="triggers">img/triggers.png</file>
     </qresource>
 </RCC>

@@ -19,7 +19,7 @@ class PGObject : public QObject, public QTreeWidgetItem
 {
 	Q_OBJECT
 public:
-	PGObject(const PGConnection *connection, ObjectType objtype, const QString &name = QString(), const QIcon &icon = QIcon(), const QIcon &objIcon = QIcon());
+	PGObject(const PGConnection *connection, ObjectType objtype, const QString &name = QString(), const QIcon &icon = QIcon());
 
 	virtual void afterConstruction();
 
@@ -67,8 +67,6 @@ protected:
 	PGConnection *_connection;
 
 	PGProperties _objectProperties;
-
-	QIcon _objectIcon;
 };
 
 template <class T>
