@@ -20,9 +20,11 @@
         <file alias="access-method.png">img/access-method.png</file>
         <file alias="casts.png">img/casts.png</file>
         <file alias="cast.png">img/cast.png</file>
-        <file alias="schemas.png">img/namespaces.png</file>
-        <file alias="schema.png">img/namespace.png</file>
+        <file alias="extensions.png">img/extensions.png</file>
+        <file alias="extension.png">img/extension.png</file>
         <file alias="languages.png">img/languages.png</file>
         <file alias="language.png">img/language.png</file>
+        <file alias="schemas.png">img/namespaces.png</file>
+        <file alias="schema.png">img/namespace.png</file>
     </qresource>
 </RCC>

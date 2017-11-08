@@ -2,6 +2,7 @@
 #include "schema/pgdatabase.h"
 #include "schema/pgaccessmethod.h"
 #include "schema/pgcast.h"
+#include "schema/pgextension.h"
 #include "schema/pglanguage.h"
 #include "schema/pgschema.h"
 
@@ -62,6 +63,7 @@ void PGDatabase::appendCollectionItems()
 	if (_connection->backendVersionGE(9, 6))
 		addChild(newPGObject<PGAccessMethod>(_connection));
 	addChild(newPGObject<PGCast>(_connection));
+	addChild(newPGObject<PGExtension>(_connection));
 	addChild(newPGObject<PGLanguage>(_connection));
 	addChild(newPGObject<PGSchema>(_connection));
 }

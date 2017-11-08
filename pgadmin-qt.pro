@@ -38,6 +38,7 @@ SOURCES += \
         schema/pgrole.cpp \
         schema/pgaccessmethod.cpp \
         schema/pgcast.cpp \
+        schema/pgextension.cpp \
         schema/pglanguage.cpp \
         schema/pgschema.cpp \
         widget/objectbrowser.cpp \
@@ -58,6 +59,7 @@ HEADERS += \
         include/schema/pgrole.h \
         include/schema/pgaccessmethod.h \
         include/schema/pgcast.h \
+        include/schema/pgextension.h \
         include/schema/pglanguage.h \
         include/schema/pgschema.h \
         include/widget/objectbrowser.h \
