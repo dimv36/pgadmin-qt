@@ -7,6 +7,7 @@ PGEventTrigger::PGEventTrigger(const PGConnection *connection, const QString &na
 		setIcon(ColumnText, QIcon(":/trigger.png"));
 	else
 		setIcon(ColumnText, QIcon(":/trigger-disabled.png"));
+	// TODO: Add trigger function as child hire
 }
 
 PGEventTrigger::PGEventTrigger(const PGConnection *connection)
@@ -15,7 +16,8 @@ PGEventTrigger::PGEventTrigger(const PGConnection *connection)
 
 bool PGEventTrigger::exists() const
 {
-	return true;
+	return _connection->executeScalarBool(QString("SELECT EXISTS (SELECT * FROM pg_event_trigger WHERE oid = %1)")
+										  .arg(_objectProperties.oidString()));
 }
 
 void PGEventTrigger::appendOrRefreshObject(PGObject *object)
