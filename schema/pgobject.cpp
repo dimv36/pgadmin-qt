@@ -100,7 +100,8 @@ void PGObject::showObjectProperties(PropertyTable *tab)
 
 			tab->addRowSummary(childObject->_objectProperties.name(),
 							   childObject->_objectProperties.owner(),
-							   childObject->_objectProperties.comment());
+							   childObject->_objectProperties.comment(),
+							   childObject->icon(ColumnText));
 		}
 	}
 	else
