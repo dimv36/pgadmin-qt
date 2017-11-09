@@ -2,6 +2,7 @@
 #include "schema/pgdatabase.h"
 #include "schema/pgaccessmethod.h"
 #include "schema/pgcast.h"
+#include "schema/pgeventtrigger.h"
 #include "schema/pgextension.h"
 #include "schema/pglanguage.h"
 #include "schema/pgschema.h"
@@ -63,6 +64,7 @@ void PGDatabase::appendCollectionItems()
 	if (_connection->backendVersionGE(9, 6))
 		addChild(newPGObject<PGAccessMethod>(_connection));
 	addChild(newPGObject<PGCast>(_connection));
+	addChild(newPGObject<PGEventTrigger>(_connection));
 	addChild(newPGObject<PGExtension>(_connection));
 	addChild(newPGObject<PGLanguage>(_connection));
 	addChild(newPGObject<PGSchema>(_connection));
@@ -79,7 +81,7 @@ void PGDatabase::appendOrRefreshObject(PGObject *object)
 					"descr.description AS comment, db.datconnlimit AS connection_limit, \n"
 					"db.datctype AS ctype, db.datcollate AS collate, \n"
 					"(SELECT array_agg(label) FROM pg_shseclabel sl1 WHERE sl1.objoid = db.oid) AS labels, \n"
-					"(SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid=db.oid) AS providers \n"
+					"(SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid = db.oid) AS providers \n"
 					"  FROM pg_database db\n"
 					"  LEFT OUTER JOIN pg_tablespace ta ON db.dattablespace=ta.OID\n"
 					"  LEFT OUTER JOIN pg_shdescription descr ON (db.oid=descr.objoid AND descr.classoid='pg_database'::regclass) \n";
