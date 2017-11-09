@@ -2,7 +2,12 @@
 
 PGEventTrigger::PGEventTrigger(const PGConnection *connection, const QString &name)
 : PGObject(connection, OBJECT_EVENTTRIGGER, name, QIcon(":/trigger.png"))
-{}
+{
+	if (_objectProperties.boolValue("enabled"))
+		setIcon(ColumnText, QIcon(":/trigger.png"));
+	else
+		setIcon(ColumnText, QIcon(":/trigger-disabled.png"));
+}
 
 PGEventTrigger::PGEventTrigger(const PGConnection *connection)
 : PGObject(connection, COLLECTION_EVENTTRIGGERS, QObject::tr("Event triggers"), QIcon(":/triggers.png"))
