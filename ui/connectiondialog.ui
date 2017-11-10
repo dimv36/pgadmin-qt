@@ -14,7 +14,7 @@
    <string>Add new server connection</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="pgadmin.qrc">
+   <iconset>
     <normaloff>:/server.png</normaloff>:/server.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -160,9 +160,7 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="pgadmin.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>_buttons</sender>
