@@ -43,7 +43,8 @@ SOURCES += \
         schema/pglanguage.cpp \
         schema/pgschema.cpp \
         widget/objectbrowser.cpp \
-        widget/propertytable.cpp
+        widget/propertytable.cpp \
+    schema/pgforeigndatawrapper.cpp
 
 HEADERS += \
         include/form/pgadmin.h \
@@ -68,7 +69,8 @@ HEADERS += \
         include/widget/propertytable.h \
         include/enums.h \
         include/settings.h \
-        include/includes.h
+        include/includes.h \
+    include/schema/pgforeigndatawrapper.h
 
 FORMS += \
         ui/pgadmin.ui \

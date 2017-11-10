@@ -1,16 +1,16 @@
 #include "schema/pgeventtrigger.h"
 
 PGEventTrigger::PGEventTrigger(const PGConnection *connection, const QString &name)
-: PGObject(connection, OBJECT_EVENTTRIGGER, name, QIcon(":/trigger.png"))
+: PGObject(connection, OBJECT_EVENTTRIGGER, name, QIcon(":/trigger"))
 {
 	if (_objectProperties.boolValue("enabled"))
-		setIcon(ColumnText, QIcon(":/trigger.png"));
+		setIcon(ColumnText, QIcon(":/trigger"));
 	else
-		setIcon(ColumnText, QIcon(":/trigger-disabled.png"));
+		setIcon(ColumnText, QIcon(":/trigger-disabled"));
 }
 
 PGEventTrigger::PGEventTrigger(const PGConnection *connection)
-: PGObject(connection, COLLECTION_EVENTTRIGGERS, QObject::tr("Event triggers"), QIcon(":/triggers.png"))
+: PGObject(connection, COLLECTION_EVENTTRIGGERS, QObject::tr("Event triggers"), QIcon(":/triggers"))
 {}
 
 bool PGEventTrigger::exists() const
@@ -37,7 +37,7 @@ void PGEventTrigger::appendOrRefreshObject(PGObject *object)
 					"LEFT OUTER JOIN pg_language l ON l.oid = p.prolang \n"
 					"%1 \n"
 					"ORDER BY e.evtname";
-	query = query.arg(object ? QString("WHERE e.oid = %1").arg(object->oidObjectAttribute("oid")) : "");
+	query = query.arg(object ? QString("WHERE e.oid = %1").arg(object->oidString()) : "");
 
 	PGSet *set = _connection->executeSet(query);
 	if (set)

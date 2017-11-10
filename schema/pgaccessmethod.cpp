@@ -1,11 +1,11 @@
 #include "schema/pgaccessmethod.h"
 
 PGAccessMethod::PGAccessMethod(const PGConnection *connection, const QString &name)
-: PGObject(connection, OBJECT_ACCESSMETHOD, name, QIcon(":/access-method.png"))
+: PGObject(connection, OBJECT_ACCESSMETHOD, name, QIcon(":/access-method"))
 {}
 
 PGAccessMethod::PGAccessMethod(const PGConnection *connection)
-	: PGObject(connection, COLLECTION_ACCESSMETHODS, QObject::tr("Access methods"), QIcon(":/access-methods.png"))
+	: PGObject(connection, COLLECTION_ACCESSMETHODS, QObject::tr("Access methods"), QIcon(":/access-methods"))
 {}
 
 bool PGAccessMethod::exists() const
@@ -24,7 +24,7 @@ void PGAccessMethod::appendOrRefreshObject(PGObject *object)
 					"LEFT JOIN pg_description d ON am.oid = d.objoid\n AND d.classoid = 'pg_am'::regclass \n"
 					"%1 \n"
 					"ORDER BY am.amname";
-	query = query.arg(object ? QString("WHERE am.oid = %1").arg(object->oidObjectAttribute("oid")) : "");
+	query = query.arg(object ? QString("WHERE am.oid = %1").arg(object->oidString()) : "");
 
 	PGSet *set = _connection->executeSet(query);
 	if (set)

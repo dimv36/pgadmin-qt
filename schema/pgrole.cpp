@@ -28,11 +28,7 @@ void PGRole::appendOrRefreshObject(PGObject *object)
 					"%3\n "
 					"ORDER BY rolname";
 	query = query.arg(table).arg(_canlogin ? "IS TRUE" : "IS FALSE");
-
-	if (object)
-		query = query.arg("AND tab.oid = %1").arg(object->oidObjectAttribute("oid"));
-	else
-		query = query.arg("");
+	query = query.arg(object ? QString("AND tab.oid = %1").arg(object->oidString()) : "");
 
 	PGSet *set = _connection->executeSet(query);
 	if (set)
@@ -78,7 +74,7 @@ void PGRole::appendOrRefreshObject(PGObject *object)
 										"  JOIN pg_auth_members m ON m.member = cte.oid \n"
 										") \n"
 										"SELECT array_agg(pg_get_userbyid(oid)) FROM cte \n"
-										"WHERE oid <> %1").arg(QString::number(role->oidObjectAttribute("oid")));
+										"WHERE oid <> %1").arg(role->oidString());
 			QString members = _connection->executeScalar(roleQuery);
 			members = members.remove('{').remove('}').replace(',', ", ");
 			role->setObjectAttribute("members", members);

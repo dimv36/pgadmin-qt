@@ -3,21 +3,22 @@
 #include "schema/pgaccessmethod.h"
 #include "schema/pgcast.h"
 #include "schema/pgeventtrigger.h"
+#include "schema/pgforeigndatawrapper.h"
 #include "schema/pgextension.h"
 #include "schema/pglanguage.h"
 #include "schema/pgschema.h"
 
 PGDatabase::PGDatabase(const PGConnection *connection, const QString &name)
-: PGObject(connection, OBJECT_DATABASE, name, QIcon(":/database.png"))
+: PGObject(connection, OBJECT_DATABASE, name, QIcon(":/database"))
 {
 	if (!(connection->databaseName() == name))
-		setIcon(ColumnText, QIcon(":/database-disconnected.png"));
+		setIcon(ColumnText, QIcon(":/database-disconnected"));
 	else
 		connect();
 }
 
 PGDatabase::PGDatabase(const PGConnection *connection)
-: PGObject(connection, COLLECTION_DATABASES, QObject::tr("Databases"), QIcon(":/databases.png"))
+: PGObject(connection, COLLECTION_DATABASES, QObject::tr("Databases"), QIcon(":/databases"))
 {}
 
 void PGDatabase::connect()
@@ -32,12 +33,12 @@ void PGDatabase::connect()
 		bool success = _connection->connect();
 		if (success)
 		{
-			setIcon(ColumnText, QIcon(":/database.png"));
+			setIcon(ColumnText, QIcon(":/database"));
 			setDefaultParams();
 		}
 		else
 		{
-			setIcon(ColumnText, QIcon(":/database-disconnected.png"));
+			setIcon(ColumnText, QIcon(":/database-disconnected"));
 			QMessageBox::critical(nullptr,
 								  QObject::tr("Connection failed"),
 								  _connection->lastError());
@@ -56,7 +57,7 @@ bool PGDatabase::connected() const
 void PGDatabase::disconnect()
 {
 	_connection->disconnect();
-	setIcon(ColumnText, QIcon(":/database-disconnected.png"));
+	setIcon(ColumnText, QIcon(":/database-disconnected"));
 }
 
 void PGDatabase::appendCollectionItems()
@@ -65,6 +66,7 @@ void PGDatabase::appendCollectionItems()
 		addChild(newPGObject<PGAccessMethod>(_connection));
 	addChild(newPGObject<PGCast>(_connection));
 	addChild(newPGObject<PGEventTrigger>(_connection));
+	addChild(newPGObject<PGForeignDataWrapper>(_connection));
 	addChild(newPGObject<PGExtension>(_connection));
 	addChild(newPGObject<PGLanguage>(_connection));
 	addChild(newPGObject<PGSchema>(_connection));
@@ -84,9 +86,11 @@ void PGDatabase::appendOrRefreshObject(PGObject *object)
 					"(SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid = db.oid) AS providers \n"
 					"  FROM pg_database db\n"
 					"  LEFT OUTER JOIN pg_tablespace ta ON db.dattablespace=ta.OID\n"
-					"  LEFT OUTER JOIN pg_shdescription descr ON (db.oid=descr.objoid AND descr.classoid='pg_database'::regclass) \n";
-	if (object)
-		query += QString("WHERE db.oid = %1").arg(object->oidObjectAttribute("oid"));
+					"  LEFT OUTER JOIN pg_shdescription descr ON (db.oid=descr.objoid AND descr.classoid='pg_database'::regclass) \n"
+					"%1\n "
+					"ORDER BY datname";
+	query = query.arg(object ? QString("WHERE db.oid = %1").arg(object->oidString()) : "");
+
 	PGSet *set = _connection->executeSet(query);
 
 	if (set)
@@ -151,7 +155,7 @@ void PGDatabase::showSingleObjectProperties(PropertyTable *tab)
 	for (auto it = settings.begin(); it != settings.end(); ++it)
 	{
 		PGKeyValueSetting setting = *it;
-		tab->addRow(setting.first, setting.second, QIcon(":/variable.png"));
+		tab->addRow(setting.first, setting.second, QIcon(":/variable"));
 	}
 }
 

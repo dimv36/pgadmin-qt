@@ -1,11 +1,11 @@
 #include "schema/pgtablespace.h"
 
 PGTablespace::PGTablespace(const PGConnection *connection, const QString &name)
-: PGObject(connection, OBJECT_TABLESPACE, name, QIcon(":/tablespace.png"))
+: PGObject(connection, OBJECT_TABLESPACE, name, QIcon(":/tablespace"))
 {}
 
 PGTablespace::PGTablespace(const PGConnection *connection)
-: PGObject(connection, COLLECTION_TABLESPACES, QObject::tr("Tablespaces"), QIcon(":/tablespaces.png"))
+: PGObject(connection, COLLECTION_TABLESPACES, QObject::tr("Tablespaces"), QIcon(":/tablespaces"))
 {}
 
 void PGTablespace::appendOrRefreshObject(PGObject *object)
@@ -17,9 +17,11 @@ void PGTablespace::appendOrRefreshObject(PGObject *object)
 					"       pg_catalog.shobj_description(oid, 'pg_tablespace') AS comment, \n"
 					"       (SELECT array_agg(label) FROM pg_shseclabel sl1 WHERE sl1.objoid=ts.oid) AS labels, \n"
 					"       (SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid=ts.oid) AS providers \n"
-					"       FROM pg_tablespace ts \n";
-	if (object)
-		query += QString("WHERE ts.oid = %1").arg(object->oidObjectAttribute("oid"));
+					"       FROM pg_tablespace ts \n"
+					"%1 \n"
+					"ORDER BY spcname";
+	query = query.arg(object ? QString("WHERE ts.oid = %1").arg(object->oidString()) : "");
+
 	PGSet *set = _connection->executeSet(query);
 
 	if (set)

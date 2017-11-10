@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/pgadmin.qrc">
-    <normaloff>:/pgadmin.png</normaloff>:/pgadmin.png</iconset>
+    <normaloff>:/pgadmin</normaloff>:/pgadmin</iconset>
   </property>
   <widget class="QWidget" name="_centralWidget">
    <layout class="QGridLayout" name="_main">
@@ -147,7 +147,7 @@
   <widget class="QStatusBar" name="_statusBar"/>
   <action name="_actionAddConnection">
    <property name="icon">
-    <iconset resource="../resources/pgadmin.qrc">
+    <iconset>
      <normaloff>:/connect.png</normaloff>:/connect.png</iconset>
    </property>
    <property name="text">

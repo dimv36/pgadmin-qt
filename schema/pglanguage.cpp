@@ -1,11 +1,11 @@
 #include "schema/pglanguage.h"
 
 PGLanguage::PGLanguage(const PGConnection *connection, const QString &name)
-: PGObject(connection, OBJECT_LANGUAGE, name, QIcon(":/language.png"))
+: PGObject(connection, OBJECT_LANGUAGE, name, QIcon(":/language"))
 {}
 
 PGLanguage::PGLanguage(const PGConnection *connection)
-: PGObject(connection, COLLECTION_LANGUAGES, QObject::tr("Languages"), QIcon(":/languages.png"))
+: PGObject(connection, COLLECTION_LANGUAGES, QObject::tr("Languages"), QIcon(":/languages"))
 {}
 
 bool PGLanguage::exists() const
@@ -31,7 +31,7 @@ void PGLanguage::appendOrRefreshObject(PGObject *object)
 					"WHERE lanispl IS TRUE\n "
 					"%1\n "
 					"ORDER BY lanname";
-	query = query.arg(object ? QString("AND lan.oid = %1").arg(object->oidObjectAttribute("oid")) : "");
+	query = query.arg(object ? QString("AND lan.oid = %1").arg(object->oidString()) : "");
 
 	PGSet *set = _connection->executeSet(query);
 	if (set)

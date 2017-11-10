@@ -3,11 +3,11 @@
 
 
 PGCast::PGCast(const PGConnection *connection, const QString &name)
-: PGObject(connection, OBJECT_CAST, name, QIcon(":/cast.png"))
+: PGObject(connection, OBJECT_CAST, name, QIcon(":/cast"))
 {}
 
 PGCast::PGCast(const PGConnection *connection)
-: PGObject(connection, COLLECTION_CASTS, QObject::tr("Casts"), QIcon(":/casts.png"))
+: PGObject(connection, COLLECTION_CASTS, QObject::tr("Casts"), QIcon(":/casts"))
 {}
 
 void PGCast::appendOrRefreshObject(PGObject *object)
@@ -27,7 +27,7 @@ void PGCast::appendOrRefreshObject(PGObject *object)
 					"LEFT OUTER JOIN pg_description des ON (des.objoid = ca.oid AND des.objsubid = 0 AND des.classoid = 'pg_cast'::regclass) \n"
 					"%1 \n"
 					"ORDER BY st.typname, tt.typname";
-	query = query.arg(object ? QString("WHERE ca.oid = %1").arg(object->oidObjectAttribute("oid")) : "");
+	query = query.arg(object ? QString("WHERE ca.oid = %1").arg(object->oidString()) : "");
 
 	PGSet *set = _connection->executeSet(query);
 	if (set)

@@ -2,11 +2,11 @@
 #include "schema/pgschema.h"
 
 PGSchema::PGSchema(const PGConnection *connection, const QString &name)
-: PGObject(connection, OBJECT_SCHEMA, name, QIcon(":/schema.png"))
+: PGObject(connection, OBJECT_SCHEMA, name, QIcon(":/schema"))
 {}
 
 PGSchema::PGSchema(const PGConnection *connection)
-: PGObject(connection, COLLECTION_SCHEMAS, QObject::tr("Schemas"), QIcon(":/schemas.png"))
+: PGObject(connection, COLLECTION_SCHEMAS, QObject::tr("Schemas"), QIcon(":/schemas"))
 {}
 
 void PGSchema::appendOrRefreshObject(PGObject *object)
@@ -20,7 +20,7 @@ void PGSchema::appendOrRefreshObject(PGObject *object)
 					"FROM pg_namespace nsp \n"
 					"LEFT OUTER JOIN pg_description des ON (des.objoid = nsp.oid AND des.classoid = 'pg_namespace'::regclass) \n"
 					"%1";
-	query = query.arg(object ? QString("WHERE nsp.oid = %1").arg(object->oidObjectAttribute("oid")) : "");
+	query = query.arg(object ? QString("WHERE nsp.oid = %1").arg(object->oidString()) : "");
 
 	PGSet *set = _connection->executeSet(query);
 	if (set)

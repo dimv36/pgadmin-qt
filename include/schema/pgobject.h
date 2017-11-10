@@ -25,6 +25,7 @@ public:
 
 	ObjectType objectType() const;
 	QString objectName() const;
+	QString oidString() const;
 
 	bool isCollectionItem() const;
 

@@ -18,7 +18,7 @@ PGServer::PGServer(const QString &connectionName,
 		   QString("%1 (%2:%3)").arg(connectionName)
 								.arg(host.isEmpty() ? QObject::tr("local") : host)
 								.arg(QString::number(port)),
-		   QIcon(":/server-disconnected.png"))
+		   QIcon(":/server-disconnected"))
 {
 	_connection = new PGConnection(host, port, dbname, username, password);
 
@@ -31,10 +31,7 @@ PGServer::PGServer(const QString &connectionName,
 }
 
 PGServer::PGServer()
-: PGObject(nullptr,
-		   COLLECTION_SERVERS,
-		   QObject::tr("Servers"),
-		   QIcon(":/servers.png"))
+: PGObject(nullptr, COLLECTION_SERVERS, QObject::tr("Servers"), QIcon(":/servers"))
 {
 	_connection = nullptr;
 }
@@ -49,7 +46,7 @@ void PGServer::connect()
 		return;
 	}
 	appendCollectionItems();
-	setIcon(ColumnText, QIcon(":/server-connected.png"));
+	setIcon(ColumnText, QIcon(":/server-connected"));
 	treeWidget()->expandItem(this);
 }
 
@@ -119,7 +116,7 @@ void PGServer::slotServerReconnect()
 void PGServer::slotServerDisconnect()
 {
 	_connection->disconnect();
-	setIcon(ColumnText, QIcon(":/server-disconnected.png"));
+	setIcon(ColumnText, QIcon(":/server-disconnected"));
 	removeChildrens();
 }
 

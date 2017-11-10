@@ -1,11 +1,11 @@
 #include "include/schema/pgextension.h"
 
 PGExtension::PGExtension(const PGConnection *connection, const QString &name)
-: PGObject(connection, OBJECT_EXTENSION, name, QIcon(":/extension.png"))
+: PGObject(connection, OBJECT_EXTENSION, name, QIcon(":/extension"))
 {}
 
 PGExtension::PGExtension(const PGConnection *connection)
-: PGObject(connection, COLLECTION_EXTENSIONS, QObject::tr("Extensions"), QIcon(":/extensions.png"))
+: PGObject(connection, COLLECTION_EXTENSIONS, QObject::tr("Extensions"), QIcon(":/extensions"))
 {}
 
 bool PGExtension::exists() const
@@ -24,7 +24,7 @@ void PGExtension::appendOrRefreshObject(PGObject *object)
 				   "JOIN pg_available_extensions() e(name, default_version, comment) ON x.extname = e.name\n "
 				   "%1\n "
 				   "ORDER BY x.extname";
-	query = query.arg(object ? QString("WHERE x.oid = %1").arg(object->oidObjectAttribute("oid")) : "");
+	query = query.arg(object ? QString("WHERE x.oid = %1").arg(object->oidString()) : "");
 
 	PGSet *set = _connection->executeSet(query);
 	if (set)

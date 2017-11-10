@@ -31,6 +31,11 @@ QString PGObject::objectName() const
 	return _objectProperties.name();
 }
 
+QString PGObject::oidString() const
+{
+	return _objectProperties.oidString();
+}
+
 bool PGObject::isCollectionItem() const
 {
 	return (_objtype < COLLECTION_LAST_ITEM);
