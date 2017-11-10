@@ -65,7 +65,7 @@ void PGServer::showSingleObjectProperties(PropertyTable *tab)
 	tab->addRow(QObject::tr("Connection name"), _objectProperties.stringValue("name"));
 	tab->addRow(QObject::tr("Hostname"), _objectProperties.stringValue("host"));
 	tab->addRow(QObject::tr("Port"), _objectProperties.intValue("port"));
-	tab->addRow(QObject::tr("Maintenance database"), _objectProperties.stringValue("database"));
+	tab->addRow(QObject::tr("Maintenance database"), _objectProperties.stringValue("dbname"));
 	tab->addRow(QObject::tr("Username"), _objectProperties.stringValue("username"));
 	tab->addRow(QObject::tr("Connected?"), isConnected);
 	if (isConnected)
