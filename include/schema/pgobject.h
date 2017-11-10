@@ -57,7 +57,7 @@ public:
 	void appendSecurityLabels(PropertyTable *tab);
 
 public slots:
-	void refresh();
+	virtual void refresh();
 
 protected:
 	ObjectBrowser *browser() const;

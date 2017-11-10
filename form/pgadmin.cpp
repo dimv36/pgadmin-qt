@@ -91,7 +91,7 @@ void PgAdmin::readSettings()
 		// Add new server item
 		PGServer *server = new PGServer(conname, host, port,
 										dbname, username, password);
-		_ui->_objectBrowser->addItem(server, _servers);
+		_servers->addChild(server);
 	}
 	settings.endArray();
 }
@@ -157,7 +157,7 @@ void PgAdmin::slotRefreshObject(PGObject *object)
 	}
 }
 
-void PgAdmin::on__actionAddConnection_triggered()
+void PgAdmin::slotAddConnection()
 {
 	ConnectionDialog dialog;
 
@@ -172,8 +172,7 @@ void PgAdmin::on__actionAddConnection_triggered()
 
 		// Add new server item
 		PGServer *server = new PGServer(connection, host, port, dbname, username, password);
-		_ui->_objectBrowser->addItem(server, _servers);
-		_ui->_objectBrowser->expandAll();
+		_servers->addChild(server);
 	}
 }
 

@@ -32,6 +32,9 @@ public:
 protected:
 	virtual void formContextMenu(QMenu *menu);
 
+public slots:
+	virtual void refresh();
+
 private slots:
 	void slotServerConnect();
 	void slotServerReconnect();

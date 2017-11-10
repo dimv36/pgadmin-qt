@@ -25,7 +25,7 @@ private:
 	void writeSettings();
 
 private slots:
-	void on__actionAddConnection_triggered();
+	void slotAddConnection();
 	void slotRefreshObject(PGObject *);
 	void slotBrowserItemClicked(QTreeWidgetItem *item, int);
 	void slotBrowserItemDoubleClicked(QTreeWidgetItem *item, int);

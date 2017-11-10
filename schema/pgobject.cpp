@@ -74,6 +74,8 @@ void PGObject::addChild(PGObject *object, bool unique)
 	}
 	if (unique && found)
 		return;
+	if (isCollectionItem())
+		refreshCollectionTitle();
 	QTreeWidgetItem::addChild(object);
 }
 

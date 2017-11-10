@@ -102,6 +102,17 @@ void PGServer::formContextMenu(QMenu *menu)
 	menu->addAction(QObject::tr("Delete"), this, SLOT(slotServerDelete()));
 }
 
+void PGServer::refresh()
+{
+	if (!isCollectionItem())
+		appendOrRefreshObject(this);
+	else
+	{
+		appendOrRefreshObject();
+		refreshCollectionTitle();
+	}
+}
+
 void PGServer::slotServerConnect()
 {
 	connect();

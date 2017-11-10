@@ -186,5 +186,25 @@
  <resources>
   <include location="../resources/pgadmin.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>_actionAddConnection</sender>
+   <signal>triggered()</signal>
+   <receiver>PgAdmin</receiver>
+   <slot>slotAddConnection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>385</x>
+     <y>237</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>slotAddConnection()</slot>
+ </slots>
 </ui>
