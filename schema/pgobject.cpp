@@ -19,6 +19,10 @@ void PGObject::afterConstruction()
 		appendOrRefreshObject();
 		refreshCollectionTitle();
 	}
+	else
+	{
+		appendCollectionItems();
+	}
 }
 
 ObjectType PGObject::objectType() const

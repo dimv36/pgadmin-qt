@@ -27,6 +27,8 @@
         <file alias="extension">img/extension.png</file>
         <file alias="foreigndatawrappers">img/foreigndatawrappers.png</file>
         <file alias="foreigndatawrapper">img/foreigndatawrapper.png</file>
+        <file alias="foreignservers">img/foreignservers.png</file>
+        <file alias="foreignserver">img/foreignserver.png</file>
         <file alias="triggerfunctions">img/triggerfunctions.png</file>
         <file alias="triggerfunction">img/triggerfunction.png</file>
         <file alias="languages">img/languages.png</file>

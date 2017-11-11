@@ -75,7 +75,15 @@ protected:
 template <class T>
 T *newPGObject(const PGConnection *connection)
 {
-	T* pgobject = new T(connection);
+	T *pgobject = new T(connection);
+	pgobject->afterConstruction();
+	return pgobject;
+}
+
+template <class T>
+PGObject *newPGObject(const PGConnection *connection, const Oid parentOid)
+{
+	T *pgobject = new T(connection, parentOid);
 	pgobject->afterConstruction();
 	return pgobject;
 }

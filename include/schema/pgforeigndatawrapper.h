@@ -10,6 +10,7 @@ public:
 	PGForeignDataWrapper(const PGConnection *connection, const QString &name);
 	PGForeignDataWrapper(const PGConnection *connection);
 
+	virtual void appendCollectionItems();
 	virtual void appendOrRefreshObject(PGObject * = nullptr);
 	virtual void showSingleObjectProperties(PropertyTable *);
 	virtual bool exists() const;

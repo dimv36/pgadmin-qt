@@ -1,4 +1,5 @@
 #include "schema/pgforeigndatawrapper.h"
+#include "schema/pgforeignserver.h"
 
 PGForeignDataWrapper::PGForeignDataWrapper(const PGConnection *connection, const QString &name)
 : PGObject(connection, OBJECT_FDW, name, QIcon(":/foreigndatawrapper"))
@@ -7,6 +8,11 @@ PGForeignDataWrapper::PGForeignDataWrapper(const PGConnection *connection, const
 PGForeignDataWrapper::PGForeignDataWrapper(const PGConnection *connection)
 : PGObject(connection, COLLECTION_FDWS, QObject::tr("Foreign Data Wrappers"), QIcon(":/foreigndatawrappers"))
 {}
+
+void PGForeignDataWrapper::appendCollectionItems()
+{
+	addChild(newPGObject<PGForeignServer>(_connection, _objectProperties.oid()));
+}
 
 void PGForeignDataWrapper::appendOrRefreshObject(PGObject *object)
 {
@@ -43,6 +49,8 @@ void PGForeignDataWrapper::appendOrRefreshObject(PGObject *object)
 			fdw->setObjectAttribute("validatorproc", set->value("fdwval"));
 			fdw->setObjectAttribute("options", set->value("fdwoptions"));
 			fdw->setObjectAttribute("comment", set->value("description"));
+
+			fdw->afterConstruction();
 
 			if (!object)
 				addChild(fdw);

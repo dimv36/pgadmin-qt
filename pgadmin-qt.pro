@@ -39,12 +39,13 @@ SOURCES += \
         schema/pgaccessmethod.cpp \
         schema/pgcast.cpp \
         schema/pgeventtrigger.cpp \
+        schema/pgforeigndatawrapper.cpp \
+        schema/pgforeignserver.cpp \
         schema/pgextension.cpp \
         schema/pglanguage.cpp \
         schema/pgschema.cpp \
         widget/objectbrowser.cpp \
-        widget/propertytable.cpp \
-    schema/pgforeigndatawrapper.cpp
+        widget/propertytable.cpp
 
 HEADERS += \
         include/form/pgadmin.h \
@@ -62,6 +63,8 @@ HEADERS += \
         include/schema/pgaccessmethod.h \
         include/schema/pgcast.h \
         include/schema/pgeventtrigger.h \
+        include/schema/pgforeigndatawrapper.h \
+        include/schema/pgforeignserver.h \
         include/schema/pgextension.h \
         include/schema/pglanguage.h \
         include/schema/pgschema.h \
@@ -69,8 +72,7 @@ HEADERS += \
         include/widget/propertytable.h \
         include/enums.h \
         include/settings.h \
-        include/includes.h \
-    include/schema/pgforeigndatawrapper.h
+        include/includes.h
 
 FORMS += \
         ui/pgadmin.ui \
