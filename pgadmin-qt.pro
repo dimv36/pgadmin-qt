@@ -41,6 +41,7 @@ SOURCES += \
         schema/pgeventtrigger.cpp \
         schema/pgforeigndatawrapper.cpp \
         schema/pgforeignserver.cpp \
+        schema/pgusermapping.cpp \
         schema/pgextension.cpp \
         schema/pglanguage.cpp \
         schema/pgschema.cpp \
@@ -65,6 +66,7 @@ HEADERS += \
         include/schema/pgeventtrigger.h \
         include/schema/pgforeigndatawrapper.h \
         include/schema/pgforeignserver.h \
+        include/schema/pgusermapping.h \
         include/schema/pgextension.h \
         include/schema/pglanguage.h \
         include/schema/pgschema.h \

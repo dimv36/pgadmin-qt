@@ -1,13 +1,19 @@
 #include "schema/pgforeignserver.h"
+#include "schema/pgusermapping.h"
 
 PGForeignServer::PGForeignServer(const PGConnection *connection, const QString &name)
 : PGObject(connection, OBJECT_FOREIGNSERVER, name, QIcon(":/foreignserver"))
 {}
 
 PGForeignServer::PGForeignServer(const PGConnection *connection, const Oid fdwOid)
-: PGObject(connection, COLLECTION_FOREIGHTSERVERS, QObject::tr("Foreign Servers"), QIcon(":/foreignservers")),
+: PGObject(connection, COLLECTION_FOREIGHNSERVERS, QObject::tr("Foreign Servers"), QIcon(":/foreignservers")),
   _fdwOid(fdwOid)
 {}
+
+void PGForeignServer::appendCollectionItems()
+{
+	addChild(newPGObject<PGUserMapping>(_connection, _objectProperties.oid()));
+}
 
 void PGForeignServer::appendOrRefreshObject(PGObject *object)
 {
@@ -46,6 +52,8 @@ void PGForeignServer::appendOrRefreshObject(PGObject *object)
 			foreignServer->setObjectAttribute("type", set->value("srvtype"));
 			foreignServer->setObjectAttribute("version", set->value("srvversion"));
 			foreignServer->setObjectAttribute("options", set->value("srvoptions"));
+
+			foreignServer->afterConstruction();
 
 			if (!object)
 				addChild(foreignServer);

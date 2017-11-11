@@ -10,6 +10,7 @@ public:
 	PGForeignServer(const PGConnection *connection, const QString &name);
 	PGForeignServer(const PGConnection *connection, const Oid fdwOid);
 
+	virtual void appendCollectionItems();
 	virtual void appendOrRefreshObject(PGObject * = nullptr);
 	virtual void showSingleObjectProperties(PropertyTable *);
 	virtual bool exists() const;
