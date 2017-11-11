@@ -1,4 +1,4 @@
-#include "include/schema/pgextension.h"
+#include "schema/pgextension.h"
 
 PGExtension::PGExtension(const PGConnection *connection, const QString &name)
 : PGObject(connection, OBJECT_EXTENSION, name, QIcon(":/extension"))
