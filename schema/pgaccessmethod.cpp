@@ -5,7 +5,7 @@ PGAccessMethod::PGAccessMethod(const PGConnection *connection, const QString &na
 {}
 
 PGAccessMethod::PGAccessMethod(const PGConnection *connection)
-	: PGObject(connection, COLLECTION_ACCESSMETHODS, QObject::tr("Access methods"), QIcon(":/access-methods"))
+: PGObject(connection, COLLECTION_ACCESSMETHODS, QObject::tr("Access methods"), QIcon(":/access-methods"))
 {}
 
 bool PGAccessMethod::exists() const

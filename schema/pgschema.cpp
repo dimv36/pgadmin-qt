@@ -9,6 +9,11 @@ PGSchema::PGSchema(const PGConnection *connection)
 : PGObject(connection, COLLECTION_SCHEMAS, QObject::tr("Schemas"), QIcon(":/schemas"))
 {}
 
+void PGSchema::appendCollectionItems()
+{
+
+}
+
 void PGSchema::appendOrRefreshObject(PGObject *object)
 {
 	PGSchema *schema = nullptr;
