@@ -37,5 +37,7 @@
         <file alias="language">img/language.png</file>
         <file alias="schemas">img/namespaces.png</file>
         <file alias="schema">img/namespace.png</file>
+        <file alias="collations">img/collations.png</file>
+        <file alias="collation">img/collation.png</file>
     </qresource>
 </RCC>

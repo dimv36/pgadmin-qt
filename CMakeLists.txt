@@ -51,6 +51,7 @@ set(SOURCES
     # schema
     schema/pgaccessmethod.cpp
     schema/pgcast.cpp
+    schema/pgcollation.cpp
     schema/pgdatabase.cpp
     schema/pgeventtrigger.cpp
     schema/pgextension.cpp

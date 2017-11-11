@@ -1,5 +1,6 @@
 #include <QDebug>
 #include "schema/pgschema.h"
+#include "schema/pgcollation.h"
 
 PGSchema::PGSchema(const PGConnection *connection, const QString &name)
 : PGObject(connection, OBJECT_SCHEMA, name, QIcon(":/schema"))
@@ -11,7 +12,7 @@ PGSchema::PGSchema(const PGConnection *connection)
 
 void PGSchema::appendCollectionItems()
 {
-
+	addChild(newPGObject<PGCollation>(_connection, _objectProperties.oid()));
 }
 
 void PGSchema::appendOrRefreshObject(PGObject *object)
@@ -46,6 +47,8 @@ void PGSchema::appendOrRefreshObject(PGObject *object)
 			schema->setObjectAttribute("comment", set->value("description"));
 			schema->getDefaultPrivileges();
 			schema->parseSecurityLabels(set->value("providers"), set->value("labels"));
+
+			schema->afterConstruction();
 
 			if (!object)
 				addChild(schema);
