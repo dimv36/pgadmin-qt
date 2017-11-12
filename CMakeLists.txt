@@ -35,44 +35,15 @@ set(CMAKE_AUTOUIC ON)
 
 file(GLOB_RECURSE HEADERS *.h)
 file(GLOB_RECURSE UI_FORMS *.ui)
+file(GLOB_RECURSE SOURCES *.cpp)
+file(GLOB_RECURSE RESOURCES *.qrc)
 
 set(SOURCES
-    # db
-    db/pgconnection.cpp
-    db/pgproperties.cpp
-    db/pgset.cpp
-
-    # dialog
-    dialog/connectiondialog.cpp
-
-    # form
-    form/pgadmin.cpp
-
-    # schema
-    schema/pgaccessmethod.cpp
-    schema/pgcast.cpp
-    schema/pgcollation.cpp
-    schema/pgdatabase.cpp
-    schema/pgeventtrigger.cpp
-    schema/pgextension.cpp
-    schema/pgforeigndatawrapper.cpp
-    schema/pgforeignserver.cpp
-    schema/pggroup.cpp
-    schema/pglanguage.cpp
-    schema/pgobject.cpp
-    schema/pgrole.cpp
-    schema/pgschema.cpp
-    schema/pgserver.cpp
-    schema/pgtablespace.cpp
-    schema/pguser.cpp
-    schema/pgusermapping.cpp
-
-    # widget
-    widget/objectbrowser.cpp
-    widget/propertytable.cpp
+    # Sources
+    ${SOURCES}
 
     # resources
-    resources/pgadmin.qrc
+    ${RESOURCES}
 
     # ui
     ${UI_FORMS}

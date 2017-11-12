@@ -39,5 +39,7 @@
         <file alias="schema">img/namespace.png</file>
         <file alias="collations">img/collations.png</file>
         <file alias="collation">img/collation.png</file>
+        <file alias="conversions">img/conversions.png</file>
+        <file alias="conversion">img/conversion.png</file>
     </qresource>
 </RCC>

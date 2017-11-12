@@ -1,6 +1,7 @@
 #include <QDebug>
 #include "schema/pgschema.h"
 #include "schema/pgcollation.h"
+#include "schema/pgconversion.h"
 
 PGSchema::PGSchema(const PGConnection *connection, const QString &name)
 : PGObject(connection, OBJECT_SCHEMA, name, QIcon(":/schema"))
@@ -13,6 +14,7 @@ PGSchema::PGSchema(const PGConnection *connection)
 void PGSchema::appendCollectionItems()
 {
 	addChild(newPGObject<PGCollation>(_connection, _objectProperties.oid()));
+	addChild(newPGObject<PGConversion>(_connection, _objectProperties.oid()));
 }
 
 void PGSchema::appendOrRefreshObject(PGObject *object)

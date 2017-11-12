@@ -6,7 +6,7 @@ PGForeignServer::PGForeignServer(const PGConnection *connection, const QString &
 {}
 
 PGForeignServer::PGForeignServer(const PGConnection *connection, const Oid fdwOid)
-: PGObject(connection, COLLECTION_FOREIGHNSERVERS, QObject::tr("Foreign Servers"), QIcon(":/foreignservers")),
+: PGObject(connection, COLLECTION_FOREIGNSERVERS, QObject::tr("Foreign Servers"), QIcon(":/foreignservers")),
   _fdwOid(fdwOid)
 {}
 
