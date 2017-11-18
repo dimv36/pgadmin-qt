@@ -43,5 +43,7 @@
         <file alias="conversion">img/conversion.png</file>
         <file alias="ftsconfigurations">img/configurations.png</file>
         <file alias="ftsconfiguration">img/configuration.png</file>
+        <file alias="ftsdictionaries">img/dictionaries.png</file>
+        <file alias="ftsdictionary">img/dictionary.png</file>
     </qresource>
 </RCC>

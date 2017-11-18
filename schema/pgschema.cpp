@@ -3,6 +3,7 @@
 #include "schema/pgcollation.h"
 #include "schema/pgconversion.h"
 #include "schema/pgtextsearchconfiguration.h"
+#include "schema/pgtextsearchdictionary.h"
 
 PGSchema::PGSchema(const PGConnection *connection, const QString &name)
 : PGObject(connection, OBJECT_SCHEMA, name, QIcon(":/schema"))
@@ -14,9 +15,11 @@ PGSchema::PGSchema(const PGConnection *connection)
 
 void PGSchema::appendCollectionItems()
 {
-	addChild(newPGObject<PGCollation>(_connection, _objectProperties.oid()));
-	addChild(newPGObject<PGConversion>(_connection, _objectProperties.oid()));
-	addChild(newPGObject<PGTextSearchConfiguration>(_connection, _objectProperties.oid()));
+	Oid schemaOid = _objectProperties.oid();
+	addChild(newPGObject<PGCollation>(_connection, schemaOid));
+	addChild(newPGObject<PGConversion>(_connection, schemaOid));
+	addChild(newPGObject<PGTextSearchConfiguration>(_connection, schemaOid));
+	addChild(newPGObject<PGTextSearchDictionary>(_connection, schemaOid));
 }
 
 void PGSchema::appendOrRefreshObject(PGObject *object)
