@@ -5,7 +5,7 @@ PGTextSearchDictionary::PGTextSearchDictionary(const PGConnection *connection, c
 {}
 
 PGTextSearchDictionary::PGTextSearchDictionary(const PGConnection *connection, const Oid schemaOid)
-: PGObject(connection, COLLECTION_TEXTSEARCHDICTIONARY, QObject::tr("FTS Dictionaries"), QIcon(":/ftsdictionaries")),
+: PGObject(connection, COLLECTION_TEXTSEARCHDICTIONARIES, QObject::tr("FTS Dictionaries"), QIcon(":/ftsdictionaries")),
   _schemaOid(schemaOid)
 {}
 

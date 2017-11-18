@@ -5,7 +5,7 @@ PGTextSearchConfiguration::PGTextSearchConfiguration(const PGConnection *connect
 {}
 
 PGTextSearchConfiguration::PGTextSearchConfiguration(const PGConnection *connection, const Oid schemaOid)
-: PGObject(connection, COLLECTION_TEXTSEARCHCONFIGURATION, QObject::tr("FTS Configurations"), QIcon(":/ftsconfigurations")),
+: PGObject(connection, COLLECTION_TEXTSEARCHCONFIGURATIONS, QObject::tr("FTS Configurations"), QIcon(":/ftsconfigurations")),
   _schemaOid(schemaOid)
 {}
 

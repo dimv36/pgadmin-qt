@@ -45,5 +45,7 @@
         <file alias="ftsconfiguration">img/configuration.png</file>
         <file alias="ftsdictionaries">img/dictionaries.png</file>
         <file alias="ftsdictionary">img/dictionary.png</file>
+        <file alias="ftsparsers">img/parsers.png</file>
+        <file alias="ftsparser">img/parser.png</file>
     </qresource>
 </RCC>
