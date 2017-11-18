@@ -41,5 +41,7 @@
         <file alias="collation">img/collation.png</file>
         <file alias="conversions">img/conversions.png</file>
         <file alias="conversion">img/conversion.png</file>
+        <file alias="ftsconfigurations">img/configurations.png</file>
+        <file alias="ftsconfiguration">img/configuration.png</file>
     </qresource>
 </RCC>
