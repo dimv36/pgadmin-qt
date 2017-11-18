@@ -5,6 +5,7 @@
 #include "schema/pgtextsearchconfiguration.h"
 #include "schema/pgtextsearchdictionary.h"
 #include "schema/pgtextsearchparser.h"
+#include "schema/pgtextsearchtemplate.h"
 
 PGSchema::PGSchema(const PGConnection *connection, const QString &name)
 : PGObject(connection, OBJECT_SCHEMA, name, QIcon(":/schema"))
@@ -22,6 +23,7 @@ void PGSchema::appendCollectionItems()
 	addChild(newPGObject<PGTextSearchConfiguration>(_connection, schemaOid));
 	addChild(newPGObject<PGTextSearchDictionary>(_connection, schemaOid));
 	addChild(newPGObject<PGTextSearchParser>(_connection, schemaOid));
+	addChild(newPGObject<PGTextSearchTemplate>(_connection, schemaOid));
 }
 
 void PGSchema::appendOrRefreshObject(PGObject *object)
