@@ -28,6 +28,8 @@ public:
 	QString oidString() const;
 	void setOid(const Oid oid);
 
+	bool hasKey(const QString &key);
+
 	QString name() const;
 	void setName(const QString &name);
 

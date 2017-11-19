@@ -36,6 +36,11 @@ void PGProperties::setOid(const Oid oid)
 	operator []("oid") = oid;
 }
 
+bool PGProperties::hasKey(const QString &key)
+{
+	return contains(key);
+}
+
 QString PGProperties::name() const
 {
 	return stringValue("name");

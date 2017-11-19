@@ -39,6 +39,7 @@ public:
 	void showObjectProperties(PropertyTable *);
 	virtual void showSingleObjectProperties(PropertyTable *) = 0;
 
+	virtual QString fullName() const;
 	virtual void appendOrRefreshObject(PGObject * = nullptr) {}
 	virtual void formContextMenu(QMenu *menu);
 	virtual void appendCollectionItems() {}

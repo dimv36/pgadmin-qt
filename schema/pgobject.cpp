@@ -21,6 +21,7 @@ void PGObject::afterConstruction()
 	}
 	else
 	{
+		setText(ColumnText, fullName());
 		appendCollectionItems();
 	}
 }
@@ -109,7 +110,7 @@ void PGObject::showObjectProperties(PropertyTable *tab)
 		{
 			PGObject *childObject = dynamic_cast<PGObject *> (child(i));
 
-			tab->addRowSummary(childObject->_objectProperties.name(),
+			tab->addRowSummary(childObject->fullName(),
 							   childObject->_objectProperties.owner(),
 							   childObject->_objectProperties.comment(),
 							   childObject->icon(ColumnText));
@@ -120,6 +121,11 @@ void PGObject::showObjectProperties(PropertyTable *tab)
 		tab->setHeaders(PropertiesKeyValue);
 		showSingleObjectProperties(tab);
 	}
+}
+
+QString PGObject::fullName() const
+{
+	return _objectProperties.name();
 }
 
 void PGObject::refresh()

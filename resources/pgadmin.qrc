@@ -49,5 +49,7 @@
         <file alias="ftsparser">img/parser.png</file>
         <file alias="ftstemplates">img/templates.png</file>
         <file alias="ftstemplate">img/template.png</file>
+        <file alias="operators">img/operators.png</file>
+        <file alias="operator">img/operator.png</file>
     </qresource>
 </RCC>

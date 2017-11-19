@@ -1,4 +1,3 @@
-#include <QDebug>
 #include "schema/pgschema.h"
 #include "schema/pgcollation.h"
 #include "schema/pgconversion.h"
@@ -6,6 +5,7 @@
 #include "schema/pgtextsearchdictionary.h"
 #include "schema/pgtextsearchparser.h"
 #include "schema/pgtextsearchtemplate.h"
+#include "schema/pgoperator.h"
 
 PGSchema::PGSchema(const PGConnection *connection, const QString &name)
 : PGObject(connection, OBJECT_SCHEMA, name, QIcon(":/schema"))
@@ -24,6 +24,7 @@ void PGSchema::appendCollectionItems()
 	addChild(newPGObject<PGTextSearchDictionary>(_connection, schemaOid));
 	addChild(newPGObject<PGTextSearchParser>(_connection, schemaOid));
 	addChild(newPGObject<PGTextSearchTemplate>(_connection, schemaOid));
+	addChild(newPGObject<PGOperator>(_connection, schemaOid));
 }
 
 void PGSchema::appendOrRefreshObject(PGObject *object)
