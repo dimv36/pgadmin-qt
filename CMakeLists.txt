@@ -29,14 +29,16 @@ find_package(Qt5Core REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
-
 file(GLOB_RECURSE HEADERS *.h)
 file(GLOB_RECURSE UI_FORMS *.ui)
 file(GLOB_RECURSE SOURCES *.cpp)
 file(GLOB_RECURSE RESOURCES *.qrc)
+
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(SOURCES
     # Sources
